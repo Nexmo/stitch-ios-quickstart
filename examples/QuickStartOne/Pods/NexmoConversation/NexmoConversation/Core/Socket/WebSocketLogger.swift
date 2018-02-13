@@ -56,15 +56,14 @@ internal class WebSocketLogger: SocketLogger {
             case Substring("Handling event: error with data"): return
         case Substring("Handling event: connect with data"): return
         case Substring("Handling event: disconnect with data"): return
-        case Substring("Handling event: text:typing:off with data"): return
+        case Substring("Handling event: text:typing:off with data"):
+            printLog("Handling event: text:typing:off")
         case Substring("Handling event: text:typing:on with data"):
             printLog("Handling event: text:typing:on")
-        case Substring("Handling event: text:delivered with data"): return
+        case Substring("Handling event: text:delivered with data"):
+            printLog("Handling event: text:delivered")
         case Substring("Handling event: text:seen with data"):
             printLog("Handling event: text:seen")
-        case Substring("Handling event: image:delivered with data"): return
-        case Substring("Handling event: image:seen with data"):
-            printLog("Handling event: image:seen")
         case Substring("Handling event: rtc:answer with data"):
             printLog("Handling event: rtc:answer")
         case Substring("Handling event: reconnet with data"): return

@@ -7,8 +7,8 @@
 //
 
 import Foundation
+import Gloss
 
-/// Image Processing service
 public struct IPS {
     
     // MARK:
@@ -19,7 +19,7 @@ public struct IPS {
     /// - original: original
     /// - medium: medium
     /// - thumbnail: thumbnail
-    public enum ImageType: String, Equatable, CodingKey {
+    public enum ImageType: String, Equatable {
         case original
         case medium
         case thumbnail
@@ -29,31 +29,12 @@ public struct IPS {
 internal extension Event.Body {
 
     /// Image model from media server
-    internal struct Image: Decodable {
+    internal struct Image: Gloss.JSONDecodable {
 
-        // MARK:
-        // MARK: Enum
-        
-        private enum CodingKeys: String, CodingKey {
-            case id
-            case representations
-        }
-        
         /// Type of images available
         ///
         /// - link: link with image data and size
-        internal enum Metadata: Equatable, Decodable {
-            
-            // MARK:
-            // MARK: Key
-            
-            internal enum CodingKeys: String, CodingKey {
-                case id
-                case type
-                case size
-                case url
-            }
-            
+        internal enum Metadata: Equatable {
             case link(id: String, url: URL, type: IPS.ImageType, size: Int)
 
             // MARK:
@@ -64,33 +45,18 @@ internal extension Event.Body {
             /// - parameter json: json
             ///
             /// - returns: image model
-            internal static func create(json: [String: Any]) -> Metadata? {
-                guard let type = json["type"] as? String, let imageType = IPS.ImageType(rawValue: type.lowercased()) else { return nil }
-                guard let id = json["id"] as? String, let url = json["url"] as? String, let size = json["size"] as? Int else { return nil }
-                guard let urlObject = URL(string: url) else { return nil }
-                
-                return Metadata.link(id: id, url: urlObject, type: imageType, size: size)
-            }
-            
-            internal init(from decoder: Decoder) throws {
-                let allValues = try decoder.container(keyedBy: CodingKeys.self)
-                
-                guard let type = IPS.ImageType(rawValue: try allValues.decode(String.self, forKey: .type).lowercased()) else {
-                    throw JSONError.malformedJSON
-                }
-                
-                let id = try allValues.decode(String.self, forKey: .id)
-                let size = try allValues.decode(Int.self, forKey: .size)
-                let url = try allValues.decode(URL.self, forKey: .url)
-                
-                self = .link(id: id, url: url, type: type, size: size)
+            internal static func create(json: JSON) -> Metadata? {
+                guard let type: String = "type" <~~ json, let imageType = IPS.ImageType(rawValue: type.lowercased()) else { return nil }
+                guard let id: String = "id" <~~ json, let url: URL = "url" <~~ json, let size: Int = "size" <~~ json else { return nil }
+
+                return Metadata.link(id: id, url: url, type: imageType, size: size)
             }
 
             // MARK:
             // MARK: JSON
 
             /// Convert model to JSON
-            internal var json: [String: Any] {
+            internal var toJSON: JSON {
                 switch self {
                 case .link(let id, let url, let type, let size):
                     return [
@@ -120,74 +86,22 @@ internal extension Event.Body {
             let url = URL(fileURLWithPath: path)
 
             self.id = id
-            self.images = [
-                Metadata.link(id: id, url: url, type: .thumbnail, size: size),
-                Metadata.link(id: id, url: url, type: .medium, size: size),
-                Metadata.link(id: id, url: url, type: .original, size: size)
-            ]
+            self.images = [Metadata.link(id: id, url: url, type: .thumbnail, size: size)]
         }
 
-        internal init?(json: [String: Any]) {
-            let json: [String: Any] = json[CodingKeys.representations.rawValue] as? [String: Any] ?? json
+        internal init?(json: JSON) {
+            let json: JSON = json["representations"] as? JSON ?? json
             
-            guard let id = json[CodingKeys.id.rawValue] as? String else { return nil }
+            guard let id: String = "id" <~~ json else { return nil }
 
             self.id = id
+
             self.images = [
                 json[IPS.ImageType.medium.rawValue],
                 json[IPS.ImageType.thumbnail.rawValue],
                 json[IPS.ImageType.original.rawValue]]
-                    .flatMap { $0 as? [String: Any] }
+                    .flatMap { $0 as? JSON }
                     .flatMap { Metadata.create(json: $0) }
-        }
-        
-        internal init(from decoder: Decoder) throws {
-            let allValues = try decoder.container(keyedBy: CodingKeys.self)
-            
-            struct Representation: Decodable {
-                
-                // MARK:
-                // MARK: Key
-                
-                enum CodingKeys: String, CodingKey {
-                    case id
-                    case thumbnail
-                    case medium
-                    case original
-                }
-                
-                // MARK:
-                // MARK: Initializers
-                
-                let id: String
-                let thumbnail: Metadata
-                let medium: Metadata
-                let original: Metadata
-                
-                init(from decoder: Decoder) throws {
-                    let allValues = try decoder.container(keyedBy: CodingKeys.self)
-                    
-                    id = try allValues.decode(String.self, forKey: .id)
-                    thumbnail = try allValues.decode(Metadata.self, forKey: .thumbnail)
-                    medium = try allValues.decode(Metadata.self, forKey: .medium)
-                    original = try allValues.decode(Metadata.self, forKey: .original)
-                }
-            }
-            
-            var representation: Representation? {
-                return !allValues.contains(.representations)
-                    ? try? decoder.singleValueContainer().decode(Representation.self)
-                    : try? allValues.decode(Representation.self, forKey: .representations)
-            }
-            
-            guard let representations = representation else { throw JSONError.malformedJSON }
-            
-            id = representations.id
-            images = [
-                representations.original,
-                representations.thumbnail,
-                representations.medium
-            ]
         }
 
         // MARK:
@@ -210,16 +124,16 @@ internal extension Event.Body {
         // MARK: JSON
         
         /// Convert model to JSON
-        internal var json: [String: Any] {
+        internal func toJSON() -> JSON {
             let thumbnail = image(for: .thumbnail)
             let medium = image(for: .medium)
             let original = image(for: .original)
             
             return [
                 "id": id,
-                "original": original?.json ?? [:],
-                "medium": medium?.json ?? [:],
-                "thumbnail": thumbnail?.json ?? [:]
+                "original": original?.toJSON ?? [:],
+                "medium": medium?.toJSON ?? [:],
+                "thumbnail": thumbnail?.toJSON ?? [:]
                 ]
         }
     }

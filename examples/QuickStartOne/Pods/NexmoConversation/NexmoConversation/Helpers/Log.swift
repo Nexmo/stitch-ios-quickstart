@@ -15,14 +15,13 @@ internal struct Log {
     internal enum Module: String {
         case rest = "REST"
         case websocket = "WebSocket"
-        case socketIO = "Socket IO"
-        case syncManager = "Sync"
+        case socketIO = "Socket IO Library"
+        case syncManager = "Sync Manager"
         case database = "Database"
         case eventProcessor = "Event Processor"
         case taskProcessor = "Task Processor"
         case signals = "Signal"
         case rtc = "RTC"
-        case data = "Data"
         case other = ""
     }
 

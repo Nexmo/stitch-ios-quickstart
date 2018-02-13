@@ -47,7 +47,7 @@ public class ImageEvent: TextEvent {
     /// - Parameter type: type of image
     /// - Returns: image size
     public func size(for type: IPS.ImageType) -> Int? {
-        guard let model: Event.Body.Image = try? data.rest.model(),
+        guard let model: Event.Body.Image = data.rest.model(),
             case .link(_, _, _, let size)? = model.image(for: type) else {
             return nil
         }
@@ -58,7 +58,7 @@ public class ImageEvent: TextEvent {
     /// Fetch image of type
     ///
     /// - Parameters:
-    ///   - type: type of image, @default: .thumbnail
+    ///   - type: type of image, @defult: .thumbnail
     ///   - completion: success/failed
     public func image(for type: IPS.ImageType = .thumbnail, _ completion: @escaping ((Result<UIImage>) -> Void)) {
         // TODO: Remove use of 'ConversationClient.instance' for DI

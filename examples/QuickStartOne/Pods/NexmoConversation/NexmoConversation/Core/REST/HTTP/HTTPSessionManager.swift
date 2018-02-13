@@ -19,10 +19,14 @@ internal class HTTPSessionManager: SessionManager {
     /// Error state
     ///
     /// - requestFailed: bad request with error
+    /// - malformedJSON: bad json
+    /// - malformedResponse: client/server error
     /// - cancelled: cancelled due to network or task
     /// - invalidToken: invalid token
     internal enum Errors: Error {
         case requestFailed(error: Any?)
+        case malformedJSON
+        case malformedResponse
         case cancelled
         case invalidToken
     }

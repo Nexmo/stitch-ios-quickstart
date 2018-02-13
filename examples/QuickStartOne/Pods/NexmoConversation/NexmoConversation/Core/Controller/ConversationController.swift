@@ -13,17 +13,14 @@ import RxSwift
 @objc(NXMConversationController)
 public class ConversationController: NSObject {
 
-    // MARK:
-    // MARK: Typealias
-    
     /// Information about conversation
     public typealias LiteConversation = (name: String, uuid: String)
 
     // MARK:
     // MARK: Properties
 
-    /// RTC Controller
-    internal let media: RTCController
+    /// Controller to rtc
+    public let media: RTCController
 
     /// Network controller
     private let networkController: NetworkController
@@ -43,9 +40,9 @@ public class ConversationController: NSObject {
     // MARK:
     // MARK: Initializers
     
-    internal init(network: NetworkController, account: AccountController, rtc: RTCController) {
+    internal init(network: NetworkController, account: AccountController) {
         networkController = network
-        media = rtc
+        media = RTCController(network: networkController)
         conversations = ConversationCollection(storage: nil) // Set afterwards
         self.account = account
     }

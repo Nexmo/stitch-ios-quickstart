@@ -1,5 +1,5 @@
 //
-//  MediaEvent.swift
+//  AudioEvent.swift
 //  NexmoConversation
 //
 //  Created by Shams Ahmed on 29/11/17.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-/// Media Event
-@objc(NXMMediaEvent)
-public class MediaEvent: EventBase {
+/// Audio Event
+@objc(NXMAudioEvent)
+public class AudioEvent: EventBase {
     
     // MARK:
     // MARK: Properties
     
     /// Audio enabled
     public internal(set) lazy var enabled: Bool = {
-        guard let audio: Event.Body.Audio = try? self.data.rest.model() else { return false }
+        guard let audio: Event.Body.Audio = self.data.rest.model() else { return false }
         
         return audio.enabled
     }()

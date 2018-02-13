@@ -57,11 +57,9 @@ public class Member: NSObject {
     // MARK: NSObject
     
     /// Hashable
-    /// :nodoc:
     public override var hashValue: Int { return data.rest.id.hashValue }
     
     /// Description
-    /// :nodoc:
     public override var description: String { return "\(data.rest.id) \(data.rest.name) \(data.rest.userId) \(data.parent) \(state)" }
     
     // MARK:

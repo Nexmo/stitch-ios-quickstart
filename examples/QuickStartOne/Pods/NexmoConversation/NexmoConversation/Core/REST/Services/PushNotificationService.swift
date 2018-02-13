@@ -101,7 +101,7 @@ internal struct PushNotificationService {
                 case .success(let response):
                     // TODO: create a model of response
                     guard let token = (response as? Parameters)?["token"] as? String else {
-                        failure?(JSONError.malformedJSON)
+                        failure?(HTTPSessionManager.Errors.malformedJSON)
 
                         return
                     }

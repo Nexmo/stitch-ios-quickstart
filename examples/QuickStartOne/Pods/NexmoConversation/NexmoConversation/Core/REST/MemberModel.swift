@@ -7,23 +7,14 @@
 //
 
 import Foundation
+import Gloss
 
 // TODO: a model should not be mutable remove all var on this class, other classes need to recreate a struct object to avoid any weird issue
-/// Member model
-public struct MemberModel: Decodable {
+public struct MemberModel: Gloss.JSONDecodable {
     
     // MARK:
     // MARK: Enum
 
-    private enum CodingKeys: String, CodingKey {
-        case memberId = "member_id"
-        case name
-        case state
-        case userId = "user_id"
-        case invitedBy = "invited_by"
-        case timestamp
-    }
-    
     /// Member State
     ///
     /// - joined: Member is joined to this conversation
@@ -74,7 +65,7 @@ public struct MemberModel: Decodable {
     /// - PSTN: pstn
     /// - SMS: sms
     /// - OTT: ott
-    public enum Channel: String, Equatable, Decodable {
+    public enum Channel: String, Equatable {
         case app
         case sip
         case pstn
@@ -85,22 +76,22 @@ public struct MemberModel: Decodable {
     // MARK:
     // MARK: Properties
     
-    /// Member iD
+    /// member id
     public internal(set) var id: String
     
-    /// Name
+    /// name
     public internal(set) var name: String
     
-    /// State
+    /// state
     public internal(set) var state: State
     
-    /// User id
+    /// user id
     public internal(set) var userId: String
 
     /// User who has invited this member
     public let invitedBy: String?
 
-    /// Timestamp of when user joined
+    /// timestamp of when user joined
     public internal(set) var timestamp: [State: Date?]
 
     // MARK:
@@ -121,49 +112,43 @@ public struct MemberModel: Decodable {
         self.timestamp = timestamp
     }
 
-    /// :nodoc:
-    public init(from decoder: Decoder) throws {
-        let allValues = try decoder.container(keyedBy: CodingKeys.self)
-        
-        id = try allValues.decode(String.self, forKey: .memberId)
-        name = try allValues.decode(String.self, forKey: .name)
-        userId = try allValues.decode(String.self, forKey: .userId)
-        invitedBy = try allValues.decodeIfPresent(String.self, forKey: .invitedBy)
-        
-        let stateString = try allValues.decode(String.self, forKey: .state)
-        
-        guard let stateObject = State(rawValue: stateString.lowercased()) else {
-            throw JSONError.malformedJSON
+    public init?(json: JSON) {
+        guard let memberId: String = "member_id" <~~ json else { return nil }
+        guard let name: String = "name" <~~ json else { return nil }
+        guard let stateString: String = "state" <~~ json,
+            let state: State = State(rawValue: stateString.lowercased()) else {
+            return nil
         }
-
-        state = stateObject
-        
-        let timestamps = try allValues.decode([String: String].self, forKey: .timestamp)
-        
-        timestamp = [
-            State.invited: DateFormatter.ISO8601?.date(from: timestamps[State.invited.rawValue] ?? ""),
-            State.joined: DateFormatter.ISO8601?.date(from: timestamps[State.joined.rawValue] ?? ""),
-            State.left: DateFormatter.ISO8601?.date(from: timestamps[State.left.rawValue] ?? "")
-        ]
-    }
-    
-    internal init(json: [String: Any], state: State) throws {
-        guard let memberId = json["member_id"] as? String else { throw JSONError.malformedJSON }
-        guard let name = json["name"] as? String else { throw JSONError.malformedJSON }
-        guard let userId = json["user_id"] as? String else { throw JSONError.malformedJSON }
+        guard let userId: String = "user_id" <~~ json else { return nil }
+        guard let formatter = DateFormatter.ISO8601 else { return nil }
 
         self.id = memberId
         self.name = name
         self.state = state
         self.userId = userId
-        self.invitedBy = json["invited_by"] as? String
-        
-        let timestamps = json["timestamp"] as? [String: String]
-        
-        timestamp = [
-            State.invited: DateFormatter.ISO8601?.date(from: timestamps?[State.invited.rawValue] ?? ""),
-            State.joined: DateFormatter.ISO8601?.date(from: timestamps?[State.joined.rawValue] ?? ""),
-            State.left: DateFormatter.ISO8601?.date(from: timestamps?[State.left.rawValue] ?? "")
+        self.invitedBy = "invited_by" <~~ json
+        self.timestamp = [
+            State.invited: Decoder.decode(dateForKey: "timestamp.\(State.invited.rawValue)", dateFormatter: formatter)(json),
+            State.joined: Decoder.decode(dateForKey: "timestamp.\(State.joined.rawValue)", dateFormatter: formatter)(json),
+            State.left: Decoder.decode(dateForKey: "timestamp.\(State.left.rawValue)", dateFormatter: formatter)(json)
+        ]
+    }
+    
+    internal init?(json: JSON, state: State) {
+        guard let memberId: String = "member_id" <~~ json else { return nil }
+        guard let name: String = "name" <~~ json else { return nil }
+        guard let userId: String = "user_id" <~~ json else { return nil }
+        guard let formatter = DateFormatter.ISO8601 else { return nil }
+
+        self.id = memberId
+        self.name = name
+        self.state = state
+        self.userId = userId
+        self.invitedBy = "invited_by" <~~ json
+        self.timestamp = [
+            State.invited: Decoder.decode(dateForKey: "timestamp.\(State.invited.rawValue)", dateFormatter: formatter)(json),
+            State.joined: Decoder.decode(dateForKey: "timestamp.\(State.joined.rawValue)", dateFormatter: formatter)(json),
+            State.left: Decoder.decode(dateForKey: "timestamp.\(State.left.rawValue)", dateFormatter: formatter)(json)
         ]
     }
 

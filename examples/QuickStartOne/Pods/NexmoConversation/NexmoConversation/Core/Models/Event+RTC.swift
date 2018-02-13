@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Gloss
 
 /// RTC body
 internal extension Event.Body {
@@ -15,17 +16,7 @@ internal extension Event.Body {
     // MARK: Audio
 
     /// Audio
-    internal struct Audio: Decodable {
-        
-        // MARK:
-        // MARK: Keys
-        
-        private enum Codingkeys: String, CodingKey {
-            case audio
-        }
-        
-        // MARK:
-        // MARK: Properties
+    internal struct Audio: Gloss.JSONDecodable {
         
         /// Member audio state
         let enabled: Bool
@@ -33,8 +24,10 @@ internal extension Event.Body {
         // MARK:
         // MARK: Initializers
         
-        internal init(from decoder: Decoder) throws {
-            enabled = try decoder.container(keyedBy: Codingkeys.self).decode(Bool.self, forKey: .audio)
+        internal init?(json: JSON) {
+            guard let state: Bool = "audio" <~~ json else { return nil }
+            
+            enabled = state
         }
     }
     
@@ -42,17 +35,7 @@ internal extension Event.Body {
     // MARK: Mute
     
     /// Sound
-    internal struct Mute: Decodable {
-        
-        // MARK:
-        // MARK: Keys
-        
-        private enum Codingkeys: String, CodingKey {
-            case mute
-        }
-        
-        // MARK:
-        // MARK: Properties
+    internal struct Mute: Gloss.JSONDecodable {
         
         /// ???
         let enabled: Bool
@@ -60,8 +43,10 @@ internal extension Event.Body {
         // MARK:
         // MARK: Initializers
         
-        internal init(from decoder: Decoder) throws {
-            fatalError()
+        internal init?(json: JSON) {
+            guard let state: Bool = "???" <~~ json else { return nil }
+            
+            enabled = state
         }
     }
 }

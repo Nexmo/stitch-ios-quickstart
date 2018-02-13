@@ -8,6 +8,7 @@
 
 import Foundation
 import GRDB
+import Gloss
 
 internal class DBEvent: Record {
 
@@ -59,11 +60,11 @@ internal class DBEvent: Record {
         }
     }
     
-    internal var body: [String: Any] {
+    internal var body: JSON {
         guard rest.body == nil else { return rest.body! }
         guard let jsonData: Data = _body?.data(using: String.Encoding.utf8) else { return [:] }
         
-        rest.body = ((try? JSONSerialization.jsonObject(with: jsonData, options: [])) as? [String: Any])
+        rest.body = ((try? JSONSerialization.jsonObject(with: jsonData, options: [])) as? JSON)
             
         return rest.body!
     }
@@ -93,7 +94,6 @@ internal class DBEvent: Record {
         super.init()
         
         rest.body = body
-        rest.tid = body["tid"] as? String
     }
     
     internal init(conversationUuid: String, type: Event.EventType, memberId: String, seen: Bool) {
@@ -106,7 +106,6 @@ internal class DBEvent: Record {
         super.init()
         
         rest.body = body
-        rest.tid = body["tid"] as? String
     }
 
     required init(row: Row) {
@@ -131,7 +130,6 @@ internal class DBEvent: Record {
         super.init(row: row)
         
         rest.body = body
-        rest.tid = body["tid"] as? String
     }
     
     // MARK:

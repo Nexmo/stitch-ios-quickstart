@@ -8,7 +8,7 @@
 
 import Foundation
 
-/**
+/*
  The idea of this collection helper is to snapshot a list in time by (cheaply) gathering
  a list of uuids when constructed; and then lazily get the full records on demand. The
  idea is that the list doesn't then change and can be used in things list UITableViews

@@ -7,35 +7,10 @@
 //
 
 import Foundation
+import Gloss
 
 /// Model for response of join/invite member request
-internal struct MemberStatus: Decodable {
-    
-    // MARK:
-    // MARK: Support
-    
-    private struct Channel: Decodable {
-        private enum CodingKeys: String, CodingKey {
-            case type
-        }
-        
-        internal let type: MemberModel.Channel
-        
-        internal init(from decoder: Decoder) throws {
-            type = try decoder.container(keyedBy: CodingKeys.self).decode(MemberModel.Channel.self, forKey: .type)
-        }
-    }
-    
-    // MARK:
-    // MARK: Keys
-    
-    private enum CodingKeys: String, CodingKey {
-        case state
-        case id
-        case userId = "user_id"
-        case timestamp
-        case channel
-    }
+internal struct MemberStatus: Gloss.JSONDecodable {
     
     /// member id
     internal let memberId: String
@@ -50,30 +25,35 @@ internal struct MemberStatus: Decodable {
     internal let timeStamp: Date
     
     /// member channel type
-    internal let channel: MemberModel.Channel?
+    internal let channel: [MemberModel.Channel: [String: String]]
     
     // MARK:
-    // MARK: Initializers
+    // MARK: Int
     
-    internal init(from decoder: Decoder) throws {
-        let allValues = try decoder.container(keyedBy: CodingKeys.self)
-        let stateString = try allValues.decode(String.self, forKey: .state)
+    internal init?(json: JSON) {
+        guard let stateString: String = "state" <~~ json else { return nil }
         
-        guard let stateObject = MemberModel.State(rawValue: stateString.lowercased()) else {
-            throw JSONError.malformedJSON
+        guard let memberId: String = "id" <~~ json,
+            let userId: String = "user_id" <~~ json,
+            let state = MemberModel.State(rawValue: stateString.lowercased()) else { return nil }
+        
+        guard let formatter = DateFormatter.ISO8601,
+            let timestamp = Decoder.decode(dateForKey: "timestamp.\(state.rawValue)", dateFormatter: formatter)(json) else {
+            return nil
         }
         
-        state = stateObject
-        userId = try allValues.decode(String.self, forKey: .userId)
-        memberId = try allValues.decode(String.self, forKey: .id)
-        
-        let timestampModel = try allValues.decode([String: String].self, forKey: .timestamp)
-        
-        guard let plainDate = timestampModel[stateObject.rawValue], let date = DateFormatter.ISO8601?.date(from: plainDate) else {
-            throw JSONError.malformedJSON
+        if let channel: [String: [String: String]] = "channel" <~~ json,
+            let firstKey = channel.first?.key,
+            let key = MemberModel.Channel(rawValue: firstKey),
+            let value = channel.first?.value {
+            self.channel = [key: value]
+        } else {
+            self.channel = [:]
         }
         
-        timeStamp = date
-        channel = try? allValues.decode(Channel.self, forKey: .channel).type
+        self.memberId = memberId
+        self.userId = userId
+        self.state = state
+        self.timeStamp = timestamp
     }
 }

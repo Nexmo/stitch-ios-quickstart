@@ -380,7 +380,8 @@ internal class EventQueue: Queue {
         
         /* If one of our messages was sent, do the necessary work to remove the draft and task. */
         if let newEvent = newEvent as? TextEvent, watcher != nil {
-             newEvent.conversation.events.eventSent.emit(newEvent)
+            // TODO: add updated by here
+            // newEvent.conversation.messageSent.emit(newEvent)
         }
     }
     

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Gloss
 
 /// Request model
 public extension ConversationController {
@@ -15,7 +16,7 @@ public extension ConversationController {
     // MARK: Model
 
     /// Join a conversation request
-    public struct JoinConversation {
+    public struct JoinConversation: Gloss.JSONEncodable {
         
         // MARK:
         // MARK: Properties
@@ -34,8 +35,7 @@ public extension ConversationController {
         
         // MARK:
         // MARK: Initializers
-        
-        /// Create model
+
         public init(userId: String, memberId: String?=nil) {
             self.userId = userId
             self.memberId = memberId
@@ -44,18 +44,17 @@ public extension ConversationController {
         // MARK:
         // MARK: JSON
         
-        internal var json: [String: Any] {
-            var model: [String: Any] = [
-                "user_id": userId,
-                "action": action.rawValue,
-                "channel": channel
-            ]
+        public func toJSON() -> JSON? {
+            var model = JSON()
+            model["user_id"] = userId
+            model["action"] = action.rawValue
+            model["channel"] = channel
             
             if let memberId = memberId {
                 model["member_id"] = memberId
             }
             
-            return model
+            return jsonify([model])
         }
     }
 }

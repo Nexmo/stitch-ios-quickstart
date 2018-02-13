@@ -25,7 +25,11 @@ public extension ConversationClient {
             self.login(with: token, { result in
                 switch result {
                 case .success:
-                    self.setupAfterLogin()
+                    // when logged in, request push notification permissions
+                    if ConversationClient.configuration.pushNotifications {
+                        self.appLifecycle.push.requestPermission()
+                    }
+                    
                     return observer(SingleEvent.success(()))
                 case .failed: return observer(SingleEvent.error(LoginResult.failed))
                 case .invalidToken: return observer(SingleEvent.error(LoginResult.invalidToken))
@@ -38,7 +42,6 @@ public extension ConversationClient {
         })
         .observeOn(ConcurrentDispatchQueueScheduler.utility)
         .subscribeOn(ConcurrentMainScheduler.instance)
-        .observeOnMainThread()
     }
     
     /// Log out user
@@ -52,7 +55,7 @@ public extension ConversationClient {
 
         do {
             try storage.reset()
-        } catch {
+        } catch _ {
             return false
         }
         
@@ -61,14 +64,5 @@ public extension ConversationClient {
         account.state.value = .loggedOut
         
         return true
-    }
-    
-    // MARK:
-    // MARK: Post-Login
-    
-    private func setupAfterLogin() {
-        if ConversationClient.configuration.pushNotifications {
-            self.appLifecycle.push.requestPermission()
-        }
     }
 }

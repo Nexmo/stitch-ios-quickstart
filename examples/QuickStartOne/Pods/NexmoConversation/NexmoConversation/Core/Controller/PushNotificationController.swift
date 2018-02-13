@@ -18,10 +18,9 @@ public class PushNotificationController: NSObject {
     // MARK: Properties
     
     /// Push notification state
-    internal var subject = Variable<PushNotificationController.State?>(nil)
-    
+    internal var subject = Variable<PushNotificationState?>(nil)
     /// Push notification state observable
-    public var state: Observable<PushNotificationController.State> {
+    public var state: Observable<PushNotificationState> {
         return subject.asObservable().unwrap().share()
     }
     
@@ -73,13 +72,16 @@ public class PushNotificationController: NSObject {
     private func registerForPushNotifications() {
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, error in
-                guard error == nil || !granted else {
+                guard error == nil else {
                     self?.subject.value = .unknown
                     return
                 }
                 
-                DispatchQueue.main.async {
+                if granted {
                     UIApplication.shared.registerForRemoteNotifications()
+                } else {
+                    // user has denied permissions
+                    self?.subject.value = .unknown
                 }
             }
         } else {

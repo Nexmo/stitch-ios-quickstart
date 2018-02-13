@@ -54,11 +54,11 @@ internal enum RTCRouter: URLRequestConvertible {
 
         switch self {
         case .new(_, let model):
-            urlRequest = try JSONEncoding.default.encode(urlRequest, with: model.json)
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: model.toJSON())
         case .terminate(_, _, let memberId):
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: ["from": memberId])
         case .send(let event):
-            urlRequest = try JSONEncoding.default.encode(urlRequest, with: event.json)
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: event.toJSON())
         }
 
         return urlRequest

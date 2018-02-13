@@ -56,7 +56,7 @@ internal struct SendEventOperation: Operation {
     
     private func send(_ event: ImageEvent, progress: @escaping (Request) -> Void) throws -> Maybe<T> {
         // create thumbnail model
-        guard let model: Event.Body.Image = try? event.data.rest.model(),
+        guard let model: Event.Body.Image = event.data.rest.model(),
             case .link(let id, _, _, _)? = model.image(for: .thumbnail) else { // by default to save local cached asset as thumbnail
             throw Errors.failedToProcessEvent
         }

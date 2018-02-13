@@ -39,14 +39,14 @@ class LoginViewController: UIViewController {
                 if let user = self.client.account.user {
                     print("DEMO - login successful and here is our \(user)")
                     
-                    // whenever the conversations array is modified
+                    // whenver the conversations array is modified
                     self.client.conversation.conversations.asObservable.subscribe(onNext: { (change) in
                         switch change {
-                        case .inserted(let conversation, let reason):
+                        case .inserted(let conversations, let reason):
                             switch reason {
-                            case .invitedBy:
-                                _ = conversation.join().subscribe(onSuccess: { _ in
-                                    print("You have joined this conversation: \(conversation.uuid)")
+                            case .invitedBy(let member):
+                                conversations.first?.join().subscribe(onSuccess: { _ in
+                                    print("You have joined this conversation: \(String(describing:conversations.first?.uuid))")
                                 }, onError: { (error) in
                                     print(error.localizedDescription)
                                 })
@@ -56,7 +56,7 @@ class LoginViewController: UIViewController {
                         default:
                             break
                         }
-                    }).disposed(by: self.client.disposeBag)
+                    })
                     
                     // figure out which conversation a member has joined
                     let joinedConversation = self.client.conversation.conversations.filter({ (conversation) -> Bool in
@@ -95,7 +95,6 @@ class LoginViewController: UIViewController {
                 print("DEMO - login unsuccessful with \(reason)")
                 
             }).disposed(by: self.client.disposeBag) // Rx does not maintain a memory reference; to make sure that reference is still in place; keep a reference of this object while I do an operation.
-            
         }))
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("alice", comment: "Second User"), style: .default, handler: { (_) in
@@ -113,11 +112,11 @@ class LoginViewController: UIViewController {
                     // whenver the conversations array is modified
                     self.client.conversation.conversations.asObservable.subscribe(onNext: { (change) in
                         switch change {
-                        case .inserted(let conversation, let reason):
+                        case .inserted(let conversations, let reason):
                             switch reason {
-                            case .invitedBy:
-                                _ = conversation.join().subscribe(onSuccess: { _ in
-                                    print("You have joined this conversation: \(conversation.uuid)")
+                            case .invitedBy(let member):
+                                conversations.first?.join().subscribe(onSuccess: { _ in
+                                    print("You have joined this conversation: \(String(describing:conversations.first?.uuid))")
                                 }, onError: { (error) in
                                     print(error.localizedDescription)
                                 })
@@ -127,7 +126,7 @@ class LoginViewController: UIViewController {
                         default:
                             break
                         }
-                    }).disposed(by: self.client.disposeBag)
+                    })
                     
                     // figure out which conversation a member has joined
                     let joinedConversation = self.client.conversation.conversations.filter({ (conversation) -> Bool in
@@ -165,7 +164,6 @@ class LoginViewController: UIViewController {
                 print("DEMO - login unsuccessful with \(reason)")
                 
             }).disposed(by: self.client.disposeBag) // Rx does not maintain a memory reference; to make sure that reference is still in place; keep a reference of this object while I do an operation.
-            
         }))
         
         DispatchQueue.main.async {
@@ -210,7 +208,7 @@ class LoginViewController: UIViewController {
     // prepare(for segue:)
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let chatVC = segue.destination as? ChatController
+        let chatVC = segue.destination as? ChatViewController
         
         chatVC?.conversation = client.conversation.conversations.first
         

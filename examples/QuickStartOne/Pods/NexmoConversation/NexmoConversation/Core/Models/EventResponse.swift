@@ -7,21 +7,10 @@
 //
 
 import Foundation
+import Gloss
 
 /// Response model from making a event request
-internal struct EventResponse: Decodable {
-    
-    // MARK:
-    // MARK: Key
-    
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case href
-        case timestamp
-    }
-    
-    // MARK:
-    // MARK: Properties
+internal struct EventResponse: Gloss.JSONDecodable {
     
     /// ID of event from backend side
     internal let id: String
@@ -35,11 +24,16 @@ internal struct EventResponse: Decodable {
     // MARK:
     // MARK: Initializers
     
-    internal init(from decoder: Decoder) throws {
-        let allValues = try decoder.container(keyedBy: CodingKeys.self)
-        
-        id = "\(try allValues.decode(Int.self, forKey: .id))"
-        href = try allValues.decode(String.self, forKey: .href)
-        timestamp = try allValues.decode(Date.self, forKey: .timestamp)
+    internal init?(json: JSON) {
+        guard let href: String = "href" <~~ json else { return nil }
+        guard let idValue: Int32 = "id" <~~ json else { return nil }
+        guard let formatter = DateFormatter.ISO8601,
+            let timestamp: Date = Decoder.decode(dateForKey: "timestamp", dateFormatter: formatter)(json) else {
+            return nil
+        }
+
+        self.id = "\(idValue)"
+        self.href = href
+        self.timestamp = timestamp
     }
 }

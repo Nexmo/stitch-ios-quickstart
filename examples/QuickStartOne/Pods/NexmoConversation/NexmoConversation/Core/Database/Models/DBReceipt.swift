@@ -8,6 +8,7 @@
 
 import Foundation
 import GRDB
+import Gloss
 
 internal class DBReceipt: Record {
     

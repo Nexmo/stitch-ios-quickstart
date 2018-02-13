@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Gloss
 
 /// Body models
 internal extension Event.Body {
@@ -15,17 +16,7 @@ internal extension Event.Body {
     // MARK: Text
     
     /// Text model
-    internal struct Text: Decodable {
-        
-        // MARK:
-        // MARK: Enum
-        
-        private enum CodingKeys: String, CodingKey {
-            case text
-        }
-        
-        // MARK:
-        // MARK: Properties
+    internal struct Text: Gloss.JSONDecodable {
         
         /// Text
         internal let text: String
@@ -33,8 +24,10 @@ internal extension Event.Body {
         // MARK:
         // MARK: Initializers
 
-        internal init(from decoder: Decoder) throws {
-            text = try decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .text)
+        internal init?(json: JSON) {
+            guard let text: String = "text" <~~ json else { return nil }
+            
+            self.text = text
         }
     }
     
@@ -42,35 +35,28 @@ internal extension Event.Body {
     // MARK: Delete
     
     /// Delete model
-    internal struct Delete: Decodable {
+    internal struct Delete: Gloss.JSONDecodable {
 
-        // MARK:
-        // MARK: Enum
-        
-        private enum CodingKeys: String, CodingKey {
-            case eventId = "event_id"
-        }
-        
-        // MARK:
-        // MARK: Properties
-        
         /// Event Id
         let event: String
         
         // MARK:
         // MARK: Initializers
         
-        internal init(from decoder: Decoder) throws {
-            let allValues = try decoder.container(keyedBy: CodingKeys.self)
+        internal init?(json: JSON) {
             
-            guard let id = try? allValues.decode(String.self, forKey: .eventId) else {
-                let id = try allValues.decode(Int.self, forKey: .eventId)
-                
-                event = "\(id)"
-                
-                return
+            var eventId: String?
+            
+            if let eid: AnyObject = "event_id" <~~ json {
+                if let str = eid as? String {
+                    eventId = str
+                } else if let num = eid as? NSNumber {
+                    let intValue = num.int64Value
+                    eventId = "\(intValue)"
+                }
             }
             
+            guard let id = eventId else { return nil }
             event = id
         }
     }
@@ -79,40 +65,14 @@ internal extension Event.Body {
     // MARK: Member Invite
 
     /// Member invite model
-    internal struct MemberInvite: Decodable {
+    internal struct MemberInvite: Gloss.JSONDecodable {
 
         // MARK:
         // MARK: User
 
         /// Member invite user model
-        internal struct User: Decodable {
+        internal struct User: Gloss.JSONDecodable {
 
-            // MARK:
-            // MARK: Enum
-            
-            private enum CodingKeys: String, CodingKey {
-                internal enum User: String, CodingKey {
-                    internal enum Audio: String, CodingKey {
-                        internal enum Sound: String, CodingKey {
-                            case earmuffed
-                            case muted
-                        }
-                        
-                        case audio
-                    }
-                    
-                    case id = "user_id"
-                    case memberId = "member_id"
-                    case name = "name"
-                    case media
-                }
-                
-                case user
-            }
-            
-            // MARK:
-            // MARK: Properties
-            
             /// Member Id
             internal let memberId: String
 
@@ -134,23 +94,16 @@ internal extension Event.Body {
             // MARK:
             // MARK: Initializers
 
-            internal init(from decoder: Decoder) throws {
-                let allValues = try { () -> KeyedDecodingContainer<CodingKeys.User> in
-                    guard let values = try? decoder.container(keyedBy: CodingKeys.self), values.contains(.user) else {
-                        return try decoder.container(keyedBy: CodingKeys.User.self)
-                    }
-                    
-                    return try values.nestedContainer(keyedBy: CodingKeys.User.self, forKey: .user)
-                }()
-                
-                let media = try allValues.nestedContainer(keyedBy: CodingKeys.User.Audio.self, forKey: .media)
-                let audio = try? media.nestedContainer(keyedBy: CodingKeys.User.Audio.Sound.self, forKey: .audio)
-                
-                memberId = try allValues.decode(String.self, forKey: .memberId)
-                userId = try allValues.decode(String.self, forKey: .id)
-                username = try allValues.decode(String.self, forKey: .name)
-                earmuffed = try audio?.decodeIfPresent(Bool.self, forKey: .earmuffed)
-                muted = try audio?.decodeIfPresent(Bool.self, forKey: .muted)
+            internal init?(json: JSON) {
+                guard let memberId: String = "user.member_id" <~~ json else { return nil }
+                guard let userId: String = "user.user_id" <~~ json else { return nil }
+                guard let username: String = "user.name" <~~ json else { return nil }
+
+                self.memberId = memberId
+                self.userId = userId
+                self.username = username
+                self.earmuffed = "user.media.audio.earmuffed" <~~ json
+                self.muted = "user.media.audio.muted" <~~ json
             }
 
             // MARK:
@@ -161,19 +114,6 @@ internal extension Event.Body {
                 return earmuffed != nil && muted != nil
             }
         }
-        
-        // MARK:
-        // MARK: Enum
-        
-        private enum CodingKeys: String, CodingKey {
-            case cname
-            case invitedBy = "invited_by"
-            case timestamp = "timestamp"
-            case user
-        }
-        
-        // MARK:
-        // MARK: Properties
 
         /// Conversation Name
         internal let conversationName: String
@@ -190,46 +130,31 @@ internal extension Event.Body {
         // MARK:
         // MARK: Initializers
 
-        internal init(from decoder: Decoder) throws {
-            let allValues = try decoder.container(keyedBy: CodingKeys.self)
-            
-            conversationName = try allValues.decode(String.self, forKey: .cname)
-            invitedBy = try allValues.decode(String.self, forKey: .invitedBy)
-            user = try allValues.decode(User.self, forKey: .user)
-            
-            guard let invited = (try allValues.decode([String: String].self, forKey: .timestamp))["invited"],
-                let date = DateFormatter.ISO8601?.date(from: invited) else {
-                throw JSONError.malformedJSON
+        internal init?(json: JSON) {
+            guard let conversationName: String = "cname" <~~ json else { return nil }
+            guard let invitedBy: String = "invited_by" <~~ json else { return nil }
+            guard let formatter = DateFormatter.ISO8601,
+                let timestamp = Decoder.decode(dateForKey: "timestamp.invited", dateFormatter: formatter)(json) else {
+                return nil
             }
-            
-            timestamp = date
+            guard let user = User(json: json) else { return nil }
+
+            self.conversationName = conversationName
+            self.invitedBy = invitedBy
+            self.timestamp = timestamp
+            self.user = user
         }
     }
     
     /// Member left model
-    internal struct MemberLeft: Decodable {
+    internal struct MemberLeft: Gloss.JSONDecodable {
 
         // MARK:
         // MARK: User
         
         /// Member left user model
-        internal struct User: Decodable {
+        internal struct User: Gloss.JSONDecodable {
         
-            // MARK:
-            // MARK: Enum
-            
-            private enum CodingKeys: String, CodingKey {
-                internal enum User: String, CodingKey {
-                    case id
-                    case name
-                }
-                
-                case user
-            }
-            
-            // MARK:
-            // MARK: Properties
-            
             /// User Id
             internal let userId: String
             
@@ -239,30 +164,14 @@ internal extension Event.Body {
             // MARK:
             // MARK: Initializers
             
-            internal init(from decoder: Decoder) throws {
-                let allValues = try { () -> KeyedDecodingContainer<CodingKeys.User> in
-                    guard let values = try? decoder.container(keyedBy: CodingKeys.self), values.contains(.user) else {
-                        return try decoder.container(keyedBy: CodingKeys.User.self)
-                    }
-                    
-                    return try values.nestedContainer(keyedBy: CodingKeys.User.self, forKey: .user)
-                }()
+            internal init?(json: JSON) {
+                guard let userId: String = "user.id" <~~ json else { return nil }
+                guard let username: String = "user.name" <~~ json else { return nil }
                 
-                userId = try allValues.decode(String.self, forKey: .id)
-                username = try allValues.decode(String.self, forKey: .name)
+                self.userId = userId
+                self.username = username
             }
         }
-        
-        // MARK:
-        // MARK: Enum
-        
-        private enum CodingKeys: String, CodingKey {
-            case user
-            case timestamp
-        }
-        
-        // MARK:
-        // MARK: Properties
         
         /// Date
         internal let timestamp: [MemberModel.State: Date]
@@ -273,79 +182,22 @@ internal extension Event.Body {
         // MARK:
         // MARK: Initializers
         
-        internal init(from decoder: Decoder) throws {
-            let allValues = try decoder.container(keyedBy: CodingKeys.self)
-            let allStates = try allValues.decode([String: String].self, forKey: .timestamp)
-            let timestamps = allStates.reduce([:]) { (result, states) -> [MemberModel.State: Date] in
-                guard let state = MemberModel.State(rawValue: states.key.lowercased()),
-                    let date = DateFormatter.ISO8601?.date(from: states.value) else {
-                    return result
-                }
+        internal init?(json: JSON) {
+            guard let user = User(json: json) else { return nil }
+            
+            let ts = MemberModel.State.allValues.reduce([:]) { result, state -> [MemberModel.State: Date] in
+                guard let formatter = DateFormatter.ISO8601, let date = Decoder.decode(dateForKey: "timestamp.\(state.rawValue)", dateFormatter: formatter)(json) else { return result }
                 
                 var result = result
                 result[state] = date
                 
                 return result
             }
+
+            guard ts.isEmpty == false else { return nil }
             
-            guard !timestamps.isEmpty else { throw JSONError.malformedJSON }
-            
-            user = try allValues.decode(User.self, forKey: .user)
-            timestamp = timestamps
-        }
-    }
-    
-    // MARK:
-    // MARK: Deleted
-    
-    /// Deleted model
-    internal struct Deleted: Decodable {
-        
-        // MARK:
-        // MARK: Enum
-        
-        private enum CodingKeys: String, CodingKey {
-            internal enum Deleted: String, CodingKey {
-                case deleted
-            }
-            
-            case timestamp
-        }
-        
-        // MARK:
-        // MARK: Properties
-        
-        /// Timestamp of when event was deleted
-        internal let timestamp: Date
-        
-        // MARK:
-        // MARK: Initializers
-        
-        internal init(with date: Date) {
-            timestamp = date
-        }
-        
-        internal init(from decoder: Decoder) throws {
-            let allValues = try decoder.container(keyedBy: CodingKeys.self)
-            let dates = try allValues.decode([String: String].self, forKey: .timestamp)
-            
-            guard let rawDate = dates[CodingKeys.Deleted.deleted.rawValue],
-                let date = DateFormatter.ISO8601?.date(from: rawDate) else {
-                throw JSONError.malformedJSON
-            }
-            
-            timestamp = date
-        }
-        
-        // MARK:
-        // MARK: JSON
-        
-        internal var json: [String: Any]? {
-            guard let date = DateFormatter.ISO8601?.string(from: timestamp) else { return nil }
-            
-            return [
-                CodingKeys.timestamp.rawValue: [CodingKeys.Deleted.deleted.rawValue: date]
-            ]
+            self.timestamp = ts
+            self.user = user
         }
     }
 }

@@ -53,14 +53,14 @@ public struct NetworkError: NetworkErrorProtocol, Decodable {
     // MARK: Initializers
 
     internal init(from response: DataResponse<Data>) throws {
-        guard let data = response.data else { throw JSONError.malformedJSON }
+        guard let data = response.data else { throw HTTPSessionManager.Errors.malformedJSON }
         let decoder = try JSONDecoder().decode([String: String].self, from: data)
         
         guard let type = decoder["code"],
             let description = decoder["description"],
             let url = response.response?.url?.absoluteString,
             let statusCode = response.response?.statusCode else {
-            throw JSONError.malformedJSON
+            throw HTTPSessionManager.Errors.malformedJSON
         }
         
         self.type = type
@@ -71,14 +71,14 @@ public struct NetworkError: NetworkErrorProtocol, Decodable {
     }
     
     internal init(from response: DataResponse<Any>) throws {
-        guard let data = response.data else { throw JSONError.malformedJSON }
+        guard let data = response.data else { throw HTTPSessionManager.Errors.malformedJSON }
         let decoder = try JSONDecoder().decode([String: String].self, from: data)
         
         guard let type = decoder["code"],
             let description = decoder["description"],
             let url = response.response?.url?.absoluteString,
             let statusCode = response.response?.statusCode else {
-            throw JSONError.malformedJSON
+            throw HTTPSessionManager.Errors.malformedJSON
         }
 
         self.type = type
@@ -112,7 +112,6 @@ extension NetworkError: CustomStringConvertible {
     // MARK: Description
     
     /// Description
-    /// :nodoc:
     public var description: String {
         let url = requestURL ?? "n/a"
         let errorCode = code.map { String($0) } ?? "n/a"
@@ -136,7 +135,6 @@ extension NetworkError: LocalizedError {
     // MARK: NSError (Objective-C compatibility support)
     
     /// Error Description
-    /// :nodoc:
     public var errorDescription: String? {
         return self.message
     }

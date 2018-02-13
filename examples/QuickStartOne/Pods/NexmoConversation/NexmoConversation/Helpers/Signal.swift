@@ -9,7 +9,7 @@
 
 import Foundation
 
-/**
+/*
  Base Signal class. This definition does not use generics, and can therefore be used
  by objective C code.
  */
@@ -19,7 +19,6 @@ public class SignalBase: NSObject {
     // MARK:
     // MARK: Handler
     
-    /// Add listener
     public func addHandler(_ target: AnyObject, selector: Selector) -> SignalReference {
         fatalError("This method must be overriden by the subclass")
     }
@@ -29,7 +28,7 @@ public class SignalBase: NSObject {
     }
 }
 
-/**
+/*
  The main signal class which uses generics to convey the parameter types of the signal. It is
  used liked this:
  

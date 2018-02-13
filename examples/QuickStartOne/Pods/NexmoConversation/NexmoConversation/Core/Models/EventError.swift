@@ -7,25 +7,17 @@
 //
 
 import Foundation
+import Gloss
 
-/// Extension for event error responses
+/// Extension for error responses
 internal extension Event {
-    
-    // MARK:
-    // MARK: Enum
-    
-    private enum CodingKeys: String, CodingKey {
-        case code
-    }
     
     /// Capi event errors
     ///
     /// - eventNotFound: event not found on capi
-    /// - eventDeleted: event has been marked as deleted
     /// - unknown: other error not hard-coded in SDK
     internal enum Errors: String, Error {
         case eventNotFound = "event:error:not-found"
-        case eventDeleted
         case unknown
         
         // MARK:
@@ -36,11 +28,11 @@ internal extension Event {
         /// - Parameter raw: raw json response
         /// - Returns: Error
         internal static func build(_ raw: Data?) -> Errors {
-            guard let data = raw,
-                let code = (try? JSONDecoder().decode([String: String].self, from: data))?[CodingKeys.code.rawValue],
-                let error = Errors(rawValue: code) else {
-                return Errors.unknown
-            }
+            guard let rawData = raw,
+                let object = try? JSONSerialization.jsonObject(with: rawData),
+                let json = object as? JSON,
+                let code: String = "code" <~~ json,
+                let error = Errors(rawValue: code) else { return Errors.unknown }
             
             return error
         }
@@ -54,10 +46,8 @@ internal extension Event {
 internal func ==(lhs: Event.Errors, rhs: Event.Errors) -> Bool {
     switch (lhs, rhs) {
     case (.eventNotFound, .eventNotFound): return true
-    case (.eventDeleted, .eventDeleted): return true
     case (.unknown, .unknown): return true
     case (.eventNotFound, _),
-         (.eventDeleted, _),
          (.unknown, _): return false
     }
 }

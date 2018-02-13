@@ -8,7 +8,7 @@
 
 import Foundation
 
-/**
+/*
  This class provides a unique reference to a handler that has been added to an signal.
  It is used to later remove the handler.
  */
@@ -25,7 +25,6 @@ public class SignalReference: NSObject {
     // MARK:
     // MARK: NSObject
     
-    /// :nodoc:
     @objc public override var hash: Int { return self.reference }
     
     // MARK:
@@ -43,7 +42,6 @@ public class SignalReference: NSObject {
     // MARK:
     // MARK: Override - Equal
     
-    /// :nodoc:
     @objc public override func isEqual(_ object: Any?) -> Bool {
         if object is SignalReference {
             let object = object as! SignalReference

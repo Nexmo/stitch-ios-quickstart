@@ -7,26 +7,11 @@
 //
 
 import Foundation
+import Gloss
 
 /// Conversation model
 @objc(NXMConversationModel)
-public class ConversationModel: NSObject, Decodable {
-    
-    // MARK:
-    // MARK: Keys
-    
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case uuid
-        case cid
-        case cname
-        case name
-        case sequence = "sequence_number"
-        case members
-        case timestamp
-        case displayName = "display_name"
-        case created
-    }
+public class ConversationModel: NSObject, Gloss.JSONDecodable {
     
     // MARK:
     // MARK: Properties
@@ -61,33 +46,41 @@ public class ConversationModel: NSObject, Decodable {
         self.displayName = displayName
     }
     
-    /// :nodoc:
-    public required init(from decoder: Decoder) throws {
-        let allValues = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if allValues.contains(.id) {
-            uuid = try allValues.decode(String.self, forKey: .id)
-        } else if allValues.contains(.uuid) {
-            uuid = try allValues.decode(String.self, forKey: .uuid)
-        } else if allValues.contains(.cid) {
-            uuid = try allValues.decode(String.self, forKey: .cid)
-        } else if allValues.contains(.cname) {
-            uuid = try allValues.decode(String.self, forKey: .cname)
+    public required init?(json: JSON) {
+        // TODO: review ones CS remodelling complete [Aug 17]
+        if let uuid: String = "id" <~~ json {
+            self.uuid = uuid
+        } else if let uuid: String = "uuid" <~~ json {
+            self.uuid = uuid
+        } else if let uuid: String = "cid" <~~ json {
+            self.uuid = uuid
+        } else if let uuid: String = "cname" <~~ json {
+            self.uuid = uuid
         } else {
-            throw JSONError.malformedJSON
+            return nil
+        }
+
+        guard let name: String = "name" <~~ json else { return nil }
+
+        self.name = name
+
+        if let sequenceNumber: Int = "sequence_number" <~~ json {
+            self.sequenceNumber = sequenceNumber
+        } else {
+            self.sequenceNumber = 0
         }
         
-        name = try allValues.decode(String.self, forKey: .name)
-        sequenceNumber = (try? allValues.decode(Int.self, forKey: .sequence)) ?? 0
-        members = try allValues.decode([MemberModel].self, forKey: .members)
-        displayName = (try? allValues.decode(String.self, forKey: .displayName)) ?? ""
+        guard let members: [MemberModel] = "members" <~~ json else { return nil }
         
-        guard let timestamp = (try allValues.decode([String: String].self, forKey: .timestamp))[CodingKeys.created.stringValue],
-            let date = DateFormatter.ISO8601?.date(from: timestamp) else {
-            throw JSONError.malformedJSON
+        self.members = members
+        
+        guard let formatter = DateFormatter.ISO8601,
+            let date = Decoder.decode(dateForKey: "timestamp.created", dateFormatter: formatter)(json) else {
+            return nil
         }
         
         created = date
+        displayName = ("display_name" <~~ json) ?? ""
     }
 }
 

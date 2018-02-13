@@ -8,34 +8,23 @@
 
 import Foundation
 
-
-public extension PushNotificationController {
-    
-    // MARK:
-    // MARK: Typealias
-    
-    /// Payload from nexmo conversation
-    public typealias RemoteNotification = (payload: [String: Any], fetchCompletion: Any?)
-    
-    // MARK:
-    // MARK: Enum
-    
-    /// Push Notification State
-    ///
-    /// - none: none
-    /// - unregistered
-    /// - registeredWithDeviceToken: token
-    /// - register failed with error
-    /// - receivedRemoteNotification: payload
-    public enum State: Equatable {
-        case unknown
-        case unregisteredForRemoteNotifications
-        case registeredWithDeviceToken(Data)
-        case registerForRemoteNotificationsFailed(Error)
-        case receivedRemoteNotification(payload: [AnyHashable: Any]?, fetchCompletion: Any?) // ((UIBackgroundFetchResult) -> Void)
-    }
-
+/// Push Notification State
+///
+/// - none: none
+/// - unregistered
+/// - registeredWithDeviceToken: token
+/// - register failed with error
+/// - receivedRemoteNotification: payload
+public enum PushNotificationState: Equatable {
+    case unknown
+    case unregisteredForRemoteNotifications
+    case registeredWithDeviceToken(Data)
+    case registerForRemoteNotificationsFailed(Error)
+    case receivedRemoteNotification(payload: [AnyHashable: Any]?, fetchCompletion: Any?) // ((UIBackgroundFetchResult) -> Void)
 }
+
+/// Payload from nexmo conversation
+public typealias RemoteNotification = (payload: [String: Any], fetchCompletion: Any?)
 
 /// Compare Push Notification States
 ///
@@ -44,7 +33,7 @@ public extension PushNotificationController {
 ///   - rhs: PushNotificationState
 /// - Returns: result
 /// :nodoc:
-public func ==(lhs: PushNotificationController.State, rhs: PushNotificationController.State) -> Bool {
+public func ==(lhs: PushNotificationState, rhs: PushNotificationState) -> Bool {
     switch (lhs, rhs) {
     case (.unknown, .unknown): return true
     case (.unregisteredForRemoteNotifications, .unregisteredForRemoteNotifications): return true

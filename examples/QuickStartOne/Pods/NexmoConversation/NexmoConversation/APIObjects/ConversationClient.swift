@@ -71,7 +71,7 @@ public class ConversationClient: NSObject {
         // MARK:
         // MARK: String
 
-        internal var stringValue: String {
+        public var stringValue: String {
             switch self {
             case .disconnected: return "disconnected"
             case .connecting: return "connecting"
@@ -92,9 +92,9 @@ public class ConversationClient: NSObject {
     // MARK:
     // MARK: Configurations
 
-    /**
+    /*
      Client configuration
-     @warning: can only be set before calling ConversationClient.instance or ConversationClient()
+     warning: can only be set before calling ConversationClient.instance or ConversationClient()
      */
     public static var configuration: Configuration = Configuration.default
 
@@ -133,9 +133,6 @@ public class ConversationClient: NSObject {
     /// Controller to handle media
     internal let mediaController: MediaController
 
-    /// Media Controller
-    public let media: RTCController
-    
     // MARK:
     // MARK: Properties - Observable
 
@@ -144,13 +141,7 @@ public class ConversationClient: NSObject {
 
     /// Internal error
     public var unhandledError: Observable<NetworkErrorProtocol> {
-        // Filter: inital value is set as nil, avoid unnecessary reports
-        return networkController
-            .networkError
-            .asObservable()
-            .filter { $0 != nil }
-            .unwrap()
-            .share()
+        return networkController.networkError.asObservable().skip(1).unwrap().share()
     }
 
     // MARK:
@@ -166,11 +157,10 @@ public class ConversationClient: NSObject {
     private override init() {
         networkController = NetworkController()
         account = AccountController(network: networkController)
-        media = RTCController(network: networkController)
-        conversation = ConversationController(network: networkController, account: account, rtc: media)
+        conversation = ConversationController(network: networkController, account: account)
         membershipController = MembershipController(network: networkController)
         mediaController = MediaController(network: networkController)
-        
+
         storage = Storage(account: account,
                           conversation: conversation,
                           membershipController: membershipController
@@ -219,7 +209,6 @@ public class ConversationClient: NSObject {
     }
 
     private func setupClientBinding() {
-        // SKIP: inital state is .disconnected, to avoid unnecessary side effects
         networkController.socketState.asDriver().asObservable().skip(1).subscribe(onNext: {
             switch $0 {
             case .connecting:
@@ -253,7 +242,10 @@ public class ConversationClient: NSObject {
                     case .expiredToken:
                         self.authenticationCompletion?(.expiredToken)
                         self.logout()
-                    case .timeout, .connectionLost, .unknown:
+                    case .unknown:
+                        self.authenticationCompletion?(.expiredToken)
+                        self.logout()
+                    case .timeout, .connectionLost:
                         self.authenticationCompletion?(.failed)
                     }
 
@@ -264,7 +256,6 @@ public class ConversationClient: NSObject {
             }
         }).disposed(by: disposeBag)
 
-        // SKIP: inital state inactive, which at this layer means is synchronized
         syncManager.state.asDriver().asObservable().skip(1).subscribe(onNext: { state in
             switch state {
             case .inactive: self.state.tryWithValue = .synchronized
@@ -304,7 +295,7 @@ public class ConversationClient: NSObject {
             .flatMap { notification -> Observable<Event> in // convert the received notification into an Event object
                 guard let rawtype = notification.payload["type"] as? String,
                     let type = Event.EventType(rawValue: rawtype),
-                    let event = try? Event(type: type, json: notification.payload) else {
+                    let event = Event(type: type, json: notification.payload) else {
                     return Observable<Event>.never()
                 }
                 
@@ -336,7 +327,7 @@ public class ConversationClient: NSObject {
         let hasDeviceToken: Observable<Data?> = appLifecycle.push.state
             .observeOnBackground()
             .map { [unowned self] state -> Data? in
-                guard case PushNotificationController.State.registeredWithDeviceToken(let token) = state else {
+                guard case PushNotificationState.registeredWithDeviceToken(let token) = state else {
                     self.appLifecycle.push.unregisterForPushNotifications()
                     return nil
                 }
@@ -375,8 +366,10 @@ public class ConversationClient: NSObject {
 
                 return (oldElement, newElement)
             }
-            .skip(1) // SKIP: inital value is both set as (.disconnect, .disconnect) when the SDK starts up
+            .skip(1)
             .subscribe(onNext: { [unowned self] old, new in
+                Log.info(.other, "Network state changed from \(old) to \(new)")
+
                 // see if we need to trigger a reconnect
                 if old == .notReachable && new.isReachable {
                     self.reconnect()

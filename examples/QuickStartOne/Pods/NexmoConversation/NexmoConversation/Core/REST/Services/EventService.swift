@@ -41,10 +41,17 @@ internal struct EventService {
         return Request(with: manager
             .request(EventRouter.send(event: event))
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
-                case .failure(let error): failure((try? NetworkError(from: $0)) ?? error)
-                case .success(let response): success(try? JSONDecoder().decode(EventResponse.self, from: response))
+                case .failure(let error):
+                    failure((try? NetworkError(from: $0)) ?? error)
+                case .success(let response):
+                    guard let json = response as? Parameters else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
+                    }
+
+                    let model = EventResponse(json: json)
+                    success(model)
                 }
             })
         )
@@ -66,7 +73,7 @@ internal struct EventService {
         failure: @escaping (Error) -> Void,
         progress: @escaping (Request) -> Void) {
         ipsService.upload(image: image, success: { model in
-            let body = model.json
+            let body = model.toJSON()
             let event = SendEvent(
                 conversationId: conversationId,
                 from: fromId,
@@ -102,10 +109,10 @@ internal struct EventService {
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
                     guard let json = response as? [Parameters] else {
-                        return failure(JSONError.malformedJSON)
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
-                    let models = json.flatMap { try? Event(conversationUuid: uuid, json: $0) }
+                    let models = json.flatMap { Event(conversationUuid: uuid, json: $0) }
 
                     success(models)
                 }

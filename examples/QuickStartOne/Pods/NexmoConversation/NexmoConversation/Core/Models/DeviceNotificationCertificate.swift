@@ -31,7 +31,6 @@ public struct PushNotificationCertificate: Decodable {
     // MARK:
     // MARK: Initializers
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let allValues = try decoder.container(keyedBy: CodingKeys.self)
         

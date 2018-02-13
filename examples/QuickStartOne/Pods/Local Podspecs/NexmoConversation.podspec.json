@@ -1,6 +1,6 @@
 {
   "name": "NexmoConversation",
-  "version": "0.19.1",
+  "version": "0.18.2",
   "license": {
     "type": "Apache"
   },
@@ -19,7 +19,7 @@
     "ios": "9.0"
   },
   "source": {
-    "git": "https://github.com/nexmo/conversation-ios-sdk.git",
+    "git": "https://github.com/nexmoinc/conversation-ios-sdk.git",
     "branch": "master"
   },
   "source_files": "NexmoConversation/**/*.{h,m,swift}",
@@ -30,7 +30,10 @@
   },
   "dependencies": {
     "RxCocoa": [
-      "~> 4.1.1"
+      "~> 4.1.0"
+    ],
+    "Gloss": [
+      "~> 2.0.0"
     ],
     "GRDB.swift": [
       "~> 0.90.3"
@@ -39,7 +42,7 @@
       "~> 4.6.0"
     ],
     "Socket.IO-Client-Swift": [
-      "~> 13.1.1"
+      "~> 13.1.0"
     ],
     "NexmoWebRTC": [
       "~> 63.11.16"

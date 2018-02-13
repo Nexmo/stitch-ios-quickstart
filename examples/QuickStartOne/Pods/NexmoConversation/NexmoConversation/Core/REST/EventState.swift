@@ -7,46 +7,29 @@
 //
 
 import Foundation
+import Gloss
 
 /// State of a event i.e sms, text, image 
-internal struct EventState: Decodable {
+internal class EventState: Gloss.JSONDecodable {
     
-    // MARK:
-    // MARK: Keys
+    internal var deliveredTo: [String: Date]?
     
-    private enum CodingKeys: String, CodingKey {
-        case state
-    }
+    internal var seenBy: [String: Date]?
     
-    private enum StateCodingKeys: String, CodingKey {
-        case delivered = "delivered_to"
-        case seen = "seen_by"
-        case done = "play_done"
-    }
-    
-    // MARK:
-    // MARK: Properties
-    
-    internal let deliveredTo: [String: String]
-    
-    internal let seenBy: [String: String]
-    
-    internal let playDone: Bool?
+    internal var playDone: Bool?
     
     // MARK:
     // MARK: Initializers
     
-    internal init(from decoder: Decoder) throws {
-        let allValues = try { () -> KeyedDecodingContainer<StateCodingKeys> in
-            guard let values = try? decoder.container(keyedBy: CodingKeys.self), values.contains(.state) else {
-                return try decoder.container(keyedBy: StateCodingKeys.self)
-            }
-            
-            return try values.nestedContainer(keyedBy: StateCodingKeys.self, forKey: .state)
-        }()
+    public required init?(json: JSON) {
+        if let formatter = DateFormatter.ISO8601, let deliveredTo: [String: Date] = Decoder.decode(dateDictionaryForKey: "delivered_to", dateFormatter: formatter)(json) {
+            self.deliveredTo = deliveredTo
+        }
         
-        deliveredTo = (try? allValues.decode([String: String].self, forKey: .delivered)) ?? [:]
-        seenBy = (try? allValues.decode([String: String].self, forKey: .seen)) ?? [:]
-        playDone = try allValues.decodeIfPresent(Bool.self, forKey: .done)
+        if let formatter = DateFormatter.ISO8601, let seenBy: [String: Date] = Decoder.decode(dateDictionaryForKey: "seen_by", dateFormatter: formatter)(json) {
+            self.seenBy = seenBy
+        }
+        
+        self.playDone = "play_done" <~~ json
     }
 }

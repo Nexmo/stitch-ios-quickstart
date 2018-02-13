@@ -99,7 +99,7 @@ internal struct SendEvent {
     // MARK:
     // MARK: Any
 
-    /// Send any type of event, @warning does not include tid
+    /// Send any type of event
     ///
     /// - parameter conversationId: id
     /// - parameter from:           from

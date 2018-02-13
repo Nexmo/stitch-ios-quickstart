@@ -90,7 +90,6 @@ public class Audio: NSObject {
     // MARK: Hashable
     
     /// Audio hashable value
-    /// :nodoc:
     public override var hashValue: Int { return self.conversation?.uuid.hashValue ?? 0 }
 
     // MARK:
@@ -109,7 +108,6 @@ public class Audio: NSObject {
     // MARK: Description
 
     /// Description
-    /// :nodoc:
     public override var description: String {
         return "Audio rtc id: \(id ?? "Unknown") for conversation \(conversation?.uuid ?? "Unknown")"
     }

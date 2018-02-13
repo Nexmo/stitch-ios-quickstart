@@ -39,7 +39,6 @@ public extension ConversationClient {
     ///
     /// - Parameter closure: to listen for new state
     public func stateObjc(_ closure: @escaping (StateObjc) -> Void) {
-        // Skip: inital state is always disconnected
         state.asDriver().asObservable().skip(1).subscribe(onNext: {
             switch $0 {
             case .disconnected: closure(.disconnected)

@@ -98,13 +98,12 @@ internal class SocketService {
     /// - Returns: result
     @discardableResult
     internal func login() -> Bool {
-        guard !token.isEmpty else {
+        guard !token.isEmpty,
+            let message = SessionAuthenticate(token: token).toJSON() else {
             updateState(with: .notConnected(.invalidToken))
             
             return false
         }
-        
-        let message = SessionAuthenticate(token: token).json
 
         updateState(with: .authentication)
         

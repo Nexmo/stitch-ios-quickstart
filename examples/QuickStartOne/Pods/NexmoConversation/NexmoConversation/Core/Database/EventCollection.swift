@@ -60,11 +60,7 @@ public class EventCollection: NSObject, Collection {
     // MARK:
     // MARK: Properties - Observable
     
-    /// New event received
     public let newEventReceived = Signal<EventBase>()
-    
-    /// Sent Event
-    public let eventSent = Signal<EventBase>()
     
     /// Notification of deleted event
     /// Returns event and type of changes that where made
@@ -86,13 +82,12 @@ public class EventCollection: NSObject, Collection {
     // MARK: Setup
     
     private func setup() {
-        eventCount = databaseManager.event[in: conversationUuid].count 
+        eventCount = databaseManager.event[in: conversationUuid].count
     }
     
     // MARK:
     // MARK: Refresh
     
-    /// Thw list of objects in cache
     internal func refresh() {
         setup()
     }

@@ -7,27 +7,28 @@
 //
 
 import Foundation
+import Gloss
 
-/// Request models
+// Request models
 internal extension RTCService {
 
     // MARK:
     // MARK: New
 
     /// Requesting new RTC call
-    internal struct New {
+    internal struct New: Gloss.JSONEncodable {
 
         /// Session iD
-        internal let id: String
+        let id: String
         
         /// Member Id
-        internal let from: String
+        let from: String
 
         /// SDP media
-        internal let sdp: String
+        let sdp: String
 
         /// label
-        internal let label: String
+        let label: String
 
         // MARK:
         // MARK: Initializers
@@ -41,8 +42,8 @@ internal extension RTCService {
 
         // MARK:
         // MARK: JSON
-        
-        internal var json: [String: Any]? {
+
+        internal func toJSON() -> JSON? {
             return [
                 "from": from,
                 "body": [

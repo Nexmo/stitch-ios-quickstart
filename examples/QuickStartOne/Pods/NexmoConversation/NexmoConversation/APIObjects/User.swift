@@ -41,11 +41,9 @@ public class User: NSObject {
     // MARK: NSObject
     
     /// Description
-    /// :nodoc:
     public override var description: String { return "User(userId=" + data.rest.uuid + ")" }
     
     /// Hashable
-    /// :nodoc:
     public override var hashValue: Int { return data.rest.uuid.hashValue }
     
     // MARK:
@@ -81,7 +79,6 @@ public class User: NSObject {
     // MARK:
     // MARK: Override
     
-    /// :nodoc:
     public override func isEqual(_ object: Any?) -> Bool {
         guard let user = object as? User else { return false }
         

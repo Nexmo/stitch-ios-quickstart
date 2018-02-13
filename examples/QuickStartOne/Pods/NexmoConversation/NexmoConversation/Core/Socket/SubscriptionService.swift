@@ -107,9 +107,7 @@ internal struct SubscriptionService {
             guard Event.EventType(rawValue: event.event) == nil else { return }
             guard WebSocketManager.Event(rawValue: event.event) == nil else { return }
             guard SocketService.Event(rawValue: event.event) == nil else { return }
-            guard event.event != "ping" else { return }
-            guard event.event != "pong" else { return }
-            
+
             Log.info(.websocket, "Unknown event(\(event.event)) from socket: \(event.items ?? [])")
         }
     }
@@ -120,7 +118,7 @@ internal struct SubscriptionService {
     private func handleEvent(_ event: Event.EventType, with data: [Any]) {
         Observable<Event>.create { observer in
             guard let json = data.first as? [String: Any] else { return Disposables.create() }
-            guard let model = try? Event(type: event, json: json) else { return Disposables.create() }
+            guard let model = Event(type: event, json: json) else { return Disposables.create() }
             
             observer.onNextWithCompleted(model)
             

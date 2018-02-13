@@ -7,30 +7,31 @@
 //
 
 import Foundation
+import Gloss
 
 /// Authenticate to CAPI
-internal struct SessionAuthenticate {
+internal struct SessionAuthenticate: Gloss.JSONEncodable {
 
     /// Device type
-    internal let device: String = PushNotificationRouter.DeviceType.iOS.rawValue
+    let device = PushNotificationRouter.DeviceType.iOS.rawValue
     
     /// Device id
-    internal let deviceId: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
+    let deviceId: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
     
     /// Auth token
-    internal let token: String
+    let token: String
     
     // MARK:
     // MARK: Initializers
     
-    internal init(token: String) {
+    init(token: String) {
         self.token = token
     }
     
     // MARK:
     // MARK: JSON
     
-    internal var json: [String: String] {
+    func toJSON() -> JSON? {
         return [
             "device_type": device,
             "device_id": deviceId,

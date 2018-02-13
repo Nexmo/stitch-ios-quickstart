@@ -12,7 +12,6 @@ import RxSwift
 /// Collection of conversations
 public class ConversationCollection: NexmoConversation.LazyCollection<Conversation> {
 
-    /// Type of change 
     public typealias T = Change<Conversation, Reason>
 
     // MARK:
@@ -59,7 +58,6 @@ public class ConversationCollection: NexmoConversation.LazyCollection<Conversati
     
     /// Observe for changes to collection
     public lazy var asObservable: Observable<T> = {
-        // SKIP: inital value is from db to cache whereas this observable for new values
         return self.subject.asObservable().skip(1).unwrap().observeOnMainThread()
     }()
     

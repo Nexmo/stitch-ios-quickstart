@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Gloss
 
 /// Event model
 @objc(NXMEvent)
@@ -14,19 +15,6 @@ public class Event: NSObject {
     
     // MARK:
     // MARK: Enum
-    
-    private enum CodingKeys: String, CodingKey {
-        case from
-        case to
-        case cid
-        case conversationId = "conversation_id"
-        case body
-        case timestamp
-        case state
-        case id
-        case type
-        case tid
-    }
     
     /// Event type
     ///
@@ -195,7 +183,7 @@ public class Event: NSObject {
     internal var to: String?
     
     /// body
-    internal var body: [String: Any]?
+    internal var body: JSON?
     
     /// time of event
     internal var timestamp: Date
@@ -225,61 +213,59 @@ public class Event: NSObject {
         self.timestamp = timestamp
         self.id = id
         self.type = type
-        self.tid = nil // set afterwards
+        self.tid = nil
     }
     
-    internal init(cid: String, type: EventType, memberId: String, body: [String: Any]?=nil) {
+    internal init(cid: String, type: EventType, memberId: String, body: JSON?=nil) {
         self.timestamp = Date()
         self.from = memberId
         self.cid = cid
         self.id = "0"
         self.type = type
         self.body = body
-        self.tid = body?["tid"] as? String
+        self.tid = nil
     }
-    
-    internal init(conversationUuid: String?=nil, type: EventType?=nil, json: [String: Any]) throws {
-        from = json[CodingKeys.from.rawValue] as? String
-        to = json[CodingKeys.to.rawValue] as? String
+
+    internal init?(conversationUuid: String?=nil, type: EventType?=nil, json: JSON) {
+        self.from = "from" <~~ json
+        self.to = "to" <~~ json
 
         // TODO: Anything that from conversation service is conversation_id, but if it goes via CAPI(socket) then it becomes cid.
-        guard let cid = conversationUuid ?? (json[CodingKeys.cid.rawValue] ?? json[CodingKeys.conversationId.rawValue]) as? String else {
-            throw JSONError.malformedJSON
-        }
-        
+        guard let cid: String = conversationUuid ?? ("cid" <~~ json ?? "conversation_id" <~~ json) else { return nil }
         self.cid = cid
 
-        guard let body = json[CodingKeys.body.rawValue] as? [String: Any] else {
-            throw JSONError.malformedJSON
-        }
-        
+        guard let body: JSON = "body" <~~ json else { return nil }
         self.body = body
 
-        guard let date = DateFormatter.ISO8601?.date(from: (json[CodingKeys.timestamp.rawValue] as? String) ?? "") else {
-            throw JSONError.malformedJSON
+        guard let formatter = DateFormatter.ISO8601,
+            let timestamp: Date = Decoder.decode(dateForKey: "timestamp", dateFormatter: formatter)(json) else {
+            return nil
         }
         
-        self.timestamp = date
-        
-        if let state = json[CodingKeys.state.rawValue] as? [String: Any] {
-            self.state = try? JSONDecoder().decode(EventState.self, from: state)
-        } else {
-            self.state = nil
-        }
+        self.timestamp = timestamp
+        self.state = "state" <~~ json
 
-        guard let id = json[CodingKeys.id.rawValue] as? Int else { throw JSONError.malformedJSON }
-        guard let type = type ?? EventType(rawValue: (json[CodingKeys.type.rawValue] as? String) ?? "") else {
-            throw JSONError.malformedJSON
-        }
+        guard let id: Int32 = "id" <~~ json else { return nil }
+        guard let type: EventType = type ?? "type" <~~ json else { return nil }
         
         self.id = "\(id)"
         self.type = type
-        self.tid = (json[CodingKeys.tid.rawValue] as? String) ?? (body[CodingKeys.tid.rawValue] as? String)
+        self.tid = nil
+        
+        if let tid: AnyObject = "tid" <~~ body {
+            if let str = tid as? String {
+                self.tid = str
+            } else if let num = tid as? NSNumber {
+                // this 'shouldn't' occur in the real world, but during testing I received numbers back. possibly due to sending Ints before changing eventId to String, and residual data still existing.
+                let intValue = num.int64Value
+                self.tid = "\(intValue)"
+            }
+        }
     }
     
-    /// Create event object for delete event type only
     internal init(conversationUuid: String, type: EventType, eventId: String, memberId: String) {
         // TODO: Anything that from conversation service is conversation_id, but if it goes via CAPI(socket) then it becomes cid.
+        
         self.to = ""
         self.from = memberId
         self.cid = conversationUuid
@@ -293,19 +279,10 @@ public class Event: NSObject {
     // MARK: Body
     
     /// Unwrap body
-    internal func model<T: Decodable>() throws -> T {
-        do {
-            return try JSONDecoder().decode(T.self, from: self.body)
-        } catch let error {
-            switch error as? JSONError {
-            case .malformedJSON?:
-                guard let _: Body.Deleted = try? self.model() else { throw error }
-                
-                throw Errors.eventDeleted
-            default:
-                throw error
-            }
-        }
+    internal func model<T: Gloss.JSONDecodable>() -> T? {
+        guard let body = body else { return nil }
+        
+        return T(json: body)
     }
 }
 

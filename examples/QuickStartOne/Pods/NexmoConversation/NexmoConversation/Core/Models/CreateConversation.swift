@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Gloss
 
 /// Request model
 internal extension ConversationService {
@@ -15,7 +16,7 @@ internal extension ConversationService {
     // MARK: Model
 
     /// Create a conversation request model
-    internal struct CreateConversation {
+    internal struct CreateConversation: Gloss.JSONEncodable {
 
         // MARK:
         // MARK: Properties
@@ -33,8 +34,10 @@ internal extension ConversationService {
         // MARK:
         // MARK: JSON
 
-        internal var json: [String: String] {
-            return ["display_name": displayName]
+        internal func toJSON() -> JSON? {
+            let model = ["display_name": displayName]
+            
+            return jsonify([model])
         }
     }
 }

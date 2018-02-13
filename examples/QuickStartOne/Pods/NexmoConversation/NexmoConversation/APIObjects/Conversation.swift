@@ -12,9 +12,6 @@ import RxSwift
 @objc(NXMConversation)
 public class Conversation: NSObject {
     
-    // MARK:
-    // MARK: Enum
-    
     /// Invitation media type
     ///
     /// - audio: audio invite, Default: @muted, @earmuffed set to false
@@ -285,11 +282,9 @@ public class Conversation: NSObject {
     // MARK: NSObject
     
     /// Hashable
-    /// :nodoc:
     public override var hashValue: Int { return data.rest.uuid.hashValue }
     
     /// Description
-    /// :nodoc:
     public override var description: String { return "uuid:" + data.rest.uuid + ", " + self.name }
     
     // MARK:
@@ -374,7 +369,7 @@ public class Conversation: NSObject {
         let key = String(arc4random())
         let path = eventController.storage.fileCache.set(key: key, value: image)
         let image = Event.Body.Image(id: key, path: path, size: image.count)
-        let event = Event(cid: uuid, type: .image, memberId: member.data.rest.id, body: image.json)
+        let event = Event(cid: uuid, type: .image, memberId: member.data.rest.id, body: image.toJSON())
         let imageEvent = ImageEvent(conversationUuid: uuid, event: event, seen: true, isDraft: true)
         
         try send(imageEvent)
@@ -430,9 +425,9 @@ public class Conversation: NSObject {
 
         return controller.join(ConversationController.JoinConversation(userId: session.userId, memberId: ourMemberRecord?.uuid), forUUID: uuid)
             .do(onError: { [weak self] _ in self?.members.refresh() })
+            .observeOnMainThread()
             .flatMap { _ in Observable<Void>.just(()) }
             .asSingle()
-            .observeOnMainThread()
     }
     
     /// Leave this conversation
@@ -502,12 +497,10 @@ public class Conversation: NSObject {
         events.refresh()
     }
     
-    /// Mark as dirty
     public func markIncomplete() {
         data.dataIncomplete = true
     }
     
-    /// Mark as dirty
     public func markRequiresSync() {
         data.requiresSync = true
     }

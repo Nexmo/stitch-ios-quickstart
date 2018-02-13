@@ -28,17 +28,17 @@ internal extension RxSwift.Reactive where Base: UNUserNotificationCenter {
     // MARK: Push Notification
     
     /// Remote notifications observable
-    internal var receivedNotification: Observable<PushNotificationController.State> {
+    internal var receivedNotification: Observable<PushNotificationState> {
         let receiveNotification = delegate
             .methodInvoked(#selector(UNUserNotificationCenterDelegate.userNotificationCenter(_:didReceive:withCompletionHandler:)))
-            .map { value in PushNotificationController.State.receivedRemoteNotification(
+            .map { value in PushNotificationState.receivedRemoteNotification(
                 payload: self.formatNotificationPayload((value[1] as? UNNotificationResponse)?.notification.request.content.userInfo as? [String: Any]),
                 fetchCompletion: value.last)
         }
         
         let willPresentNotification = delegate
             .methodInvoked(#selector(UNUserNotificationCenterDelegate.userNotificationCenter(_:willPresent:withCompletionHandler:)))
-            .map { value in PushNotificationController.State.receivedRemoteNotification(payload: self.formatNotificationPayload((value[1] as? UNNotification)?.request.content.userInfo as? [String: Any]), fetchCompletion: value.last)
+            .map { value in PushNotificationState.receivedRemoteNotification(payload: self.formatNotificationPayload((value[1] as? UNNotification)?.request.content.userInfo as? [String: Any]), fetchCompletion: value.last)
         }
 
         return Observable.merge([receiveNotification, willPresentNotification])

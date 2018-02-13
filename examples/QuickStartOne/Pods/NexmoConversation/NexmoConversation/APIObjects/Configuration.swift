@@ -68,7 +68,6 @@ public struct Configuration {
     // MARK:
     // MARK: Initializers
     
-    /// Create configuration
     public init(with logLevel: LogLevel = .warning, autoReconnect: Bool = true, clearAllData: Bool = false, pushNotifications: Bool = true) {
         self.logLevel = logLevel
         self.autoReconnect = autoReconnect

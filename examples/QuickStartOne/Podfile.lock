@@ -1,12 +1,14 @@
 PODS:
   - Alamofire (4.6.0)
+  - Gloss (2.0.0)
   - GRDB.swift (0.90.3)
-  - NexmoConversation (0.19.1):
+  - NexmoConversation (0.18.2):
     - Alamofire (~> 4.6.0)
+    - Gloss (~> 2.0.0)
     - GRDB.swift (~> 0.90.3)
     - NexmoWebRTC (~> 63.11.16)
-    - RxCocoa (~> 4.1.1)
-    - Socket.IO-Client-Swift (~> 13.1.1)
+    - RxCocoa (~> 4.1.0)
+    - Socket.IO-Client-Swift (~> 13.1.0)
   - NexmoWebRTC (63.11.16)
   - RxCocoa (4.1.1):
     - RxSwift (~> 4.0)
@@ -25,19 +27,20 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   NexmoConversation:
-    :commit: dbbd5ef705558b6bb18752d4677451c0acaa1d57
+    :commit: 30c2788f26f98610a8ce019d10a394af72c45f30
     :git: https://github.com/nexmo/conversation-ios-sdk.git
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  Gloss: b67617f327406adfd47adf20172d00680a3a31bd
   GRDB.swift: bc1ed5575caf43e468a9393f34f3dffbfa12f191
-  NexmoConversation: 4cbd4f64182d14a77087c2548a4544de1084adb7
+  NexmoConversation: f0a2cd2be8d599724c4348b0678a8d79fad66a3b
   NexmoWebRTC: efb9a506e6107d12399114b621f4b71b07c56d75
   RxCocoa: fd0862fd2df95fa55562ad28ffd2522c25eb4a85
   RxSwift: c6e3b1c7b325c7d121cd4327e9d98b7ed746b570
   Socket.IO-Client-Swift: f22222913f29801e30ae0df712db663ec096edc2
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
 
-PODFILE CHECKSUM: 581a62ba38e7b3ac6616ed9e9ac46f223918dc26
+PODFILE CHECKSUM: 20e336395d184d1d14ecd83c252799fb4939ed93
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.4.0.beta.1

@@ -42,7 +42,7 @@ internal struct MediaService {
                 case .failure(let error):
                     failure(error)
                 case .success(let response):
-                    guard let model = T(response) else { return failure(JSONError.malformedJSON) }
+                    guard let model = T(response) else { return failure(HTTPSessionManager.Errors.malformedResponse) }
 
                     success(model)
                 }

@@ -7,26 +7,11 @@
 //
 
 import Foundation
+import Gloss
 
 /// Membership Event
 @objc(NXMMembershipEvent)
-public class MembershipEvent: EventBase {
-    
-    // MARK:
-    // MARK: Keys
-    
-    fileprivate enum CodingKeys: String, CodingKey {
-        case timestamp
-        case user
-        case invited = "invited_by"
-    }
-    
-    fileprivate enum TimestampCodingKeys: String, CodingKey {
-        case invited
-        case joined
-        case left
-    }
-}
+public class MembershipEvent: EventBase { }
 
 /// Invite Membership Event
 @objc(NXMMemberInvitedEvent)
@@ -37,9 +22,8 @@ public class MemberInvitedEvent: MembershipEvent {
     
     /// Invited date
     public internal(set) lazy var invitedDate: Date? = {
-        let allValues = try? JSONDecoder().decode([String: String].self, from: self.data.body)
-        
-        guard let date = DateFormatter.ISO8601?.date(from: allValues?[TimestampCodingKeys.invited.rawValue] ?? "")else {
+        guard let formatter = DateFormatter.ISO8601,
+            let date = Decoder.decode(dateForKey: "timestamp.invited", dateFormatter: formatter)(self.data.body) else {
             return nil
         }
         
@@ -48,16 +32,13 @@ public class MemberInvitedEvent: MembershipEvent {
     
     /// Member who been invited to conversation
     public internal(set) lazy var invitedMember: Member? = {
-        guard let json = self.data.body[CodingKeys.user.rawValue] as? [String: Any],
-            let member = try? MemberModel(json: json, state: .invited) else {
-            return nil
-        }
+        guard let json = self.data.body["user"] as? JSON, let member = MemberModel(json: json, state: .invited) else { return nil }
         
         return Member(conversationUuid: self.uuid, member: member)
     }()
     
     /// invited by user
-    public internal(set) lazy var invitedBy: String? = { return self.data.body[CodingKeys.invited.rawValue] as? String }()
+    public internal(set) lazy var invitedBy: String? = { return self.data.body["invited_by"] as? String }()
 }
 
 /// Join Membership Event
@@ -69,9 +50,8 @@ public class MemberJoinedEvent: MembershipEvent {
     
     /// Join date
     public internal(set) lazy var joinedDate: Date? = {
-        let allValues = try? JSONDecoder().decode([String: String].self, from: self.data.body)
-        
-        guard let date = DateFormatter.ISO8601?.date(from: allValues?[TimestampCodingKeys.joined.rawValue] ?? "")else {
+        guard let formatter = DateFormatter.ISO8601,
+            let date = Decoder.decode(dateForKey: "timestamp.joined", dateFormatter: formatter)(self.data.body) else {
             return nil
         }
         
@@ -88,9 +68,8 @@ public class MemberLeftEvent: MembershipEvent {
     
     /// Lefted date
     public internal(set) lazy var leftDate: Date? = {
-        let allValues = try? JSONDecoder().decode([String: String].self, from: self.data.body)
-        
-        guard let date = DateFormatter.ISO8601?.date(from: allValues?[TimestampCodingKeys.invited.rawValue] ?? "")else {
+        guard let formatter = DateFormatter.ISO8601,
+            let date = Decoder.decode(dateForKey: "timestamp.left", dateFormatter: formatter)(self.data.body) else {
             return nil
         }
         

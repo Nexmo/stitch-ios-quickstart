@@ -37,13 +37,13 @@ internal struct AccountService {
         return manager
             .request(AccountRouter.user(id: id))
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    guard let model = try? JSONDecoder().decode(UserModel.self, from: response) else {
-                        return failure(JSONError.malformedJSON)
+                    guard let json = response as? Parameters, let model = UserModel(json: json) else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     success(model)

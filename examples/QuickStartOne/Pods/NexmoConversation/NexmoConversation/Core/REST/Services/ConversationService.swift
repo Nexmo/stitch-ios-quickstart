@@ -42,7 +42,7 @@ internal struct ConversationService {
     @discardableResult
     internal func create(with model: CreateConversation, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) -> DataRequest {
         return manager
-            .request(ConversationRouter.create(model: model.json))
+            .request(ConversationRouter.create(model: model.toJSON()))
             .validateAndReportError(to: manager)
             .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
@@ -51,7 +51,7 @@ internal struct ConversationService {
                 case .success(let response):
                     // TODO: create model out of JSON
                     guard let json = response as? Parameters, let uuid = json["id"] as? String else {
-                        return failure(JSONError.malformedJSON)
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     success(uuid)
@@ -71,15 +71,15 @@ internal struct ConversationService {
     @discardableResult
     internal func join(with model: ConversationController.JoinConversation, forUUID uuid: String, success: @escaping (MemberStatus) -> Void, failure: @escaping (Error) -> Void) -> DataRequest {
         return manager
-            .request(ConversationRouter.join(uuid: uuid, parameters: model.json))
+            .request(ConversationRouter.join(uuid: uuid, parameters: model.toJSON()))
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    guard let model = try? JSONDecoder().decode(MemberStatus.self, from: response) else {
-                        return failure(JSONError.malformedJSON)
+                    guard let json = response as? Parameters, let model = MemberStatus(json: json) else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     success(model)
@@ -113,11 +113,10 @@ internal struct ConversationService {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    // TODO: make model out of responses
                     guard let json = response as? Parameters,
                         let embedded = json["_embedded"] as? Parameters,
                         let conversations = embedded["conversations"] as? [Parameters] else {
-                        return failure(JSONError.malformedJSON)
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     allModels.append(contentsOf: conversations.flatMap { conversation -> ConversationController.LiteConversation? in
@@ -150,13 +149,13 @@ internal struct ConversationService {
         return manager
             .request(ConversationRouter.allUser(id: userId))
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    guard let models = try? JSONDecoder().decode([ConversationPreviewModel].self, from: response) else {
-                        return failure(JSONError.malformedJSON)
+                    guard let json = response as? [Parameters], let models = [ConversationPreviewModel].from(jsonArray: json) else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     success(models)
@@ -180,13 +179,13 @@ internal struct ConversationService {
         return manager
             .request(ConversationRouter.conversation(id: cid))
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    guard let model = try? JSONDecoder().decode(ConversationModel.self, from: response) else {
-                        return failure(JSONError.malformedJSON)
+                    guard let json = response as? Parameters, let model = ConversationModel(json: json) else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     guard !model.members.isEmpty else { return failure(Errors.invalidResponseFromBackend) }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Gloss
 
 /// RTC Namespace
 internal enum RTC {
@@ -37,7 +38,7 @@ internal extension RTC {
         // MARK:
         // MARK: JSON
 
-        internal var json: [String: Any] {
+        internal func toJSON() -> JSON {
             return [
                 "cid": conversationId,
                 "to": to,
@@ -47,6 +48,7 @@ internal extension RTC {
             ]
         }
     }
+
 }
 
 /// RTC Respones
@@ -56,26 +58,18 @@ internal extension RTC {
     // MARK: Response
 
     /// Response model from RTC request
-    internal struct Response: Decodable {
+    internal struct Response: Gloss.JSONDecodable {
 
-        // MARK:
-        // MARK: Keys
-        
-        private enum CodingKeys: String, CodingKey {
-            case id = "rtc_id"
-        }
-        
-        // MARK:
-        // MARK: Properties
-        
         /// RTC Id
         internal let id: String
 
         // MARK:
         // MARK: Initializers
 
-        internal init(from decoder: Decoder) throws {
-            id = try decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .id)
+        internal init?(json: JSON) {
+            guard let rtcId: String = "rtc_id" <~~ json else { return nil }
+            
+            self.id = rtcId
         }
     }
 
@@ -83,25 +77,8 @@ internal extension RTC {
     // MARK: Answer
 
     /// Answer model from RTC new request
-    internal struct Answer: Decodable {
+    internal struct Answer: Gloss.JSONDecodable {
 
-        // MARK:
-        // MARK: Keys
-        
-        private enum CodingKeys: String, CodingKey {
-            case cid
-            case body
-            case timestamp
-        }
-        
-        private enum BodyCodingKeys: String, CodingKey {
-            case id = "rtc_id"
-            case answer
-        }
-        
-        // MARK:
-        // MARK: Properties
-        
         /// SDP
         internal let sdp: String
 
@@ -117,14 +94,20 @@ internal extension RTC {
         // MARK:
         // MARK: Initializers
 
-        internal init(from decoder: Decoder) throws {
-            let allValues = try decoder.container(keyedBy: CodingKeys.self)
-            let nestedContainer = try allValues.nestedContainer(keyedBy: BodyCodingKeys.self, forKey: .body)
-            
-            conversationId = try allValues.decode(String.self, forKey: .cid)
-            sdp = try nestedContainer.decode(String.self, forKey: .answer)
-            id = try nestedContainer.decode(String.self, forKey: .id)
-            timestamp = try allValues.decode(Date.self, forKey: .timestamp)
+        internal init?(json: JSON) {
+            guard let answer: String = "body.answer" <~~ json else { return nil }
+            guard let id: String = "body.rtc_id" <~~ json else { return nil }
+            guard let conversationId: String = "cid" <~~ json else { return nil }
+
+            guard let formatter = DateFormatter.ISO8601,
+                let timestamp: Date = Decoder.decode(dateForKey: "timestamp", dateFormatter: formatter)(json) else {
+                return nil
+            }
+
+            self.sdp = answer
+            self.id = id
+            self.conversationId = conversationId
+            self.timestamp = timestamp
         }
     }
 }

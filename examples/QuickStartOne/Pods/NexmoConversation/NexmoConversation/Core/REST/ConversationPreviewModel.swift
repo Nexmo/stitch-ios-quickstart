@@ -7,25 +7,11 @@
 //
 
 import Foundation
+import Gloss
 
 /// Conversation preview model show a small preview of a conversation
 @objc(NXMConversationPreviewModel)
-public class ConversationPreviewModel: NSObject, Decodable {
-    
-    // MARK:
-    // MARK: Enum
-    
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case uuid
-        case cid
-        case cname
-        case name
-        case sequence = "sequence_number"
-        case state
-        case memberIdUppercase = "member_Id"
-        case memberIdLowercase = "member_id"
-    }
+public class ConversationPreviewModel: NSObject, Gloss.JSONDecodable {
     
     // MARK:
     // MARK: Properties
@@ -56,36 +42,39 @@ public class ConversationPreviewModel: NSObject, Decodable {
         state = member.state
     }
 
-    /// :nodoc:
-    public required init(from decoder: Decoder) throws {
-        let allValues = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if allValues.contains(.id) {
-            uuid = try allValues.decode(String.self, forKey: .id)
-        } else if allValues.contains(.uuid) {
-            uuid = try allValues.decode(String.self, forKey: .uuid)
-        } else if allValues.contains(.cid) {
-            uuid = try allValues.decode(String.self, forKey: .cid)
-        } else if allValues.contains(.cname) {
-            uuid = try allValues.decode(String.self, forKey: .cname)
+    public required init?(json: JSON) {
+        // TODO: review ones CS remodelling complete [Aug 17]
+        if let uuid: String = "id" <~~ json {
+           self.uuid = uuid
+        } else if let uuid: String = "uuid" <~~ json {
+            self.uuid = uuid
+        } else if let uuid: String = "cid" <~~ json {
+            self.uuid = uuid
+        } else if let uuid: String = "cname" <~~ json {
+            self.uuid = uuid
         } else {
-            throw JSONError.malformedJSON
+            return nil
         }
 
-        name = try allValues.decode(String.self, forKey: .name)
-        sequenceNumber = (try? allValues.decode(Int.self, forKey: .sequence)) ?? 0
+        guard let name: String = "name" <~~ json else { return nil }
         
-        let stateString = try allValues.decode(String.self, forKey: .state).lowercased()
-        
-        guard let memberState = MemberModel.State(rawValue: stateString.lowercased()) else {
-            throw JSONError.malformedJSON
+        self.name = name
+
+        if let sequenceNumber: Int = "sequence_number" <~~ json {
+            self.sequenceNumber = sequenceNumber
+        } else {
+            self.sequenceNumber = 0
         }
-        
-        state = memberState
-        
-        memberId = allValues.contains(.memberIdUppercase)
-            ? try allValues.decode(String.self, forKey: .memberIdUppercase)
-            : try allValues.decode(String.self, forKey: .memberIdLowercase)
+
+        // Not sure some json response return cap and non-caps for member_Id
+        guard let state: String = "state" <~~ json,
+            let memberState = MemberModel.State(rawValue: state.lowercased()),
+            let id: String = ("member_Id" <~~ json) ?? ("member_id" <~~ json) else {
+            return nil
+        }
+
+        self.memberId = id
+        self.state = memberState
     }
 }
 

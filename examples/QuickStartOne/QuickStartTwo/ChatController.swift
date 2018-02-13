@@ -35,7 +35,7 @@ class ChatController: UIViewController {
         super.viewDidLoad()
         
         // a handler for updating the textView with TextEvents
-        conversation?.events.newEventReceived.addHandler { event in
+        conversation?.newEventReceived.addHandler { event in
             guard let event = event as? TextEvent, event.isCurrentlyBeingSent == false else { return }
             guard let text = event.text else { return }
             

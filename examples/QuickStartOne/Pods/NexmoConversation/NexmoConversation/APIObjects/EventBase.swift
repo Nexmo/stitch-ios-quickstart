@@ -9,9 +9,9 @@
 import Foundation
 
 /// Event Base
+// TODO: remove such approach for swifty protocol oriented extensions  
 @objc(NXMEventBase)
 public class EventBase: NSObject {
-    // TODO: remove such approach for swifty protocol oriented extensions
     
     // MARK:
     // MARK: Enum
@@ -97,7 +97,6 @@ public class EventBase: NSObject {
     // MARK:
     // MARK: NSObject
     
-    /// :nodoc:
     public override var description: String {
         return String(format: "\(type(of: self)): \(data.id) from: \(data.cid)")
     }
@@ -149,7 +148,7 @@ public class EventBase: NSObject {
         case .memberInvited: return MemberInvitedEvent(conversationUuid: conversationUuid, event: event, seen: seen)
         case .memberJoined: return MemberJoinedEvent(conversationUuid: conversationUuid, event: event, seen: seen)
         case .memberLeft: return MemberLeftEvent(conversationUuid: conversationUuid, event: event, seen: seen)
-        case .memberMedia: return MediaEvent(conversationUuid: conversationUuid, event: event, seen: seen)
+        case .memberMedia: return AudioEvent(conversationUuid: conversationUuid, event: event, seen: seen)
         default: return EventBase(conversationUuid: conversationUuid, event: event, seen: seen)
         }
     }
@@ -161,7 +160,7 @@ public class EventBase: NSObject {
         case .memberInvited: return MemberInvitedEvent(data: data)
         case .memberJoined: return MemberJoinedEvent(data: data)
         case .memberLeft: return MemberLeftEvent(data: data)
-        case .memberMedia: return MediaEvent(data: data)
+        case .memberMedia: return AudioEvent(data: data)
         default: return EventBase(data: data)
         }
     }

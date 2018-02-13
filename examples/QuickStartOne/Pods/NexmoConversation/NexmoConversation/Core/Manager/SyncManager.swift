@@ -8,6 +8,8 @@
 
 import Foundation
 import RxSwift
+// TODO: remove Gloss import, sync manager does not need to know about json etc..
+import Gloss
 
 /// State of synchronizing
 ///
@@ -137,7 +139,7 @@ internal class SyncManager {
                 case .rtcAnswer: self.processMedia(with: json)
                 case .rtcTerminate: break
                 case .memberMedia:
-                    guard let model = try? Event(type: type, json: json) else { return }
+                    guard let model = Event(type: type, json: json) else { return }
                     
                     let events: SignalInvocations = SignalInvocations()
                     let conversation = self.storage.conversationCache.get(uuid: model.cid)
@@ -497,38 +499,33 @@ internal class SyncManager {
     }
     
     internal func syncImage(_ event: Event, for type: IPS.ImageType) -> Single<RawData> {
-        do {
-            let model: Event.Body.Image = try event.model()
-            
-            guard case .link(let id, let url, _, _)? = model.image(for: type) else {
-                return Single<RawData>.error(JSONError.malformedJSON)
-            }
-            
-            guard !self.storage.fileCache.fileExist(at: id) else {
-                return Single<RawData>.create(subscribe: { observer -> Disposable in
-                    self.storage.fileCache.get(id, { (data: Data?) in
-                        guard let data = data, let raw = RawData(data) else {
-                            return observer(.error(JSONError.malformedResponse))
-                        }
-                        
-                        observer(.success(raw))
-                    })
-                    
-                    return Disposables.create()
-                })
-            }
-            
-            let download: Single<RawData> = mediaController.download(at: url.absoluteString)
-            
-            return download.do(onSuccess: { [weak self] object in
-                self?.storage.fileCache.set(key: id, value: object.value)
-            })
-        } catch let error {
-            switch error as? Event.Errors {
-            case .eventDeleted?: return Single<RawData>.error(Event.Errors.eventDeleted)
-            default: return Single<RawData>.error(JSONError.malformedJSON)
-            }
+        guard let model: Event.Body.Image = event.model(),
+            case .link(let id, let url, _, _)? = model.image(for: type) else {
+            return Single<RawData>.error(HTTPSessionManager.Errors.malformedResponse)
         }
+        
+        guard !self.storage.fileCache.fileExist(at: id) else {
+            return Single<RawData>.create(subscribe: { observer -> Disposable in
+                self.storage.fileCache.get(id, { (data: Data?) in
+                    guard let data = data, let raw = RawData(data) else {
+                        return observer(.error(HTTPSessionManager.Errors.malformedResponse))
+                    }
+                    
+                    observer(.success(raw))
+                })
+                
+                return Disposables.create()
+            })
+        }
+        
+        Log.info(.rest, "syncImage download \(id) \(url.absoluteString) started")
+        
+        let download: Single<RawData> = mediaController.download(at: url.absoluteString)
+
+        return download.do(onNext: { [weak self] object in
+            self?.storage.fileCache.set(key: id, value: object.value)
+            Log.info(.rest, "syncImage download \(id) \(url.absoluteString) success")
+        })
     }
     
     /* Request the given user to be synced. This method can be called outside of the sync manager. */
@@ -619,6 +616,7 @@ internal class SyncManager {
             try previewModels.forEach { try syncConversation(for: $0.uuid, isExisiting: false) }
 
             /* Main sync processor. Go in to a loop processing any events on the queue. */
+            Log.info(.syncManager, "Main Sync Processor loop complete.")
             state.tryWithValue = .inactive
 
             eventQueue.enable()
@@ -684,9 +682,9 @@ internal class SyncManager {
                     callback(record)
                 }
             }
-        } catch JSONError.malformedJSON {
+        } catch HTTPSessionManager.Errors.malformedJSON {
             /* Server sent us invalid JSON, we treat this as fatal because otherwise we will probably get out knickers in a twist. */
-            handleFatalError(error: JSONError.malformedJSON)
+            handleFatalError(error: HTTPSessionManager.Errors.malformedJSON)
         } catch HTTPSessionManager.Errors.requestFailed(let error) {
             /* The request failed. We currently treat this as fatal. */
             // TODO Build a retry mechanism into the low level routine syncResponseJSON(), but only use it on methods that are safe to retry.
@@ -731,7 +729,7 @@ internal class SyncManager {
             conversation.data.mostRecentEventIndex = event.id
         } else {
             /* The conversation was not found, see if this is us being invited to a new conversation event. */
-            if event.type == .memberInvited, let invitedBy: Event.Body.MemberInvite = try? event.model() {
+            if event.type == .memberInvited, let invitedBy: Event.Body.MemberInvite = event.model() {
                 try syncConversation(for: event.cid, isExisiting: false, invitedBy: invitedBy)
             /* See if it's us joining our own newly created conversation. */
             } else if event.type == .memberJoined {
@@ -746,12 +744,14 @@ internal class SyncManager {
         
         var draftEvent: DBEvent?
         
-        if let tid = event.tid, let draft = databaseManager.event.getDraft(tid, in: conversation.uuid) {
-            draftEvent = draft
-            
-            try databaseManager.event.delete(draft)
-            
-            Log.info(.syncManager, "draft deleted tid= \(tid)")
+        if let tid = event.tid {
+            if let draft = databaseManager.event.getDraft(tid, in: conversation.uuid) {
+                draftEvent = draft
+                try databaseManager.event.delete(draft)
+                Log.info(.syncManager, "draft deleted tid= \(tid)")
+            } else {
+                Log.info(.syncManager, "draft not found for tid= \(tid)")
+            }
         }
         
         /* Process seen. */
@@ -804,9 +804,7 @@ internal class SyncManager {
         }
         
         if event.type == .image {
-            syncImage(event, for: .thumbnail)
-                .subscribe(onError: { _ in } )
-                .disposed(by: disposeBag)
+            syncImage(event, for: .thumbnail).subscribe().disposed(by: disposeBag)
         }
 
         if needToNotifyDelivered  && newMessage is TextEvent {
@@ -855,9 +853,9 @@ internal class SyncManager {
         }
         
         guard let eventId = { () -> String? in
-            if let eventId = body["event_id"] as? Int {
+            if let eventId: Int32 = "event_id" <~~ body {
                 return "\(eventId)"
-            } else if let eventId = body["event_id"] as? String {
+            } else if let eventId: String = "event_id" <~~ body {
                 // FIXME: https://nexmoinc.atlassian.net/browse/CS-345
                 return eventId
             }
@@ -913,7 +911,7 @@ internal class SyncManager {
     }
 
     private func processMedia(with json: [String: Any]) {
-        guard let answer = try? JSONDecoder().decode(RTC.Answer.self, from: json) else { return }
+        guard let answer = RTC.Answer(json: json) else { return }
 
         conversationController.media.answers.value = answer
     }
@@ -942,7 +940,7 @@ internal class SyncManager {
             guard let invitedMember = (membershipEvent as? MemberInvitedEvent)?.invitedMember else { return }
 
             events.add {
-                let invitedBy: Event.Body.MemberInvite? = try? event.model()
+                let invitedBy: Event.Body.MemberInvite? = event.model()
 
                 // for media invite, push it to invitation observable instead, since they an special member that are temporary
                 if invitedMember.user.isMe && invitedBy?.user.hasMediaSupport == true {
@@ -962,7 +960,7 @@ internal class SyncManager {
         case .memberLeft:
             events.add {
                 // update the member state locally
-                if let memberLeft: Event.Body.MemberLeft = try? event.model() {
+                if let memberLeft: Event.Body.MemberLeft = event.model() {
                     if let member = conversation.members.first(where: { $0.uuid == event.from }) {
                         member.data.rest.timestamp = memberLeft.timestamp
                         member.data.rest.state = .left

@@ -48,7 +48,7 @@ internal enum IPSRouter: URLRequestConvertible {
         case .upload:
             // For unit test purposes :(
             if Environment.inDebug, Environment.inTesting, ConversationClient.instance.networkController.token == "Test Mode" {
-                throw JSONError.malformedJSON
+                throw HTTPSessionManager.Errors.malformedJSON
             }
 
             urlRequest = try JSONEncoding.default.encode(urlRequest)

@@ -49,7 +49,7 @@ internal struct IPSService {
             multipartFormData: { IPSBuilder.uploadParameter(formData: $0, parameters: image) },
             with: IPSRouter.upload,
             encodingCompletion: { result in
-                guard case .success(let request, _, _) = result else { return failure(JSONError.malformedResponse) }
+                guard case .success(let request, _, _) = result else { return failure(HTTPSessionManager.Errors.malformedJSON) }
 
                 progress(Request(with: request))
 
@@ -59,7 +59,7 @@ internal struct IPSService {
                         switch response.result {
                         case .success(let response):
                             guard let json = response as? Alamofire.Parameters, let model = Event.Body.Image(json: json) else {
-                                return failure(JSONError.malformedJSON)
+                                return failure(HTTPSessionManager.Errors.malformedJSON)
                             }
                             
                             success(model)

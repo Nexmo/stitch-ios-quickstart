@@ -57,13 +57,13 @@ internal struct MembershipService {
         return manager
             .request(request)
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    guard let model = try? JSONDecoder().decode(MemberStatus.self, from: response) else {
-                        return failure(JSONError.malformedJSON)
+                    guard let json = response as? Parameters, let model = MemberStatus(json: json) else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
                     
                     success(model)
@@ -113,13 +113,13 @@ internal struct MembershipService {
         return manager
             .request(MembershipRouter.details(conversationId: conversationId, memberId: member))
             .validateAndReportError(to: manager)
-            .responseData(queue: manager.queue, completionHandler: {
+            .responseJSON(queue: manager.queue, completionHandler: {
                 switch $0.result {
                 case .failure(let error):
                     failure((try? NetworkError(from: $0)) ?? error)
                 case .success(let response):
-                    guard let model = try? JSONDecoder().decode(MemberModel.self, from: response) else {
-                        return failure(JSONError.malformedJSON)
+                    guard let json = response as? Parameters, let model = MemberModel(json: json) else {
+                        return failure(HTTPSessionManager.Errors.malformedJSON)
                     }
 
                     success(model)

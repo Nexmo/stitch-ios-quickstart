@@ -7,29 +7,11 @@
 //
 
 import Foundation
+import Gloss
 
-/// User model
-internal class UserModel: Decodable {
+// User model
+internal class UserModel: UserLiteModel {
     
-    // MARK:
-    // MARK: Keys
-    
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case displayName = "display_name"
-        case image = "image_url"
-    }
-    
-    // MARK:
-    // MARK: Properties
-    
-    /// ID of the corresponding User
-    internal var uuid: String
-    
-    /// The unique name for this User
-    internal var name: String
-
     /// Display Name
     internal var displayName: String
     
@@ -45,16 +27,23 @@ internal class UserModel: Decodable {
     internal init(displayName: String, imageUrl: String, uuid: String, name: String) {
         self.displayName = displayName
         self.imageUrl = imageUrl
-        self.uuid = uuid
-        self.name = name
+        
+        super.init(uuid: uuid, name: name)
     }
     
-    internal required init(from decoder: Decoder) throws {
-        let allValues = try decoder.container(keyedBy: CodingKeys.self)
+    internal required init?(json: JSON) {
+        if let displayName: String = "display_name" <~~ json {
+            self.displayName = displayName
+        } else {
+            self.displayName = ""
+        }
         
-        uuid = try allValues.decode(String.self, forKey: .id)
-        name = try allValues.decode(String.self, forKey: .name)
-        displayName = (try allValues.decodeIfPresent(String.self, forKey: .displayName)) ?? ""
-        imageUrl = (try allValues.decodeIfPresent(String.self, forKey: .image)) ?? ""
+        if let imageUrl: String = "image_url" <~~ json {
+            self.imageUrl = imageUrl
+        } else {
+            self.imageUrl = ""
+        }
+        
+        super.init(json: json)
     }
 }

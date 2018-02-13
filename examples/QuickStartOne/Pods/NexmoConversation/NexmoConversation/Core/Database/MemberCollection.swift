@@ -11,9 +11,6 @@ import Foundation
 /// Cache of all members for a conversation
 public class MemberCollection: NexmoConversation.LazyCollection<Member> {
     
-    // MARK:
-    // MARK: Properties
-    
     private let databaseManager: DatabaseManager?
 
     private let conversationUuid: String

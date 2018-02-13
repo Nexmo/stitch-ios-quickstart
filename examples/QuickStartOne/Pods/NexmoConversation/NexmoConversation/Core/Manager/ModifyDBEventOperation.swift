@@ -65,7 +65,7 @@ internal struct ModifyDBEventOperation: Operation {
     // MARK: Private - Delete
     
     private func modifyEvent() throws {
-        guard let event = event, let delete: Event.Body.Delete = try? event.model() else { throw Errors.eventNotFoundInCache }
+        guard let delete: Event.Body.Delete = event?.model() else { throw Errors.eventNotFoundInCache }
         
         // delete task
         if let task = task {
@@ -74,18 +74,26 @@ internal struct ModifyDBEventOperation: Operation {
         
         let eventId = delete.event
         
-        // find old event
-        guard let oldDBEvent = storage.eventCache.get(uuid: EventBase.uuid(from: eventId, in: event.cid)) else {
+        guard let conversationId = event?.cid else {
             throw Errors.eventNotFoundInCache
         }
 
-        // remove old event payload and mark as deleted
+        // find old event
+        guard let oldDBEvent = storage.eventCache.get(uuid: EventBase.uuid(from: eventId, in: conversationId)) else {
+            throw Errors.eventNotFoundInCache
+        }
+
+        // remove old event payload
         let oldEvent = oldDBEvent.data.rest
-        oldEvent.body = Event.Body.Deleted(with: event.timestamp).json
+        oldEvent.body = [:]
+        oldEvent.timestamp = Date()
 
         // save events
-        try database.event.update(DBEvent(conversationUuid: event.cid, event: oldEvent, seen: true))
-        try database.event.insert(DBEvent(conversationUuid: event.cid, event: event, seen: true))
+        try database.event.update(DBEvent(conversationUuid: conversationId, event: oldEvent, seen: true))
+
+        if let event = event {
+            try database.event.insert(DBEvent(conversationUuid: conversationId, event: event, seen: true))
+        }
 
         let indexPath: [IndexPath] = {
             guard let index = oldDBEvent.conversation.events.index(of: oldDBEvent) else { return [] }
@@ -95,7 +103,7 @@ internal struct ModifyDBEventOperation: Operation {
 
         // remove the old event from cache
         storage.eventCache.clear(uuid: oldDBEvent.uuid)
-        
+
         // update observer
         oldDBEvent.conversation.events.events.emit(([], EventCollection.Change.deletes(indexPath)))
     }
