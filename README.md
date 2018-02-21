@@ -1,18 +1,18 @@
 # Nexmo Conversation SDK for iOS Beta EA
 
-This is the iOS SDK for Nexmo's Conversation API. Read more about:
+This is the iOS SDK for Nexmo In-App Messaging and Voice APIs. Read more about:
 
-- [The Conversation API](#about-the-conversation-api)
+- [In-App Messaging and Voice](#about-in-app-messaging-and-voice)
 - [Participating in the Early Adopter program](#participating-in-the-early-adopter-program)
 - [Trying out the quickstart examples](#run-through-the-quickstart-guides)
 - [Viewing the SDK API Reference docs](#sdk-api-reference-docs)
 - [Checking out the additional resources](#additional-resources)
 
-## About the Conversation API
+## About In-App Messaging and Voice
 
-The Nexmo Conversation API enables you to build conversation features where communication can take place across multiple mediums including IP Messaging, PSTN Voice, SMS and WebRTC Audio and Video. The context of the conversations is maintained though each communication event taking place within a conversation, no matter the medium.
+The Nexmo In-App Messaging and Voice APIs enables you to build conversation features where communication can take place across multiple mediums. The context of the conversations is maintained though each communication event taking place within a conversation, no matter the medium.
 
-Currently the Conversation API offers basic IP messaging with the following features:
+Currently the API offers basic IP messaging with the following features:
 
 - Conversation creation and management
 - Sending and receiving text
@@ -20,34 +20,31 @@ Currently the Conversation API offers basic IP messaging with the following feat
 - Cache support
 - Typing indicators
 - Message sent, delivered and read receipts
-
-Upcoming features will include:
 - Image support
-- Push notifications
 - Voice support
 
 ## Participating in the Early Adopter program
 
 This first preview will focus on the IP messaging capabilities. During this extended Beta program there will be frequent releases with new features and bug fixes based on your feedback. Changes will be communicated with each release outlying what changed. During the Beta it is possible (and probable) that there shall be breaking changes to the SDK and API but these will be explicitly communicated beforehand.
 
-If your team members require access to the docs or SDK repos contact [devrel@nexmo.com](mailto:devrel@nexmo.com).
-* Ask questions, provide feedback and report problems by [creating an issue](https://github.com/Nexmo/conversation-iso-quickstart/issues/new)
+If your team members require access to the docs or SDK repos contact [ea-support@nexmo.com](mailto:ea-support@nexmo.com).
+* Ask questions, provide feedback and report problems by [creating an issue](https://github.com/Nexmo/conversation-ios-quickstart/issues/new)
 If you want communicate with us during the EA program you can:
-* Join the [Nexmo community slack](https://developer.nexmo.com/community/slack) and ask @ericgiannini, @chris, @laka or @leggetter for access to the private [#conversation-ea](https://nexmo-community.slack.com/messages/G5V788WHJ/) channel
-* Email [devrel@nexmo.com](mailto:devrel@nexmo.com) directly
+* Join the [Nexmo community slack](https://developer.nexmo.com/community/slack) and then check out the [#in-app-messaging](https://nexmo-community.slack.com/messages/G5V788WHJ/) channel where you can ask @ericgiannini, @chris, @laka or @leggetter any questions.
+* Email [ea-support@nexmo.com](mailto:ea-support@nexmo.com) directly
 
 ## Run through the quickstart guides
 
 * [Simple conversation](docs/1-simple-conversation.md)
 * [Inviting members](docs/2-inviting-members.md)
+* [Enable Audio](docs/enable-audio.md)
 
 You can also find the completed examples in the [examples directory](examples).
 
 ## SDK API Reference docs
 
-The [Nexmo Conversation iOS SDK API Reference docs](https://ea.developer.nexmo.com/sdk/conversation/ios/) are available online. You can also view the docs from within Xcode. If you do not have access to the docs, please contact [devrel@nexmo.com](mailto:devrel@nexmo.com)
+The [Nexmo Conversation iOS SDK API Reference docs](https://ea.developer.nexmo.com/sdk/conversation/ios/) are available online. You can also view the docs from within Xcode. If you do not have access to the docs, please contact [ea-support@nexmo.com](mailto:ea-support@nexmo.com)
 
 ## Additional Resources
 
 * [Nexmo CLI](https://github.com/nexmo/nexmo-cli)
-
