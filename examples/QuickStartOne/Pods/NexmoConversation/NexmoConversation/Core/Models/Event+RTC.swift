@@ -61,7 +61,7 @@ internal extension Event.Body {
         // MARK: Initializers
         
         internal init(from decoder: Decoder) throws {
-            fatalError()
+            fatalError("feature not ready")
         }
     }
 }

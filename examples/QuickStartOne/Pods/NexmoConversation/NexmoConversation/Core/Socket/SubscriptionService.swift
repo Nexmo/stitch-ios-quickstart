@@ -12,14 +12,14 @@ import RxSwift
 /// Service for all custom listeners 
 internal struct SubscriptionService {
 
-    /// Unknown types from CAPI
+    /// Unknown types from socket
     internal typealias GenericsResponse = (type: Event.EventType, json: [String: Any])
 
-    /// New events from capi socket
-    internal let events = Variable<Event?>(nil)
+    /// New events from socket
+    internal let events = RxSwift.Variable<Event?>(nil)
 
     /// New rtc events
-    internal let rtc = Variable<GenericsResponse?>(nil)
+    internal let rtc = RxSwift.Variable<GenericsResponse?>(nil)
     
     private let webSocketManager: WebSocketManager
     
@@ -94,12 +94,14 @@ internal struct SubscriptionService {
         webSocketManager.on(Event.EventType.audioRecord.rawValue) { self.handleRTCEvent(.audioRecord, with: $0) }
         webSocketManager.on(Event.EventType.audioRecordDone.rawValue) { self.handleRTCEvent(.audioRecordDone, with: $0) }
         webSocketManager.on(Event.EventType.audioUnmute.rawValue) { self.handleRTCEvent(.audioUnmute, with: $0) }
-        webSocketManager.on(Event.EventType.audioUnearmuff.rawValue) { self.handleRTCEvent(.audioEarmuffed, with: $0) }
+        webSocketManager.on(Event.EventType.audioUnearmuff.rawValue) { self.handleRTCEvent(.audioUnearmuff, with: $0) }
         webSocketManager.on(Event.EventType.audioSpeakingOff.rawValue) { self.handleRTCEvent(.audioSpeakingOff, with: $0) }
         webSocketManager.on(Event.EventType.audioMute.rawValue) { self.handleRTCEvent(.audioMute, with: $0) }
         webSocketManager.on(Event.EventType.audioEarmuffed.rawValue) { self.handleRTCEvent(.audioEarmuffed, with: $0) }
         webSocketManager.on(Event.EventType.audioSpeakingOn.rawValue) { self.handleRTCEvent(.audioSpeakingOn, with: $0) }
         webSocketManager.on(Event.EventType.sipHangUp.rawValue) { self.handleRTCEvent(.sipHangUp, with: $0) }
+        webSocketManager.on(Event.EventType.audioRingingStart.rawValue) { self.handleRTCEvent(.audioRingingStart, with: $0) }
+        webSocketManager.on(Event.EventType.audioRingingStop.rawValue) { self.handleRTCEvent(.audioRingingStop, with: $0) }
     }
 
     private func bindUnknownListener() {
@@ -118,7 +120,7 @@ internal struct SubscriptionService {
     // MARK: Private - Handler
     
     private func handleEvent(_ event: Event.EventType, with data: [Any]) {
-        Observable<Event>.create { observer in
+        RxSwift.Observable<Event>.create { observer in
             guard let json = data.first as? [String: Any] else { return Disposables.create() }
             guard let model = try? Event(type: event, json: json) else { return Disposables.create() }
             

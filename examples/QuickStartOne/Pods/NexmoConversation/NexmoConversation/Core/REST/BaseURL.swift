@@ -39,7 +39,7 @@ internal struct BaseURL {
         return url
     }()
     
-    /// CAPI REST Service
+    /// REST Service
     internal static var rest: String = {
         guard inDevelopmentMode, let url = ProcessInfo.processInfo.environment[Path.rest.rawValue],
             !url.isEmpty else {

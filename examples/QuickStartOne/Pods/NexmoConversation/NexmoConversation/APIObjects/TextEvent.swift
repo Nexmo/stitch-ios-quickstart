@@ -51,7 +51,7 @@ public class TextEvent: EventBase, Deletable {
     }
     
     // MARK:
-    // MARK: State
+    // MARK: Receipt
     
     /// Mark event as seen
     ///

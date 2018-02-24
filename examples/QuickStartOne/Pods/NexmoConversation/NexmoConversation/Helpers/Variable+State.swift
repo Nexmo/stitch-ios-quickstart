@@ -9,8 +9,8 @@
 import Foundation
 import RxSwift
 
-/// Audio State
-internal extension Variable where Variable.E == Audio.State {
+/// Media State
+internal extension Variable where Variable.E == Media.State {
 
     // MARK:
     // MARK: Connect

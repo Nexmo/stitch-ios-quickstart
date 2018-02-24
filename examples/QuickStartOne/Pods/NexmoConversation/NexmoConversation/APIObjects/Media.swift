@@ -1,5 +1,5 @@
 //
-//  Audio.swift
+//  Media.swift
 //  NexmoConversation
 //
 //  Created by May Ben Arie on 9/27/17.
@@ -10,46 +10,58 @@ import Foundation
 import RxSwift
 import WebRTC
 
-/// Facade for Audio
-public class Audio: NSObject {
+/// Facade for Media
+@objc(NXMMedia)
+public class Media: NSObject {
 
     // MARK:
     // MARK: Enum
 
-    /// Audio state
+    /// Media state
     ///
     /// - idle: inital state
     /// - connecting: connecting to audio
     /// - connected: audio connected
     /// - disconnected: audio disconnected
     /// - failed: failed to enable audio
-    @objc(NXMAudioState)
+    @objc(NXMMediaState)
     public enum State: Int {
+        /// inital state
         case idle
+        /// connecting to audio
         case connecting
+        /// audio connected
         case connected
+        /// audio disconnected
         case disconnected
+        /// failed to enable audio
         case failed
     }
     
-    /// Audio Error
+    /// Media Error
     ///
     /// - isAlreadyConnected: user has already connected to audio
     /// - isAlreadyEnabled: user has enabled audio
     /// - userHasNotGrantedPermission: user has granted permission to start using audio
-    /// - userHasEnabledAudioInAnotherConversation: user is in another audio session
+    /// - userHasEnabledMediaInAnotherConversation: user is in another audio session
     public enum Errors: Error {
+        /// user has already connected to a media
         case isAlreadyConnected
+        /// user has enabled a media
         case isAlreadyEnabled
+        /// user has granted permission to start using audio
         case userHasNotGrantedPermission
-        case userHasEnabledAudioInAnotherConversation
+        /// user is in another media session
+        case userHasEnabledMediaInAnotherConversation
+        /// active media session in progress with the same name/users
+        case activeMediaSessionWithSameNameInProgress
     }
 
     // MARK:
     // MARK: Properties
 
     /// Current state
-    public let state = Variable<State>(.idle)
+    public let state = MutableObservable(RxSwift.Variable<State>(.idle))
 
     /// Mute audio
     public var mute: Bool = false {
@@ -77,10 +89,10 @@ public class Audio: NSObject {
     /// Conversation
     internal weak var conversation: Conversation?
     
-    /// RTC controller
-    internal let controller: RTCController
+    /// Media controller
+    internal let controller: MediaController
 
-    /// Connecting for Audio session
+    /// Connecting for Media session
     private let connection = RTCConnection()
 
     /// Rx
@@ -89,7 +101,6 @@ public class Audio: NSObject {
     // MARK:
     // MARK: Hashable
     
-    /// Audio hashable value
     /// :nodoc:
     public override var hashValue: Int { return self.conversation?.uuid.hashValue ?? 0 }
 
@@ -108,36 +119,35 @@ public class Audio: NSObject {
     // MARK:
     // MARK: Description
 
-    /// Description
     /// :nodoc:
     public override var description: String {
-        return "Audio rtc id: \(id ?? "Unknown") for conversation \(conversation?.uuid ?? "Unknown")"
+        return "Media rtc id: \(id ?? "Unknown") for conversation \(conversation?.uuid ?? "Unknown")"
     }
 
     // MARK:
-    // MARK: Audio
+    // MARK: Media
 
     /// Enable audio
     ///
     /// - Returns: observable of state property
     /// - Throws: error that affects enabling audio
     @discardableResult
-    public func enable() throws -> Observable<State> {
+    public func enable() throws -> NexmoConversation.Observable<State> {
         Log.info(.rtc, "Enable audio at: \(Date())")
 
         try hasAudioPermission()
 
-        guard !state.isConnectState else { throw Errors.isAlreadyConnected }
+        guard !state.subject.isConnectState else { throw Errors.isAlreadyConnected }
 
         do {
             try controller.enabled(media: self)
-        } catch RTCController.Errors.dupeConversation {
+        } catch MediaController.Errors.dupeConversation {
             throw Errors.isAlreadyEnabled
-        } catch RTCController.Errors.mediaIsInCurrentlyInSession {
-            throw Errors.userHasEnabledAudioInAnotherConversation
+        } catch MediaController.Errors.mediaIsCurrentlyInSession {
+            throw Errors.userHasEnabledMediaInAnotherConversation
         }
 
-        state.value = .connecting
+        state.subject.value = .connecting
 
         connection.setLocalSDP {
             switch $0 {
@@ -145,21 +155,20 @@ public class Audio: NSObject {
                 do {
                     try self.sendRTC(with: sdp)
                 } catch {
-                    self.state.value = .failed
+                    self.state.subject.value = .failed
                 }
             case .failed(let error):
                 Log.info(.rtc, "Local sdp failed: \(error)")
                 
-                self.state.value = .failed
+                self.state.subject.value = .failed
             }
         }
-
-        return state.asObservable()
+        
+        return state.rx.wrap
     }
 
     /// Disable audio call
     ///
-    /// - Returns: result of disabling audio
     public func disable() {
         terminate()
 
@@ -167,7 +176,20 @@ public class Audio: NSObject {
         controller.disabled(media: self)
 
         id = nil
-        state.value = .disconnected
+        state.subject.value = .disconnected
+    }
+    
+    // MARK:
+    // MARK: Ringing
+    
+    /// Send a ringing event
+    public func startRinging() {
+        sendEvent(.audioRingingStart, to: conversation?.ourMemberRecord)
+    }
+    
+    /// Send a stop ringing event
+    public func stopRinging() {
+        sendEvent(.audioRingingStop, to: conversation?.ourMemberRecord)
     }
 
     // MARK:
@@ -179,8 +201,8 @@ public class Audio: NSObject {
 
         connection.setRemoteSDP(answer.sdp) {
             switch $0 {
-            case .success: self.state.value = .connected
-            case .failed: self.state.value = .failed
+            case .success: self.state.subject.value = .connected
+            case .failed: self.state.subject.value = .failed
             }
         }
     }
@@ -200,10 +222,10 @@ public class Audio: NSObject {
             Log.info(.rtc, "Created RTC:new \(rtc.id)")
             
             self.id = rtc.id
-            self.state.value = .connected
+            self.state.subject.value = .connected
         }, onError: { error in
             Log.info(.rtc, "Failed to create RTC:new with error: \(error)")
-            self.state.value = .failed
+            self.state.subject.value = .failed
         }).disposed(by: disposeBag)
     }
 
@@ -231,18 +253,22 @@ public class Audio: NSObject {
 
     private func mute(_ mute: Bool) {
         connection.peerConnection.localStreams.forEach { media in
-            media.audioTracks.forEach { $0.isEnabled = mute }
+            media.audioTracks.forEach {
+                if $0.isEnabled != !mute {
+                    $0.isEnabled = !mute
+                }
+            }
         }
-
+        
         sendEvent(mute ? .audioMute : .audioUnmute, to: conversation?.ourMemberRecord)
 
-        Log.info(.rtc, "Audio state: \(mute ? "Muted" : "Unmuted")")
+        Log.info(.rtc, "Media state: \(mute ? "Muted" : "Unmuted")")
     }
 
     private func earmuff(_ earmuff: Bool) {
         sendEvent(earmuff ? .audioEarmuffed : .audioUnearmuff, to: conversation?.ourMemberRecord)
 
-        Log.info(.rtc, "Audio state: \(earmuff ? "Earmuffed" : "Unearmuff")")
+        Log.info(.rtc, "Media state: \(earmuff ? "Earmuffed" : "Unearmuff")")
     }
 
     private func hold(_ hold: Bool) {
@@ -258,6 +284,6 @@ public class Audio: NSObject {
 // Mark: Compare
 
 /// :nodoc:
-public func ==(lhs: Audio, rhs: Audio) -> Bool {
+public func ==(lhs: Media, rhs: Media) -> Bool {
     return lhs.hashValue == rhs.hashValue && lhs.hashValue != 0 && rhs.hashValue != 0
 }

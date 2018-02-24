@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// URL Configuration for CAPI
+/// URL Configuration
 @objc
 internal class SessionConfiguration: NSObject {
     
@@ -18,7 +18,7 @@ internal class SessionConfiguration: NSObject {
     // MARK:
     // MARK: Default
 
-    /// Default configuration for CAPI
+    /// Default configuration
     internal static var `default`: URLSessionConfiguration { return SessionConfiguration().configuration }
     
     // MARK:

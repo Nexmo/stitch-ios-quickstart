@@ -16,12 +16,15 @@ public struct IPS {
     
     /// Types of images sent from server
     ///
-    /// - original: original
-    /// - medium: medium
-    /// - thumbnail: thumbnail
+    /// - original: original image
+    /// - medium: medium image
+    /// - thumbnail: thumbnail image
     public enum ImageType: String, Equatable, CodingKey {
+        /// original image
         case original
+        /// medium image
         case medium
+        /// thumbnail image
         case thumbnail
     }
 }

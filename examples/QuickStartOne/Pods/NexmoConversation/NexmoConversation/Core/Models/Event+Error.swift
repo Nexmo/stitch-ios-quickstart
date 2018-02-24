@@ -18,9 +18,9 @@ internal extension Event {
         case code
     }
     
-    /// Capi event errors
+    /// Event errors
     ///
-    /// - eventNotFound: event not found on capi
+    /// - eventNotFound: event not found
     /// - eventDeleted: event has been marked as deleted
     /// - unknown: other error not hard-coded in SDK
     internal enum Errors: String, Error {

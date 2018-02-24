@@ -13,9 +13,6 @@ public extension PushNotificationController {
     // MARK:
     // MARK: User (Objective-C compatibility support)
     
-    //public func update(deviceToken: Data, deviceId: String?) -> Observable<Bool> {
-    //public func removeDeviceToken(deviceId: String?) -> Observable<Bool> {
-    
     /// Add device token
     ///
     /// - Parameters:
@@ -26,9 +23,9 @@ public extension PushNotificationController {
     @objc
     public func update(deviceToken: Data, deviceId: String?, _ onSuccess: @escaping (Bool) -> Void, onFailure: ((Error) -> Void)?) {
         update(deviceToken: deviceToken, deviceId: deviceId).subscribe(
-            onNext: onSuccess,
+            onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
     
     /// Remove device token with your given device iD
@@ -40,8 +37,8 @@ public extension PushNotificationController {
     @objc
     public func removeDeviceToken(deviceId: String?, _ onSuccess: @escaping (Bool) -> Void, onFailure: ((Error) -> Void)?) {
         removeDeviceToken(deviceId: deviceId).subscribe(
-            onNext: onSuccess,
+            onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
 }

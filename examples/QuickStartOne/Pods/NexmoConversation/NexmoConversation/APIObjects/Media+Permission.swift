@@ -1,5 +1,5 @@
 //
-//  Audio+Permission.swift
+//  Media+Permission.swift
 //  NexmoConversation
 //
 //  Created by Shams Ahmed on 13/10/17.
@@ -9,7 +9,7 @@
 import Foundation
 import AVFoundation
 
-extension Audio {
+extension Media {
     
     // MARK:
     // MARK: Privacy

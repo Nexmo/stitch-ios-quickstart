@@ -29,10 +29,15 @@ public struct MemberModel: Decodable {
     /// - joined: Member is joined to this conversation
     /// - invited: Member has been invited to this conversation
     /// - left: Member has left this conversation
+    /// - unknown: Unknown state, must be a force resync
     public enum State: String, EnumCollection {
+        /// Member is joined to this conversation
         case joined
+        /// Member has been invited to this conversation
         case invited
+        /// Member has left this conversation
         case left
+        /// Unknown state, must be a force resync
         case unknown
         
         // MARK:
@@ -62,8 +67,10 @@ public struct MemberModel: Decodable {
     ///
     /// - invite: member requested to be invited
     /// - join: member requested to join
-    public enum Action: String, Equatable {
+    internal enum Action: String, Equatable {
+        /// member requested to be invited
         case invite
+        /// member requested to join
         case join
     }
     
@@ -75,10 +82,15 @@ public struct MemberModel: Decodable {
     /// - SMS: sms
     /// - OTT: ott
     public enum Channel: String, Equatable, Decodable {
+        /// SDK
         case app
+        /// sip
         case sip
+        /// pstn
         case pstn
+        /// sms
         case sms
+        /// ott
         case ott
     }
     
@@ -207,7 +219,7 @@ public func ==(lhs: MemberModel.State, rhs: MemberModel.State) -> Bool {
 
 /// Compare Action
 /// :nodoc:
-public func ==(lhs: MemberModel.Action, rhs: MemberModel.Action) -> Bool {
+internal func ==(lhs: MemberModel.Action, rhs: MemberModel.Action) -> Bool {
     switch (lhs, rhs) {
     case (.invite, .invite): return true
     case (.join, .join): return true

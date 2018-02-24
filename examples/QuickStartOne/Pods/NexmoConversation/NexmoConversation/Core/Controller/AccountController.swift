@@ -18,10 +18,12 @@ public class AccountController: NSObject {
     
     /// Account state
     ///
-    /// - loggedOut: user is not logged into capi
-    /// - loggedIn: user has been logged into capi, parameter includes session model
+    /// - loggedOut: user is logged out
+    /// - loggedIn: user has been logged in, @parameter includes session model
     public enum State: Equatable {
+        /// user is logged out
         case loggedOut
+        /// user has been logged in, @parameter includes session model
         case loggedIn(Session)
     }
     
@@ -96,7 +98,7 @@ public class AccountController: NSObject {
     // MARK: Properties - Observable
 
     /// User login state
-    public let state = Variable<State>(.loggedOut)
+    public let state = MutableObservable(RxSwift.Variable<State>(.loggedOut))
 
     // MARK:
     // MARK: Initializers
@@ -123,12 +125,13 @@ public class AccountController: NSObject {
     /// - Parameters:
     ///   - uuid: user uuid
     /// - Returns: observable with User object result
-    public func user(with id: String) -> Observable<User> {
-        return Observable<User>.create { [weak self] observer in
+    public func user(with id: String) -> NexmoConversation.Observable<User> {
+        return RxSwift.Observable<User>.create { [weak self] observer in
             self?.networkController.accountService.user(
                 with: id,
                 success: { userModel in
                     let user = User(from: userModel)
+                    
                     observer.onNextWithCompleted(user)
             },
                 failure: { observer.onError($0) }
@@ -137,6 +140,7 @@ public class AccountController: NSObject {
             return Disposables.create()
         }
         .observeOnBackground()
+        .wrap
     }
 }
 

@@ -12,7 +12,6 @@ import Foundation
  This class provides a unique reference to a handler that has been added to an signal.
  It is used to later remove the handler.
  */
-@objc(NXMSignalReference)
 public class SignalReference: NSObject {
     
     // MARK:
@@ -60,6 +59,6 @@ public class SignalReference: NSObject {
     /// Remove this handler from its signal.
     @objc
     public func dispose() {
-        parentSignal?.removeHandler(self)
+        parentSignal?.removeSubscriber(self)
     }
 }

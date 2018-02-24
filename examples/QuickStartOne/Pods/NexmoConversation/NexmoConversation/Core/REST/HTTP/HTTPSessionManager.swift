@@ -30,14 +30,14 @@ internal class HTTPSessionManager: SessionManager {
     /// Common keys for http header
     ///
     /// - authorization: authorization token
-    /// - session: session id to help CAPI
+    /// - session: session id to help socket
     internal enum HeaderKeys: String {
         case authorization = "Authorization"
         case session = "X-Nexmo-SessionId"
     }
     
     internal let queue: DispatchQueue
-    internal let errorListener: Variable<NetworkErrorProtocol?> = Variable<NetworkErrorProtocol?>(nil)
+    internal let errorListener: RxSwift.Variable<NetworkErrorProtocol?> = RxSwift.Variable<NetworkErrorProtocol?>(nil)
     internal let reachabilityManager = ReachabilityManager()
     
     // MARK:

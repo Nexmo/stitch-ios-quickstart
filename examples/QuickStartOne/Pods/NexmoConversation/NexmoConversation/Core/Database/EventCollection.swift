@@ -26,12 +26,19 @@ public class EventCollection: NSObject, Collection {
     /// - beginBatchEditing: begin batch editing
     /// - endBatchEditing: end batch editing
     public enum Change {
+        /// reset all events
         case reset
+        /// inserted events at indexpath
         case inserts([IndexPath])
+        /// deleted events at indexpath
         case deletes([IndexPath])
+        /// updated events at indexpath
         case updates([IndexPath])
+        /// moved events from and to
         case move(IndexPath, IndexPath)
+        /// begin batch editing
         case beginBatchEditing
+        /// end batch editing
         case endBatchEditing
     }
     

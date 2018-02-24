@@ -53,7 +53,7 @@ internal class WebSocketLogger: SocketLogger {
         case Substring("Writing ws"): return
         case Substring("Parsing"): return
         case Substring("Decoded packet as"): return
-            case Substring("Handling event: error with data"): return
+        case Substring("Handling event: error with data"): return
         case Substring("Handling event: connect with data"): return
         case Substring("Handling event: disconnect with data"): return
         case Substring("Handling event: text:typing:off with data"): return
@@ -69,6 +69,16 @@ internal class WebSocketLogger: SocketLogger {
             printLog("Handling event: rtc:answer")
         case Substring("Handling event: reconnet with data"): return
         case Substring("Handling event: reconnetAttempt with data"): return
+        case Substring("Handling event: member:joined with data:"):
+            printLog("member:joined")
+        case Substring("Handling event: member:invited with data:"):
+            printLog("member:invited")
+        case Substring("Handling event: session:success with data:"):
+            printLog("Session:success")
+        case Substring("Handling event: member:media with data:"):
+            printLog("member:media")
+        case Substring("Handling event: sip:hangup with data:"):
+            printLog("sip:hangup")
         case "session:success": return
         case "Closing socket": return
         case "Disconnected": return

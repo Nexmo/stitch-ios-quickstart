@@ -49,7 +49,7 @@ internal extension ObservableType where E: Optionable {
     /// Takes a sequence of optional elements and returns a sequence of non-optional elements, filtering out any nil values.
     ///
     /// - Returns: An observable sequence of non-optional elements
-    internal func unwrap() -> Observable<E.WrappedType> {
+    internal func unwrap() -> RxSwift.Observable<E.WrappedType> {
         return self
             .filter { !$0.isEmpty() }
             .map { $0.unwrap() }
@@ -75,13 +75,13 @@ internal extension ObservableType where E: OptionalType {
     /// Unwraps and filters out `nil` elements.
     ///
     /// - Returns: `Observable` of source `Observable`'s elements, with `nil` elements filtered out.
-    internal func filterNil() -> Observable<E.Wrapped> {
-        return self.flatMap { element -> Observable<E.Wrapped> in
+    internal func filterNil() -> RxSwift.Observable<E.Wrapped> {
+        return self.flatMap { element -> RxSwift.Observable<E.Wrapped> in
             guard let value = element.value else {
-                return Observable<E.Wrapped>.empty()
+                return RxSwift.Observable<E.Wrapped>.empty()
             }
             
-            return Observable<E.Wrapped>.just(value)
+            return RxSwift.Observable<E.Wrapped>.just(value)
         }
     }
 }

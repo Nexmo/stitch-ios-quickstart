@@ -17,7 +17,7 @@ internal extension Data {
     internal var hexString: String {
         var tokenString = ""
         
-        enumerateBytes { (buffer, _, _) in
+        enumerateBytes { buffer, _, _ in
             let formattedString = buffer.map { String(format: "%02x", $0) }.joined()
             tokenString.append(formattedString)
         }

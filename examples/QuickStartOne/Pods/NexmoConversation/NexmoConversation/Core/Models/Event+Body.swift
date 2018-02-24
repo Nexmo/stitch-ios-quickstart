@@ -168,7 +168,7 @@ internal extension Event.Body {
         private enum CodingKeys: String, CodingKey {
             case cname
             case invitedBy = "invited_by"
-            case timestamp = "timestamp"
+            case timestamp
             case user
         }
         
@@ -276,7 +276,7 @@ internal extension Event.Body {
         internal init(from decoder: Decoder) throws {
             let allValues = try decoder.container(keyedBy: CodingKeys.self)
             let allStates = try allValues.decode([String: String].self, forKey: .timestamp)
-            let timestamps = allStates.reduce([:]) { (result, states) -> [MemberModel.State: Date] in
+            let timestamps = allStates.reduce([:]) { result, states -> [MemberModel.State: Date] in
                 guard let state = MemberModel.State(rawValue: states.key.lowercased()),
                     let date = DateFormatter.ISO8601?.date(from: states.value) else {
                     return result

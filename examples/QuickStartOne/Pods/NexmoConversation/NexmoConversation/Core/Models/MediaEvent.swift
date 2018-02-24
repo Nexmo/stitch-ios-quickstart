@@ -15,7 +15,7 @@ public class MediaEvent: EventBase {
     // MARK:
     // MARK: Properties
     
-    /// Audio enabled
+    /// Media enabled
     public internal(set) lazy var enabled: Bool = {
         guard let audio: Event.Body.Audio = try? self.data.rest.model() else { return false }
         

@@ -9,19 +9,19 @@
 import Foundation
 
 /// Request model
-public extension ConversationController {
+internal extension ConversationController {
 
     // MARK:
     // MARK: Model
 
     /// Join a conversation request
-    public struct JoinConversation {
+    internal struct JoinConversation {
         
         // MARK:
         // MARK: Properties
         
         /// user id
-        public let userId: String
+        internal let userId: String
         
         /// action to perform
         private let action = MemberModel.Action.join
@@ -30,13 +30,13 @@ public extension ConversationController {
         private let channel = ["type": MemberModel.Channel.app.rawValue]
         
         /// member whom want to join, can be nil value
-        public let memberId: String?
+        internal let memberId: String?
         
         // MARK:
         // MARK: Initializers
         
         /// Create model
-        public init(userId: String, memberId: String?=nil) {
+        internal init(userId: String, memberId: String?=nil) {
             self.userId = userId
             self.memberId = memberId
         }

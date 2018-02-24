@@ -21,7 +21,7 @@ public protocol NetworkErrorProtocol: Error {
     /// Network Request URL
     var requestURL: String? { get }
 
-    /// Status code of request or Error code from CAPI
+    /// Status code of request or Error code
     var code: Int? { get }
     
     /// Stacktrace
@@ -43,7 +43,7 @@ public struct NetworkError: NetworkErrorProtocol, Decodable {
     /// Network Request URL
     public var requestURL: String?
     
-    /// Status code of request or Error code from CAPI
+    /// Status code of request or Error code
     public var code: Int?
     
     /// Stacktrace

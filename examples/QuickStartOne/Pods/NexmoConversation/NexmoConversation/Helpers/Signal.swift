@@ -9,56 +9,24 @@
 
 import Foundation
 
-/**
- Base Signal class. This definition does not use generics, and can therefore be used
- by objective C code.
- */
-@objc(NXMSignalBase)
-public class SignalBase: NSObject {
+/// Base Signal class
+public class SignalBase {
     
     // MARK:
     // MARK: Handler
     
     /// Add listener
-    public func addHandler(_ target: AnyObject, selector: Selector) -> SignalReference {
+    internal func subscribe(_ target: AnyObject, selector: Selector) -> SignalReference {
         fatalError("This method must be overriden by the subclass")
     }
     
-    internal func removeHandler(_ ref: SignalReference) {
+    internal func removeSubscriber(_ ref: SignalReference) {
         fatalError("This method must be overriden by the subclass")
     }
 }
 
 /**
- The main signal class which uses generics to convey the parameter types of the signal. It is
- used liked this:
- 
-        let testSignal: Signal<(String, NSNumber)> = Signal()
- 
- Note that the signal parameters are passed in a tuple (ie. in brackets).
- 
- Two types of handler are supported: selector based and Swift functions, they are registered
- as follows:
- 
-        let ref1 = testSignal.addHandler(self, selector: #selector(AnObject.selHandler(_:p2:)))
-        let ref2 = testSignal.addHandler(self, handler: AnObject.swiftHandler)
- 
- The references that are returned can be used to later remove the handler using dispose(). A
- weak reference is kept for the target, so that if the lifecycle of the handler mirros that
- of the target, you don't need to call dispose(). This is useful in UI code which doesn't
- have a "destructor". So you only need to remember the references if you want to dictate
- when to remove the handler. If you don't care, you don't have to remember the reference and
- the garbage collector will take care of everything.
- 
- To immediately remove a handler, call dispose() on the reference from addHandler():
- 
-        ref1.dispose()
-        ref2.dispose()
- 
- To raise/trigger the signal call emit, passing the parameters in a tuple:
- 
-        testSignal.emit(("Foo", 3))
- 
+ The main signal class which uses generics to convey the parameter types of the signal
  */
 public class Signal<T>: SignalBase {
     
@@ -71,10 +39,10 @@ public class Signal<T>: SignalBase {
     private var closures = [SignalReference: SignalClosureWrapper]()
     
     /// Current value of signal
-    public internal(set) var value: T?
+    internal var value: T?
     
     // MARK:
-    // MARK: Handler
+    // MARK: Subscribe
     
     /**
      Add a "selector" handler.
@@ -84,8 +52,8 @@ public class Signal<T>: SignalBase {
      
      - returns: A reference that can be used to remove the handler.
      */
-    @discardableResult public override func addHandler(_ target: AnyObject, selector: Selector) -> SignalReference {
-        fatalError() // Interop with ObjC is not currently working. The reflection in emit() cannot cope with all the types it can encounter.
+    @discardableResult internal override func subscribe(_ target: AnyObject, selector: Selector) -> SignalReference {
+        fatalError("implement logic in concrete class") // Interop with ObjC is not currently working. The reflection in emit() cannot cope with all the types it can encounter.
         
         /* Add the handler. */
 //        let ref = SignalHandlerRef(parent: self)
@@ -102,7 +70,7 @@ public class Signal<T>: SignalBase {
      
      - returns: A reference that can be used to remove the handler.
      */
-    @discardableResult public func addHandler<U: AnyObject>(_ target: U, handler: @escaping (U) -> (T) -> Void) -> SignalReference {
+    @discardableResult internal func subscribe<U: AnyObject>(_ target: U, handler: @escaping (U) -> (T) -> Void) -> SignalReference {
         /* Add the handler. */
         let ref = SignalReference(parent: self)
         let wrapper = SignalHandlerContainer(onUIThread: Thread.isMainThread, target: target, handler: handler)
@@ -118,9 +86,10 @@ public class Signal<T>: SignalBase {
      
      - returns: A reference that can be used to remove the handler.
      */
-    @discardableResult public func addHandler(_ closure: @escaping (T) -> Void) -> SignalReference {
+    @discardableResult public func subscribe(onSuccess: ((T) -> Void)?=nil, onError: ((Error) -> Void)?=nil) -> SignalReference {
         /* Add the handler. */
         let ref = SignalReference(parent: self)
+        let closure: ((T) -> Void) = onSuccess ?? { _ in }
         let wrapper = SignalClosureContainer(onUIThread: Thread.isMainThread, closure: closure)
         closures.updateValue(wrapper, forKey: ref)
         
@@ -130,9 +99,9 @@ public class Signal<T>: SignalBase {
     /**
      Remove this handler from signal.
      
-     - parameter ref: The reference returned by the original call to addHandler().
+     - parameter ref: The reference returned by the original call to subscribe().
      */
-    public override func removeHandler(_ ref: SignalReference) {
+    public override func removeSubscriber(_ ref: SignalReference) {
         selectors.removeValue(forKey: ref)
         handlers.removeValue(forKey: ref)
         closures.removeValue(forKey: ref)

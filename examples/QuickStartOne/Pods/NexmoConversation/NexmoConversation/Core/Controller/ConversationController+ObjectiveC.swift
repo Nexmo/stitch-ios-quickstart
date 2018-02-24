@@ -29,14 +29,12 @@ public extension ConversationController {
     ///   - join: userid of the user wants to join
     ///   - onSuccess: conversation created in backend successfully, and conversation model object which was persisted in the local database is returned
     ///   - onFailure: error
-    ///   - onCompleted: conversation created in backend successfully, no conversation model object returned as not persisted in local database
     @objc
     public func new(with name: String, shouldJoin: Bool, _ onSuccess: @escaping (Conversation) -> Void, onFailure: ((Error) -> Void)?, onComplete: @escaping () -> Void) {
         new(name, withJoin: shouldJoin).subscribe(
-            onNext: onSuccess,
-            onError: onFailure,
-            onCompleted: onComplete
-        ).disposed(by: disposeBag)
+            onSuccess: onSuccess,
+            onError: onFailure
+        )
     }
     
     // MARK:
@@ -51,9 +49,9 @@ public extension ConversationController {
     @objc
     public func conversation(with id: String, _ onSuccess: @escaping (Conversation) -> Void, onFailure: ((Error) -> Void)?) {
         conversation(with: id).subscribe(
-            onNext: onSuccess,
+            onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
 
     /// Fetch all conversations
@@ -64,9 +62,9 @@ public extension ConversationController {
     @objc
     public func all(_ onSuccess: @escaping ([[String: String]]) -> Void, onFailure: ((Error) -> Void)?) {
         all().subscribe(
-            onNext: { conversations in onSuccess(conversations.map { ["name": $0.name, "uuid": $0.uuid] }) },
+            onSuccess: { conversations in onSuccess(conversations.map { ["name": $0.name, "uuid": $0.uuid] }) },
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
     
     /// Fetch all users conversations
@@ -78,9 +76,9 @@ public extension ConversationController {
     @objc
     public func all(with userId: String, _ onSuccess: @escaping ([ConversationPreviewModel]) -> Void, onFailure: ((Error) -> Void)?) {
         all(with: userId).subscribe(
-            onNext: onSuccess,
+            onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
     
     // MARK:

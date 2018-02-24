@@ -26,7 +26,7 @@ internal struct DownloadQueue: Queue {
     }
 
     /// State of queue
-    internal var state: Variable<State> = Variable<State>(.inactive)
+    internal var state: RxSwift.Variable<State> = RxSwift.Variable<State>(.inactive)
 
     internal static var maximumParallelTasks: Int { return 3 }
     internal static var maximumRetries: Int { return 3 }

@@ -66,7 +66,7 @@ internal extension JSONDecoder {
     
     private func isDeletedObject(_ object: [String: Any]) -> Bool {
         guard let data = try? JSONSerialization.data(withJSONObject: object),
-            let _ = try? decode(Event.Body.Deleted.self, from: data) else {
+            (try? decode(Event.Body.Deleted.self, from: data)) != nil else {
             return false
         }
         

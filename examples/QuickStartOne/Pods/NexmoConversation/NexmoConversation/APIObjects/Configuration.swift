@@ -38,9 +38,13 @@ public struct Configuration {
     /// - `warning`: Output logs for warning and errors
     /// - error: Output logs for only errors
     public enum LogLevel {
+        /// Silent all logs from SDK
         case none
+        /// Output logs for information, warning and errors
         case info
+        /// Output logs for warning and errors
         case warning
+        /// Output logs for only errors
         case error
     }
 

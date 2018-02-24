@@ -12,6 +12,9 @@ import RxSwift
 /// Collection of conversations
 public class ConversationCollection: NexmoConversation.LazyCollection<Conversation> {
 
+    // MARK:
+    // MARK: Typealias
+    
     /// Type of change 
     public typealias T = Change<Conversation, Reason>
 
@@ -24,8 +27,11 @@ public class ConversationCollection: NexmoConversation.LazyCollection<Conversati
     /// - invitedBy: new conversation received from a member invite
     /// - modified: collection was modified during sync
     public enum Reason: Equatable {
+        /// new conversation from sync
         case new
+        /// new conversation received from a member invite
         case invitedBy(member: Member, withMedia: Conversation.Media?)
+        /// collection was modified during sync
         case modified
     }
 
@@ -55,12 +61,12 @@ public class ConversationCollection: NexmoConversation.LazyCollection<Conversati
     // MARK: Properties - Observable
     
     /// Notification
-    private let subject = Variable<T?>(nil)
+    private let subject = RxSwift.Variable<T?>(nil)
     
     /// Observe for changes to collection
-    public lazy var asObservable: Observable<T> = {
+    public lazy var asObservable: NexmoConversation.Observable<T> = {
         // SKIP: inital value is from db to cache whereas this observable for new values
-        return self.subject.asObservable().skip(1).unwrap().observeOnMainThread()
+        return self.subject.asObservable().skip(1).unwrap().observeOnMainThread().wrap
     }()
     
     // MARK:

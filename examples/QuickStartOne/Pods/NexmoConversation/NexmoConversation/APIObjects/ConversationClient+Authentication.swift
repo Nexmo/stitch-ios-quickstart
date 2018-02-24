@@ -20,25 +20,27 @@ public extension ConversationClient {
     /// - Parameter token: Token used to validate login
     /// - Returns: Response of login request
     @nonobjc
-    public func login(with token: String?=nil) -> Single<Void> {
-        return Single<Void>.create(subscribe: { [unowned self] observer in
+    public func login(with token: String?=nil) -> NexmoConversation.Observable<Void> {
+        return RxSwift.Observable<Void>.create { [unowned self] observer in
             self.login(with: token, { result in
                 switch result {
                 case .success:
                     self.setupAfterLogin()
-                    return observer(SingleEvent.success(()))
-                case .failed: return observer(SingleEvent.error(LoginResult.failed))
-                case .invalidToken: return observer(SingleEvent.error(LoginResult.invalidToken))
-                case .sessionInvalid: return observer(SingleEvent.error(LoginResult.sessionInvalid))
-                case .expiredToken: return observer(SingleEvent.error(LoginResult.expiredToken))
+                    
+                    return observer.onNext(())
+                case .failed: return observer.onError(LoginResult.failed)
+                case .invalidToken: return observer.onError(LoginResult.invalidToken)
+                case .sessionInvalid: return observer.onError(LoginResult.sessionInvalid)
+                case .expiredToken: return observer.onError(LoginResult.expiredToken)
                 }
             })
             
             return Disposables.create()
-        })
+        }
         .observeOn(ConcurrentDispatchQueueScheduler.utility)
         .subscribeOn(ConcurrentMainScheduler.instance)
         .observeOnMainThread()
+        .wrap
     }
     
     /// Log out user
@@ -58,7 +60,7 @@ public extension ConversationClient {
         
         conversation.conversations.refetch()
         account.token = nil
-        account.state.value = .loggedOut
+        account.state.subject.value = .loggedOut
         
         return true
     }

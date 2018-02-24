@@ -67,8 +67,8 @@ internal struct SendIndicationOperation: Operation {
         
         let sendEvent = SendEvent(conversationId: event.conversation.uuid, from: memberId, type: type, eventId: event.data.id)
 
-        return eventController.send(sendEvent, progress: { _ in }).catchError { error -> Observable<EventResponse?> in
-            guard let networkError = error as? NetworkError else { return Observable<EventResponse?>.error(error) }
+        return eventController.send(sendEvent, progress: { _ in }).catchError { error -> RxSwift.Observable<EventResponse?> in
+            guard let networkError = error as? NetworkError else { return RxSwift.Observable<EventResponse?>.error(error) }
 
             switch networkError.type {
             case NetworkError.Code.Text.notJoined.rawValue,
@@ -77,9 +77,9 @@ internal struct SendIndicationOperation: Operation {
                  NetworkError.Code.Event.notJoined.rawValue:
                 _ = try? self.database.task.delete(task)
 
-                return Observable<EventResponse?>.empty()
+                return RxSwift.Observable<EventResponse?>.empty()
             default:
-                return Observable<EventResponse?>.error(error)
+                return RxSwift.Observable<EventResponse?>.error(error)
             }
         }.map { _ -> T in
             _ = try? self.database.task.delete(task)

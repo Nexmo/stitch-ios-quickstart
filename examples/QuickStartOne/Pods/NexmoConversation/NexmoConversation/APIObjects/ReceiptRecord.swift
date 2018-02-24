@@ -15,7 +15,7 @@ public class ReceiptRecord: NSObject {
     // MARK:
     // MARK: Enum
     
-    // TODO: rename to State
+    // TODO: rename to Status
     /// Receipt State
     ///
     /// - sending: event is being sent
@@ -23,8 +23,11 @@ public class ReceiptRecord: NSObject {
     /// - seen: event has been seen
     @objc(NXMReceiptState)
     public enum ReceiptState: Int, Equatable {
+        /// event is being sent
         case sending
+        /// event has been delivered
         case delivered
+        /// event has been seen
         case seen
     }
     

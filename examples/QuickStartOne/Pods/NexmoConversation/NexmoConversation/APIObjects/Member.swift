@@ -51,7 +51,7 @@ public class Member: NSObject {
     // MARK: Properties - Observable
 
     /// Signal for when the member starts or stops typing.
-    public let typing = Variable<Bool>(false)
+    public let typing = MutableObservable(RxSwift.Variable<Bool>(false))
     
     // MARK:
     // MARK: NSObject
@@ -99,7 +99,7 @@ public class Member: NSObject {
         let events: SignalInvocations = SignalInvocations()
         
         /* Look for updates. */
-        SignalInvocations.compareField(current: &self.data.rest.state, new: new.rest.state, updatesMade: &updatesMade, signals: events, signal: { (_, new) in
+        SignalInvocations.compareField(current: &self.data.rest.state, new: new.rest.state, updatesMade: &updatesMade, signals: events, signal: { _, new in
             if new == MemberModel.State.joined {
                 self.conversation.memberJoined.emit(self)
             } else if new == MemberModel.State.left {
@@ -118,11 +118,11 @@ public class Member: NSObject {
     /// Kick member out of this conversation
     ///
     /// - returns: result of operation
-    public func kick() -> Single<Void> {
+    public func kick() -> NexmoConversation.Observable<Void> {
         return conversation.membershipController.kick(uuid, in: conversation.uuid)
             .observeOnMainThread()
             .map { _ in () }
-            .asSingle()
+            .wrap
     }
 }
 

@@ -54,7 +54,7 @@ internal struct Constants {
         /// Document name
         internal static let documentPath: String = {
             let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-
+            
             return (documents as NSString).appendingPathComponent(Constants.SDK.name)
         }()
     }

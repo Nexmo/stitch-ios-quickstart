@@ -19,9 +19,13 @@ internal class DBTask: Record {
     /// - indicateSeen: send seen
     /// - delete: send delete
     internal enum OperationType: Int32 {
+        /// send event
         case send
+        /// send delivered
         case indicateDelivered
+        /// send seen
         case indicateSeen
+        /// send delete
         case delete
     }
     
