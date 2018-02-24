@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		1078C1FF204171DE002F4F39 /* BuildAllTarget */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 1078C202204171DE002F4F39 /* Build configuration list for PBXAggregateTarget "BuildAllTarget" */;
+			buildPhases = (
+			);
+			dependencies = (
+				1078C204204171E9002F4F39 /* PBXTargetDependency */,
+				1078C206204171E9002F4F39 /* PBXTargetDependency */,
+			);
+			name = BuildAllTarget;
+			productName = BuildAllTarget;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		56180D61E037A9C05A66B927 /* Pods_QuickStartOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81B6CAEF177B653B31C0D0EB /* Pods_QuickStartOne.framework */; };
 		994C87511FDB3027009C3BCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994C87501FDB3027009C3BCE /* AppDelegate.swift */; };
@@ -22,6 +37,23 @@
 		99EBF5851F54F7D6001A03F2 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EBF5841F54F7D5001A03F2 /* ChatController.swift */; };
 		A0E2AC3C957A77E5E699973C /* Pods_QuickStartTwo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC36E4F063EA4042ADA891B /* Pods_QuickStartTwo.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1078C203204171E9002F4F39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99D373C11F54D48E0079AA61 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99D373C81F54D48E0079AA61;
+			remoteInfo = QuickStartOne;
+		};
+		1078C205204171E9002F4F39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99D373C11F54D48E0079AA61 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 994C874D1FDB3027009C3BCE;
+			remoteInfo = QuickStartTwo;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		14DFD9E4AABDCED0139C7834 /* Pods-QuickStartOne.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartOne.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartOne/Pods-QuickStartOne.debug.xcconfig"; sourceTree = "<group>"; };
@@ -189,6 +221,10 @@
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Unicorn Mobile, LLC";
 				TargetAttributes = {
+					1078C1FF204171DE002F4F39 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 					994C874D1FDB3027009C3BCE = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
@@ -214,6 +250,7 @@
 			targets = (
 				99D373C81F54D48E0079AA61 /* QuickStartOne */,
 				994C874D1FDB3027009C3BCE /* QuickStartTwo */,
+				1078C1FF204171DE002F4F39 /* BuildAllTarget */,
 			);
 		};
 /* End PBXProject section */
@@ -397,6 +434,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		1078C204204171E9002F4F39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 99D373C81F54D48E0079AA61 /* QuickStartOne */;
+			targetProxy = 1078C203204171E9002F4F39 /* PBXContainerItemProxy */;
+		};
+		1078C206204171E9002F4F39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 994C874D1FDB3027009C3BCE /* QuickStartTwo */;
+			targetProxy = 1078C205204171E9002F4F39 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		994C87541FDB3027009C3BCE /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -433,6 +483,22 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1078C200204171DE002F4F39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1078C201204171DE002F4F39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		994C875D1FDB3027009C3BCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4BAD5209EB8DB9A21D9CEE50 /* Pods-QuickStartTwo.debug.xcconfig */;
@@ -619,6 +685,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1078C202204171DE002F4F39 /* Build configuration list for PBXAggregateTarget "BuildAllTarget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1078C200204171DE002F4F39 /* Debug */,
+				1078C201204171DE002F4F39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		994C875F1FDB3027009C3BCE /* Build configuration list for PBXNativeTarget "QuickStartTwo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

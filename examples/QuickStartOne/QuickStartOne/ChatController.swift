@@ -35,11 +35,11 @@ class ChatController: UIViewController {
         super.viewDidLoad()
     
         // a handler for updating the textView with TextEvents
-        conversation?.events.newEventReceived.addHandler { event in
+        conversation?.events.newEventReceived.subscribe(onSuccess: { event in
             guard let event = event as? TextEvent, event.isCurrentlyBeingSent == false else { return }
             guard let text = event.text else { return }
 
             self.textView.insertText("\n \n \(text) \n \n")
-        }
+        })
     }
 }
