@@ -39,10 +39,18 @@ internal struct Database {
     
     /// Read/Write queue
     internal let queue: DatabaseQueue = {
-        // if it fails, will fail back to in-memory queue
-        guard let diskSpaceQueue = try? DatabaseQueue(path: Database.path) else { return DatabaseQueue() }
+        do {
+            // GRDB requires directory to exist before SQLite open connection
+            try FileManager.default.createDirectory(atPath: Constants.SDK.documentPath, withIntermediateDirectories: true)
+            
+            return try DatabaseQueue(path: Database.path)
+        } catch {
+            Log.info(.database, "Failed to open database")
+        }
         
-        return diskSpaceQueue
+        Log.info(.database, "Using in-memory for database failback")
+        
+        return DatabaseQueue()
     }()
 
     // MARK:

@@ -23,8 +23,11 @@ public class EventBase: NSObject {
     /// - membership: membership event
     @objc(NXMEventType)
     public enum EventType: Int {
+        /// Text event
         case text
+        /// Image event
         case image
+        /// membership event
         case membership
     }
     
@@ -99,7 +102,7 @@ public class EventBase: NSObject {
     
     /// :nodoc:
     public override var description: String {
-        return String(format: "\(type(of: self)): \(data.id) from: \(data.cid)")
+        return String(format: "\(type(of: self)): \(data.id) in: \(data.cid)")
     }
     
     // MARK:

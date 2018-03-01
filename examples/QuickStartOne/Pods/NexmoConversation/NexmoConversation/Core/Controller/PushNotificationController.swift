@@ -15,15 +15,47 @@ import UserNotifications
 public class PushNotificationController: NSObject {
     
     // MARK:
-    // MARK: Properties
+    // MARK: Typealias
+    
+    /// Payload from nexmo conversation
+    public typealias RemoteNotification = (payload: [String: Any], fetchCompletion: Any?)
+    
+    // MARK:
+    // MARK: Enum
+    
+    /// Push Notification State
+    ///
+    /// - unknown: unknown push notification state
+    /// - unregisteredForRemoteNotifications: unregistered for remote notification
+    /// - registeredWithDeviceToken: registered for notification
+    /// - registerForRemoteNotificationsFailed: registered for notification failed with error
+    /// - receivedRemoteNotification: received remote notification
+    public enum State: Equatable {
+        /// unknown push notification state
+        case unknown
+        /// unregistered for remote notification
+        case unregisteredForRemoteNotifications
+        /// registered for notification
+        case registeredWithDeviceToken(Data)
+        /// registered for notification failed with error
+        case registerForRemoteNotificationsFailed(Error)
+        /// received remote notification
+        case receivedRemoteNotification(payload: [AnyHashable: Any]?, fetchCompletion: Any?)
+    }
+    
+    // MARK:
+    // MARK: Properties - Observable
     
     /// Push notification state
-    internal var subject = Variable<PushNotificationController.State?>(nil)
+    internal var subject = RxSwift.Variable<PushNotificationController.State?>(nil)
     
     /// Push notification state observable
-    public var state: Observable<PushNotificationController.State> {
-        return subject.asObservable().unwrap().share()
+    public var state: NexmoConversation.Observable<PushNotificationController.State> {
+        return subject.asObservable().unwrap().share().wrap
     }
+    
+    // MARK:
+    // MARK: Properties
     
     /// Network controller
     private let networkController: NetworkController
@@ -110,10 +142,10 @@ public class PushNotificationController: NSObject {
     ///   - deviceId: unique device id i.e UIDevice.currentDevice.identifierForVendor?.uuidString or a custom id
     /// - Returns: result of updating device token
     @discardableResult
-    public func update(deviceToken: Data, deviceId: String?) -> Observable<Bool> {
-        guard let deviceId = deviceId else { return Observable<Bool>.just(false) }
+    public func update(deviceToken: Data, deviceId: String?) -> NexmoConversation.Observable<Bool> {
+        guard let deviceId = deviceId else { return RxSwift.Observable<Bool>.just(false).wrap }
         
-        return Observable<Bool>.create { observer -> Disposable in
+        return RxSwift.Observable<Bool>.create { observer -> Disposable in
             self.networkController.pushNotificationService.update(deviceToken: deviceToken, deviceId: deviceId, success: {
                 observer.onNextWithCompleted(true)
             }, failure: { error in
@@ -122,6 +154,7 @@ public class PushNotificationController: NSObject {
             
             return Disposables.create()
         }
+        .wrap
     }
     
     /// Remove device token with your given device iD
@@ -129,10 +162,10 @@ public class PushNotificationController: NSObject {
     /// - Parameters:
     ///   - deviceId: unique device id i.e UIDevice.currentDevice.identifierForVendor?.uuidString or a custom id
     @discardableResult
-    public func removeDeviceToken(deviceId: String?) -> Observable<Bool> {
-        guard let deviceId = deviceId else { return Observable<Bool>.just(false) }
+    public func removeDeviceToken(deviceId: String?) -> NexmoConversation.Observable<Bool> {
+        guard let deviceId = deviceId else { return RxSwift.Observable<Bool>.just(false).wrap }
 
-        return Observable<Bool>.create { observer -> Disposable in
+        return RxSwift.Observable<Bool>.create { observer -> Disposable in
             self.networkController.pushNotificationService.removeDeviceToken(deviceId: deviceId, success: {
                 observer.onNextWithCompleted(true)
             }, failure: { error in
@@ -141,6 +174,7 @@ public class PushNotificationController: NSObject {
             
             return Disposables.create()
         }
+        .wrap
     }
     
     // MARK:
@@ -154,5 +188,27 @@ public class PushNotificationController: NSObject {
     /// Unregister for remote notifications
     public func unregisteredForRemoteNotifications() {
         subject.value = .unregisteredForRemoteNotifications
+    }
+}
+
+/// Compare Push Notification States
+///
+/// - Parameters:
+///   - lhs: PushNotificationState
+///   - rhs: PushNotificationState
+/// - Returns: result
+/// :nodoc:
+public func ==(lhs: PushNotificationController.State, rhs: PushNotificationController.State) -> Bool {
+    switch (lhs, rhs) {
+    case (.unknown, .unknown): return true
+    case (.unregisteredForRemoteNotifications, .unregisteredForRemoteNotifications): return true
+    case (.registeredWithDeviceToken(_), .registeredWithDeviceToken(_)): return true
+    case (.registerForRemoteNotificationsFailed(_), .registerForRemoteNotificationsFailed(_)): return true
+    case (.receivedRemoteNotification(_, _), .receivedRemoteNotification(_, _)): return true
+    case (.unknown, _),
+         (.unregisteredForRemoteNotifications, _),
+         (.registeredWithDeviceToken, _),
+         (.registerForRemoteNotificationsFailed, _),
+         (.receivedRemoteNotification, _): return false
     }
 }

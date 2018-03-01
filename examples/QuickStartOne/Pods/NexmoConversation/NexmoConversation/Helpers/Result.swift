@@ -13,6 +13,8 @@ import Foundation
 /// - success: result with T object
 /// - failed: failed with error
 public enum Result<T> {
+    /// result with T object
     case success(T)
+    /// failed with error
     case failed(Error)
 }

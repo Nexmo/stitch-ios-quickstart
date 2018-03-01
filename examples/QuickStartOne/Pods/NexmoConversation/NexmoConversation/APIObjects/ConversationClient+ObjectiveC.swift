@@ -24,11 +24,17 @@ public extension ConversationClient {
     /// - synchronized: SDK is synchronized with all services and ready now.
     @objc(NXMStateObjc)
     public enum StateObjc: Int {
+        /// SDK is disconnected from all services and / or triggered on user logout, disconnection or as an initial, default, state.
         case disconnected
+        /// SDK is requesting permission to connect / reconnect.
         case connecting
+        /// SDK is connected to all services.
         case connected
+        /// SDK is not synchronized yet.
         case outOfSync
+        /// SDK is synchronizing with current progress state.
         case synchronizing
+        /// SDK is synchronized with all services and ready now.
         case synchronized
     }
 
@@ -40,7 +46,7 @@ public extension ConversationClient {
     /// - Parameter closure: to listen for new state
     public func stateObjc(_ closure: @escaping (StateObjc) -> Void) {
         // Skip: inital state is always disconnected
-        state.asDriver().asObservable().skip(1).subscribe(onNext: {
+        state.rx.skip(1).subscribe(onNext: {
             switch $0 {
             case .disconnected: closure(.disconnected)
             case .connecting: closure(.connecting)

@@ -62,7 +62,7 @@ internal struct SendEventOperation: Operation {
         }
 
         // fetch 
-        return Observable<Data>.create { observer -> Disposable in
+        return RxSwift.Observable<Data>.create { observer -> Disposable in
             self.eventController.storage.fileCache.get(id) { (object: Data?) in
                 guard let data = object.value else { return observer.onError(Errors.failedToProcessEvent) }
 
@@ -70,7 +70,7 @@ internal struct SendEventOperation: Operation {
             }
 
             return Disposables.create()
-        }.flatMap { data -> Observable<T> in
+        }.flatMap { data -> RxSwift.Observable<T> in
             let parameters: IPSService.UploadImageParameter = (
                 image: data,
                 size: (originalRatio: nil, mediumRatio: nil, thumbnailRatio: nil) // default values

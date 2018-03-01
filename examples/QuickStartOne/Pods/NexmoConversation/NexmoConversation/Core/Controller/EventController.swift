@@ -46,8 +46,8 @@ internal class EventController: NSObject {
     /// - model: event model
     /// - progress: progress of sending a event
     /// - Returns: observable with event result
-    internal func send(_ event: SendEvent, progress: @escaping (Request) -> Void) -> Observable<EventResponse?> {
-        return Observable<EventResponse?>.create { observer -> Disposable in
+    internal func send(_ event: SendEvent, progress: @escaping (Request) -> Void) -> RxSwift.Observable<EventResponse?> {
+        return RxSwift.Observable<EventResponse?>.create { observer -> Disposable in
             let request = self.networkController.eventService.send(event: event, success: { response in
                 observer.onNextWithCompleted(response)
             }, failure: { error in
@@ -73,8 +73,8 @@ internal class EventController: NSObject {
                        conversationId: String,
                        fromId: String,
                        tid: String,
-                       progress: @escaping (Request) -> Void) -> Observable<EventResponse?> {
-        return Observable<EventResponse?>.create { observer -> Disposable in
+                       progress: @escaping (Request) -> Void) -> RxSwift.Observable<EventResponse?> {
+        return RxSwift.Observable<EventResponse?>.create { observer -> Disposable in
             self.networkController.eventService.upload(
                 image: image,
                 conversationId: conversationId,
@@ -100,8 +100,8 @@ internal class EventController: NSObject {
     /// - for: conversation uuid
     /// - with: range start/end
     /// - Returns: observable with list of events
-    internal func retrieve(for uuid: String, with range: Range<Int> = Range<Int>(uncheckedBounds: (lower: 0, upper: 20))) -> Observable<[Event]> {
-        return Observable<[Event]>.create { observer -> Disposable in
+    internal func retrieve(for uuid: String, with range: Range<Int> = Range<Int>(uncheckedBounds: (lower: 0, upper: 20))) -> RxSwift.Observable<[Event]> {
+        return RxSwift.Observable<[Event]>.create { observer -> Disposable in
             self.networkController.eventService.retrieve(for: uuid, with: range, success: { response in
                 observer.onNextWithCompleted(response)
             }, failure: { error in
@@ -123,8 +123,8 @@ internal class EventController: NSObject {
     ///   - memberId: memberId
     ///   - uuid: uuid
     /// - Returns: Observable
-    internal func delete(_ eventId: String, for memberId: String, in uuid: String) -> Observable<Event> {
-        return Observable<Event>.create { observer -> Disposable in
+    internal func delete(_ eventId: String, for memberId: String, in uuid: String) -> RxSwift.Observable<Event> {
+        return RxSwift.Observable<Event>.create { observer -> Disposable in
             self.networkController.eventService.delete(eventId, for: memberId, in: uuid, success: { event in
                 observer.onNextWithCompleted(event)
             }, failure: { error in

@@ -14,14 +14,14 @@ import RxSwift
 internal class RTCDevice {
 
     /// Observable for when device interrupe audio
-    internal lazy var audioInterruption: Observable<Notification> = {
+    internal lazy var audioInterruption: RxSwift.Observable<Notification> = {
         return NotificationCenter.default.rx
             .notification(.AVAudioSessionInterruption)
             .do(onNext: { _ in Log.info(.rtc, "interruption") })
     }()
 
     /// Observable for when input/output changes
-    internal lazy var audioRouteChanged: Observable<AVAudioSessionRouteChangeReason> = {
+    internal lazy var audioRouteChanged: RxSwift.Observable<AVAudioSessionRouteChangeReason> = {
         return NotificationCenter.default.rx
             .notification(.AVAudioSessionRouteChange)
             .do(onNext: { notification in

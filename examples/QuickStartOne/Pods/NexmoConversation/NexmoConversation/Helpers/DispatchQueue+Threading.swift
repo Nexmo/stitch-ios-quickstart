@@ -20,7 +20,7 @@ internal extension DispatchQueue {
         
         guard let name = bundle.infoDictionary?[kCFBundleIdentifierKey as String] as? String,
             !name.isEmpty,
-            !Environment.inFatalErrorTesting else { fatalError() } // fine for testing purposes
+            !Environment.inFatalErrorTesting else { fatalError("in test mode") } // fine for testing purposes
         
         return DispatchQueue(label: "\(name).parsering", qos: .userInitiated)
     }
@@ -34,7 +34,7 @@ internal extension DispatchQueue {
 
         guard let name = bundle.infoDictionary?[kCFBundleIdentifierKey as String] as? String,
             !name.isEmpty,
-            !Environment.inFatalErrorTesting else { fatalError() } // fine for testing purposes
+            !Environment.inFatalErrorTesting else { fatalError("in test mode") } // fine for testing purposes
 
         return DispatchQueue(label: "\(name).io", qos: .utility)
     }

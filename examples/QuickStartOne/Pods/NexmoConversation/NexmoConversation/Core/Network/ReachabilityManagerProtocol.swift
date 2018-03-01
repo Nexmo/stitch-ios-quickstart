@@ -12,7 +12,7 @@ import RxSwift
 internal protocol ReachabilityManagerProtocol {
     
     /// State of network reachability
-    var state: Variable<ReachabilityManager.State> { get set }
+    var state: RxSwift.Variable<ReachabilityManager.State> { get set }
     
     func updateState(with newState: ReachabilityManager.State)
 }

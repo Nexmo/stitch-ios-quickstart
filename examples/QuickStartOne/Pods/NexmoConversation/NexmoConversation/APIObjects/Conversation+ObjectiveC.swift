@@ -30,7 +30,7 @@ public extension Conversation {
         leave().subscribe(
             onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
 
     // MARK:
@@ -46,7 +46,7 @@ public extension Conversation {
         join().subscribe(
             onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
 
     // MARK:
@@ -58,10 +58,12 @@ public extension Conversation {
     ///   - onSuccess: method called upon completion of inviting the conversation
     ///   - onFailure: method called upon failing to inviting conversation
     @objc
-    public func invite(username: String, userId: String?, withAudio audio: Bool, onSuccess: @escaping () -> Void, onFailure: @escaping (Error) -> Void) {
-        invite(username, userId: userId, with: audio ? .audio(muted: false, earmuffed: false) : nil).subscribe(
-            onSuccess: onSuccess,
-            onError: onFailure
-        ).disposed(by: disposeBag)
+    public func invite(username: String, userId: String?, withAudio audio: Bool, onSuccess: @escaping (()) -> Void, onFailure: @escaping (Error) -> Void) {
+        invite(username, userId: userId, with: audio ? .audio(muted: false, earmuffed: false) : nil)
+            .map { _ in () }
+            .subscribe(
+                onSuccess: onSuccess,
+                onError: onFailure
+            )
     }
 }

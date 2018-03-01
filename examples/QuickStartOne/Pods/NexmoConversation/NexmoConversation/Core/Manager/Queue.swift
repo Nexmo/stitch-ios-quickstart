@@ -15,7 +15,7 @@ internal protocol Queue {
     associatedtype QueueState
     
     /// State of queue
-    var state: Variable<QueueState> { get set }
+    var state: RxSwift.Variable<QueueState> { get set }
     
     static var maximumParallelTasks: Int { get }
     static var maximumRetries: Int { get }

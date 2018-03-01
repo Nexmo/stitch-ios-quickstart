@@ -34,8 +34,8 @@ internal class MembershipController: NSObject {
     /// - Parameter user: user id
     /// - Parameter for: conversation id
     /// - Returns: result
-    internal func invite(userId: String?=nil, username: String, for conversationId: String, with media: Conversation.Media?) -> Observable<Void> {
-        return Observable<Void>.create { observer in
+    internal func invite(userId: String?=nil, username: String, for conversationId: String, with media: Conversation.Media?=nil) -> RxSwift.Observable<Void?> {
+        return RxSwift.Observable<Void?>.create { observer in
             self.networkController.membershipService.invite(userId: userId, username: username, for: conversationId, with: media, success: { _ in
                 observer.onNextWithCompleted(())
             }, failure: { error in
@@ -52,8 +52,8 @@ internal class MembershipController: NSObject {
     /// - Parameter member: member id
     /// - Parameter in: conversation id
     /// - Returns: result
-    internal func kick(_ member: String, in conversation: String) -> Observable<Bool> {
-        return Observable<Bool>.create { observer in
+    internal func kick(_ member: String, in conversation: String) -> RxSwift.Observable<Bool> {
+        return RxSwift.Observable<Bool>.create { observer in
             self.networkController.membershipService.kick(member, in: conversation, success: { result in
                 observer.onNextWithCompleted(result)
             }, failure: { error in
@@ -70,8 +70,8 @@ internal class MembershipController: NSObject {
     /// - Parameter for: member id
     /// - Parameter in: conversation Id
     /// - Returns: result with model or error
-    internal func details(for member: String, in conversationId: String) -> Observable<MemberModel> {
-        return Observable<MemberModel>.create { observer in
+    internal func details(for member: String, in conversationId: String) -> RxSwift.Observable<MemberModel> {
+        return RxSwift.Observable<MemberModel>.create { observer in
             self.networkController.membershipService.details(for: member, in: conversationId, success: { model in
                 observer.onNextWithCompleted(model)
             }, failure: { error in

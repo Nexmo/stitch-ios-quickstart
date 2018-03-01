@@ -19,7 +19,7 @@ public class MemberCollection: NexmoConversation.LazyCollection<Member> {
     private let conversationUuid: String
 
     /// list of all users
-    public var allUsers: [User] {
+    public var users: [User] {
         defer { mutex.unlock() }
 
         mutex.lock()

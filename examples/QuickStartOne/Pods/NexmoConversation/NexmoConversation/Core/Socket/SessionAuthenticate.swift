@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Authenticate to CAPI
+/// Authenticating
 internal struct SessionAuthenticate {
 
     /// Device type

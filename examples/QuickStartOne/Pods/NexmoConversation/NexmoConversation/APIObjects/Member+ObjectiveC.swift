@@ -24,6 +24,6 @@ public extension Member {
         kick().subscribe(
             onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
 }

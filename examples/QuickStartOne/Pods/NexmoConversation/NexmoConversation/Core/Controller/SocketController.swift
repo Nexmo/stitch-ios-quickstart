@@ -25,7 +25,7 @@ internal struct SocketController {
     // MARK:
     // MARK: Login
     
-    /// Make request to login to CAPI
+    /// Make request to login
     internal func login() {
         socketService.login()
     }

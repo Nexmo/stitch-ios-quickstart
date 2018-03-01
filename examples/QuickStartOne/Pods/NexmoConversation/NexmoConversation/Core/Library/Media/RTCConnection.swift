@@ -44,6 +44,9 @@ internal class RTCConnection: NSObject {
     /// Connection
     internal lazy var peerConnection: RTCPeerConnection = { return self.factory.connection(with: self) }()
 
+    /// Signaling state
+    internal var signalingState: RTCSignalingState = .stable
+    
     // MARK:
     // MARK: Initializers
 
@@ -57,22 +60,22 @@ internal class RTCConnection: NSObject {
     // MARK: Setup
 
     private func setup() {
-        connectionSetup()
-
         switch ConversationClient.configuration.logLevel {
         case .error: RTCSetMinDebugLogLevel(.error)
         case .warning: RTCSetMinDebugLogLevel(.error)
         case .info: RTCSetMinDebugLogLevel(.error)
         case .none: break
         }
+        
+        checkConnectionSetup()
     }
     
-    private func connectionSetup() {
+    private func checkConnectionSetup() {
         // start connection
-        guard peerConnection.signalingState == .closed else { return }
+        guard signalingState == .closed else { return }
 
-        peerConnection.close()
-
+        close()
+        
         peerConnection = factory.connection(with: self)
     }
 
@@ -83,7 +86,7 @@ internal class RTCConnection: NSObject {
     internal func setLocalSDP(_ completion: @escaping ((LocalSDPResult) -> Void)) {
         Log.info(.rtc, "Creating local SDP")
         
-        connectionSetup()
+        checkConnectionSetup()
         
         localSDPCompletion = completion
         
@@ -142,6 +145,7 @@ internal class RTCConnection: NSObject {
         peerConnection.stopRtcEventLog()
         peerConnection.close()
         peerConnection.delegate = nil
+        
         iceCandidates.removeAll()
     }
 }

@@ -17,6 +17,8 @@ extension RTCConnection: RTCPeerConnectionDelegate {
 
     /** Called when the SignalingState changed. */
     internal func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
+        signalingState = stateChanged
+        
         let state: String
 
         switch stateChanged {

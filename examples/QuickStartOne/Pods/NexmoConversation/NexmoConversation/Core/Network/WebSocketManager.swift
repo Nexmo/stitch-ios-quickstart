@@ -19,8 +19,8 @@ internal class WebSocketManager {
     ///
     /// - notConnected: socket not connected
     /// - disconnected: socket has been disconnected
-    /// - connecting: connecting to capi socket
-    /// - connected: connected to capi with token
+    /// - connecting: connecting to socket
+    /// - connected: connected to with token
     internal enum State: Equatable {
         
         /// Status reason
@@ -76,7 +76,7 @@ internal class WebSocketManager {
     private lazy var websocket: SocketIOClient = { return self.manager.defaultSocket }()
 
     /// An event to indicate our socket status.
-    internal let state: Variable<State> = Variable<State>(.notConnected(.unknown([])))
+    internal let state: RxSwift.Variable<State> = RxSwift.Variable<State>(.notConnected(.unknown([])))
     
     /// Processing events queue
     internal let queue: DispatchQueue
@@ -108,7 +108,7 @@ internal class WebSocketManager {
     
     /// Subscribe to a event
     internal func on(_ event: String, _ listener: @escaping ([Any]) -> Void) {
-        websocket.on(event) { (data, _) in listener(data) }
+        websocket.on(event) { data, _ in listener(data) }
     }
 
     /// Subscribe to all events

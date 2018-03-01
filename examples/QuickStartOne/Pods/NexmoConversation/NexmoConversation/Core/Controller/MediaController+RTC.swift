@@ -1,5 +1,5 @@
 //
-//  RTCController+RTC.swift
+//  MediaController+RTC.swift
 //  NexmoConversation
 //
 //  Created by Shams Ahmed on 30/10/2017.
@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-internal extension RTCController {
+internal extension MediaController {
 
     // MARK:
     // MARK: RTC

@@ -61,39 +61,78 @@ public class Event: NSObject {
     /// - audioMute: audio mute
     /// - audioEarmuffed: audio earmuffed
     /// - audioSpeakingOn: audio speaking on
+    /// - sipHangUp: media hangup from member
+    /// - audioRingingStart: start ringing event
+    /// - audioRingingStop: stop ringing event
     public enum EventType: String, Equatable {
+        /// invited
         case memberInvited = "member:invited"
+        /// joined
         case memberJoined = "member:joined"
+        /// lefted
         case memberLeft = "member:left"
+        /// is typing
         case textTypingOn = "text:typing:on"
+        /// is not typing
         case textTypingOff = "text:typing:off"
+        /// deleted event
         case eventDelete = "event:delete"
+        /// text
         case text = "text"
+        /// text delivered
         case textDelivered = "text:delivered"
+        /// text seen
         case textSeen = "text:seen"
+        /// image
         case image = "image"
+        /// image delivered
         case imageDelivered = "image:delivered"
+        /// image seen
         case imageSeen = "image:seen"
+        /// new session
         case rtcNew = "rtc:new"
+        /// offer model
         case rtcOffer = "rtc:offer"
+        /// ICE model
         case rtcIce = "rtc:ice"
+        /// answer model
         case rtcAnswer = "rtc:answer"
+        /// call terminated
         case rtcTerminate = "rtc:terminate"
+        /// member media
         case memberMedia = "member:media"
+        /// audio play
         case audioPlay = "audio:play"
+        /// audio play done
         case audioPlayDone = "audio:play:done"
+        /// audio say
         case audioSay = "audio:say"
+        /// audio say done
         case audioSayDone = "audio:say:done"
+        /// audio dtmf
         case audioDtmf = "audio:dtmf"
+        /// audio record
         case audioRecord = "audio:record"
+        /// audio record done
         case audioRecordDone = "audio:record:done"
+        /// audio unmute
         case audioUnmute = "audio:mute:off"
+        /// audio unearmuff
         case audioUnearmuff = "audio:earmuff:off"
+        /// audio speaking off
         case audioSpeakingOff = "audio:speaking:off"
+        /// audio mute
         case audioMute = "audio:mute:on"
+        /// audio earmuffed
         case audioEarmuffed = "audio:earmuff:on"
+        /// audio speaking on
         case audioSpeakingOn = "audio:speaking:on"
+        /// media hangup from member
         case sipHangUp = "sip:hangup"
+        /// start ringing event
+        case audioRingingStart = "audio:ringing:start"
+        /// stop ringing event
+        case audioRingingStop = "audio:ringing:stop"
         
         // MARK:
         // MARK: Helper
@@ -132,6 +171,8 @@ public class Event: NSObject {
             case .audioEarmuffed: return 30
             case .audioSpeakingOn: return 31
             case .sipHangUp: return 32
+            case .audioRingingStart: return 33
+            case .audioRingingStop: return 34
             }
         }
         
@@ -169,6 +210,8 @@ public class Event: NSObject {
             case 30: return .audioEarmuffed
             case 31: return .audioSpeakingOn
             case 32: return .sipHangUp
+            case 33: return .audioRingingStart
+            case 34: return .audioRingingStop
             default: return nil
             }
         }
@@ -242,7 +285,7 @@ public class Event: NSObject {
         from = json[CodingKeys.from.rawValue] as? String
         to = json[CodingKeys.to.rawValue] as? String
 
-        // TODO: Anything that from conversation service is conversation_id, but if it goes via CAPI(socket) then it becomes cid.
+        // TODO: Anything that from socket is conversation_id, but if it goes via socket then it becomes cid.
         guard let cid = conversationUuid ?? (json[CodingKeys.cid.rawValue] ?? json[CodingKeys.conversationId.rawValue]) as? String else {
             throw JSONError.malformedJSON
         }
@@ -279,7 +322,7 @@ public class Event: NSObject {
     
     /// Create event object for delete event type only
     internal init(conversationUuid: String, type: EventType, eventId: String, memberId: String) {
-        // TODO: Anything that from conversation service is conversation_id, but if it goes via CAPI(socket) then it becomes cid.
+        // TODO: Anything that from socket is conversation_id, but if it goes via socket then it becomes cid.
         self.to = ""
         self.from = memberId
         self.cid = conversationUuid
@@ -348,6 +391,8 @@ public func ==(lhs: Event.EventType, rhs: Event.EventType) -> Bool {
     case (.audioEarmuffed, .audioEarmuffed): return true
     case (.audioSpeakingOn, .audioSpeakingOn): return true
     case (.sipHangUp, .sipHangUp): return true
+    case (.audioRingingStart, .audioRingingStart): return true
+    case (.audioRingingStop, .audioRingingStop): return true
     case (.imageSeen, _),
          (.memberInvited, _),
          (.memberJoined, _),
@@ -379,6 +424,8 @@ public func ==(lhs: Event.EventType, rhs: Event.EventType) -> Bool {
          (.audioMute, _),
          (.audioEarmuffed, _),
          (.audioSpeakingOn, _),
-         (.sipHangUp, _): return false
+         (.sipHangUp, _),
+         (.audioRingingStart, _),
+         (.audioRingingStop, _): return false
     }
 }

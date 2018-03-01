@@ -15,10 +15,18 @@ public class Conversation: NSObject {
     // MARK:
     // MARK: Enum
     
+    /// Reserved Prefixes, avoid using to stop strange behaviour
+    ///
+    /// - call: Intended for Calling 
+    internal enum ReservedPrefix: String {
+        case call = "CALL_"
+    }
+    
     /// Invitation media type
     ///
     /// - audio: audio invite, Default: @muted, @earmuffed set to false
     public enum Media {
+        /// audio invite, Default: @muted, @earmuffed set to false
         case audio(muted: Bool, earmuffed: Bool)
     }
     
@@ -26,10 +34,17 @@ public class Conversation: NSObject {
     ///
     /// - eventBodyIsEmpty: event could not be found in storage or database
     /// - cannotProcessRequest: cannot process request
+    /// - memberNotFound: member not found in cache/db
+    /// - usernameNotFound: username not found
     public enum Errors: Error, Equatable {
+        /// event could not be found in storage or database
         case eventBodyIsEmpty
+        /// cannot process request
         case cannotProcessRequest
+        /// member not found in cache/db
         case memberNotFound
+        /// username not found
+        case usernameNotFound
     }
     
     // MARK:
@@ -53,11 +68,11 @@ public class Conversation: NSObject {
      An array of all of the users in the conversation.
      
      ```
-     var users:[Users] = conversation.allUsers
+     var users:[Users] = conversation.members.users
      ```
      
      */
-    public var users: [User] { return members.allUsers }
+    public var users: [User] { return members.users }
     
     /// Last event number 
     public var lastSequence: Int { return data.rest.sequenceNumber }
@@ -117,13 +132,13 @@ public class Conversation: NSObject {
     
     private let eventQueue: EventQueue
     private let eventController: EventController
-    private let account: AccountController
+    internal let account: AccountController
     internal let controller: ConversationController
     internal let membershipController: MembershipController
     private let databaseManager: DatabaseManager
 
-    /// Audio 
-    public private(set) lazy var audio: Audio = { return Audio(with: self) }()
+    /// Media
+    public private(set) lazy var media: NexmoConversation.Media = { return NexmoConversation.Media(with: self) }()
 
     /// Rx
     internal let disposeBag = DisposeBag()
@@ -131,154 +146,19 @@ public class Conversation: NSObject {
     // MARK:
     // MARK: Properties - Observable
     
-    /**
-     
-     Signal for when new member is added to the conversation
-     
-     Can add handlers to respond to new members in this conversation
-     
-     Using selectors:
-     
-     ```
-     newMember.addHandler(self, selector: #selector(MyClass.handleNewMember))
-     ```
-     
-     Using swift handlers:
-     
-     ```
-     newMember.addHandler(self, handler: MyClass.handleNewMember)
-     ```
-     
-     Handler should have Conversation and Member as parameters:
-     
-     ```
-     func handleNewMember(conversation: Conversation, newMember: Member) {
-     
-     // Do something here
-     
-     }
-     ```
-     */
+    /// Signal for when new member is added to the conversation
     public let newMember = Signal<Member>()
     
-    /**
-     
-     Signal for when a member left the conversation
-     
-     Can add handlers to respond to a member leaving this conversation
-     
-     Using selectors:
-     
-     ```
-     memberLeft.addHandler(self, selector: #selector(MyClass.handleMemberLeft))
-     ```
-     
-     Using swift handlers:
-     
-     ```
-     memberLeft.addHandler(self, handler: MyClass.handleMemberLeft)
-     ```
-     
-     Handler should have Conversation and Member as parameters:
-     
-     ```
-     func handleMemberLeft(conversation: Conversation, member: Member) {
-     
-     // Do something here
-     
-     }
-     ```
-     */
+    /// Signal for when a member left the conversation
     public let memberLeft = Signal<Member>()
-
-    /**
-     
-     Signal for when a member joined the conversation
-     
-     Can add handlers to respond to a member joining this conversation
-     
-     Using selectors:
-     
-     ```
-     memberJoined.addHandler(self, selector: #selector(MyClass.handleMemberJoined))
-     ```
-     
-     Using swift handlers:
-     
-     ```
-     memberJoined.addHandler(self, handler: MyClass.handleMemberJoined)
-     ```
-     
-     Handler should have Conversation and Member as parameters:
-     
-     ```
-     func handleMemberJoined(conversation: Conversation, member: Member) {
-     
-     // Do something here
-     
-     }
-     ```
-     */
+    
+    /// Signal for when a member joined the conversation
     public let memberJoined = Signal<Member>()
 
-    /**
-     
-     Signal for when a member is invited to the conversation
-     
-     Can add handlers to respond to a member being invited to this conversation
-     
-     Using selectors:
-     
-     ```
-     memberInvited.addHandler(self, selector: #selector(MyClass.handleMemberInvited))
-     ```
-     
-     Using swift handlers:
-     
-     ```
-     memberInvited.addHandler(self, handler: MyClass.handleMemberInvited)
-     ```
-     
-     Handler should have Conversation and Member as parameters:
-     
-     ```
-     func handleMemberInvited(conversation: Conversation, member: Member) {
-     
-     // Do something here
-     
-     }
-     ```
-     */
+    /// Signal for when a member is invited to the conversation
     public let memberInvited = Signal<Member>()
   
-    /**
-     
-     Signal for when the members in this conversation change
-     
-     Can add handlers to respond to a change in the members in this conversation
-     
-     Using selectors:
-     
-     ```
-     membersChanged.addHandler(self, selector: #selector(MyClass.handleMembersChanged))
-     ```
-     
-     Using swift handlers:
-     
-     ```
-     membersChanged.addHandler(self, handler: MyClass.handleMembersChanged)
-     ```
-     
-     Handler should have Conversation as a parameter:
-     
-     ```
-     func handleMembersChanged(conversation: Conversation) {
-     
-     // Do something here
-     
-     }
-     ```
-     */
+    /// Signal for when the members in this conversation change
     public let membersChanged = Signal<Void>()
 
     // MARK:
@@ -423,23 +303,27 @@ public class Conversation: NSObject {
     /// Join this conversatation
     ///
     /// - returns: an operation which joins the user to the conversation
-    public func join() -> Single<Void> {
+    public func join() -> NexmoConversation.Observable<Void> {
         guard case .loggedIn(let session) = account.state.value else {
-            return Single<Void>.error(ConversationClient.Errors.userNotInCorrectState)
+            return RxSwift.Observable<Void>
+                .error(ConversationClient.Errors.userNotInCorrectState)
+                .wrap
         }
 
         return controller.join(ConversationController.JoinConversation(userId: session.userId, memberId: ourMemberRecord?.uuid), forUUID: uuid)
             .do(onError: { [weak self] _ in self?.members.refresh() })
-            .flatMap { _ in Observable<Void>.just(()) }
-            .asSingle()
+            .flatMap { _ in RxSwift.Observable<Void>.just(()) }
             .observeOnMainThread()
+            .wrap
     }
     
     /// Leave this conversation
     ///
     /// - returns: an operation which removes the user from the conversation and can be used to cancel the request
-    public func leave() -> Single<Void> {
-        guard let member = ourMemberRecord else { return Single.error(Errors.memberNotFound) }
+    public func leave() -> NexmoConversation.Observable<Void> {
+        guard let member = ourMemberRecord else {
+            return RxSwift.Observable.error(Errors.memberNotFound).wrap
+        }
             
         return member.kick()
     }
@@ -451,10 +335,10 @@ public class Conversation: NSObject {
     ///   - userId: userId optional
     ///   - media: media type i.e audio 
     /// - Returns: Completion of inviting a member to the conversation
-    public func invite(_ username: String, userId: String?=nil, with media: Media?=nil) -> Single<Void> {
+    public func invite(_ username: String, userId: String?=nil, with media: Media?=nil) -> NexmoConversation.Observable<Void?> {
         return membershipController.invite(userId: userId, username: username, for: uuid, with: media)
             .observeOnMainThread()
-            .asSingle()
+            .wrap
     }
     
     // MARK:
@@ -534,8 +418,10 @@ public func ==(lhs: Conversation.Errors, rhs: Conversation.Errors) -> Bool {
     case (.eventBodyIsEmpty, .eventBodyIsEmpty): return true
     case (.cannotProcessRequest, .cannotProcessRequest): return true
     case (.memberNotFound, .memberNotFound): return true
+    case (.usernameNotFound, .usernameNotFound): return true
     case (.memberNotFound, _),
          (.eventBodyIsEmpty, _),
+         (.usernameNotFound, _),
          (.cannotProcessRequest, _): return false
     }
 }

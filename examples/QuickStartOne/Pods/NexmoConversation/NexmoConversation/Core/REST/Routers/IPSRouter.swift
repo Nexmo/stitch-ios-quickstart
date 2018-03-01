@@ -54,8 +54,6 @@ internal enum IPSRouter: URLRequestConvertible {
             urlRequest = try JSONEncoding.default.encode(urlRequest)
         }
 
-        print(urlRequest)
-
         return urlRequest
     }
 }

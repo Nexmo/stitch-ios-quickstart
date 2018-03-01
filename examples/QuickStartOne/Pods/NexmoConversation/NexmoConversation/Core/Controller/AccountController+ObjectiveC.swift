@@ -22,8 +22,8 @@ public extension AccountController {
     @objc
     public func user(with id: String, _ onSuccess: @escaping (User) -> Void, onFailure: ((Error) -> Void)?) {
         user(with: id).subscribe(
-            onNext: onSuccess,
+            onSuccess: onSuccess,
             onError: onFailure
-        ).disposed(by: disposeBag)
+        )
     }
 }

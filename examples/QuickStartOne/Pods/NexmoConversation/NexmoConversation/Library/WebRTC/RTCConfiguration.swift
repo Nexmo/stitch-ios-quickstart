@@ -28,11 +28,9 @@ internal struct RTCConfiguration {
         
         let hostUrl = "turn:138.68.169.35:3478?transport=tcp"
         Log.info(.rtc, "Ice Server: \(hostUrl)")
-        Log.info(.rtc, "RTC config: \(configuration)")
         
         configuration.iceServers = [
             // RTCIceServer(urlStrings: [BaseURL.stun])
-            // TODO: TEST Turn servers for access within office
             RTCIceServer(urlStrings: [hostUrl], username: "foo2", credential: "bar")
         ]
 

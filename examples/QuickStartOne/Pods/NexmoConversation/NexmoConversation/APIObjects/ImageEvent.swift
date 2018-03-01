@@ -40,7 +40,7 @@ public class ImageEvent: TextEvent {
     }
 
     // MARK:
-    // MARK: Image
+    // MARK: Size
     
     /// File size of type
     ///
@@ -54,6 +54,9 @@ public class ImageEvent: TextEvent {
         
         return size
     }
+    
+    // MARK:
+    // MARK: Image
     
     /// Fetch image of type
     ///

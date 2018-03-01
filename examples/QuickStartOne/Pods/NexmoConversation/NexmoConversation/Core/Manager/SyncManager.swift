@@ -17,13 +17,34 @@ import RxSwift
 /// - users: processing users
 /// - receipt: processing receipts
 /// - tasks: sending all unsent request i.e events
-public enum SynchronizingState: String {
+public enum SynchronizingState: String, CustomDebugStringConvertible {
+    /// processing conversations
     case conversations
+    /// processing events
     case events
+    /// processing members
     case members
+    /// processing users
     case users
+    /// processing receipts
     case receipts
+    /// sending all unsent request i.e events
     case tasks
+    
+    // MARK:
+    // MARK: Debug
+    
+    /// :nodoc:
+    public var debugDescription: String {
+        switch self {
+        case .conversations: return "conversations"
+        case .events: return "events"
+        case .members: return "members"
+        case .users: return "users"
+        case .receipts: return "receipts"
+        case .tasks: return "tasks"
+        }
+    }
 }
 
 // TODO: rename to Syncer
@@ -44,7 +65,7 @@ internal class SyncManager {
     }
     
     /// State of queue
-    internal var state: Variable<State> = Variable<State>(.inactive)
+    internal var state: RxSwift.Variable<State> = RxSwift.Variable<State>(.inactive)
     
     private var workerThread: Thread? // Our worker thread.
 
@@ -56,7 +77,7 @@ internal class SyncManager {
     private let account: AccountController
     private let eventController: EventController
     private let membershipController: MembershipController
-    private let mediaController: MediaController
+    private let assetController: AssetController
     private let storage: Storage
     private let databaseManager: DatabaseManager
     private let eventQueue: EventQueue
@@ -81,14 +102,14 @@ internal class SyncManager {
                   storage: Storage,
                   databaseManager: DatabaseManager,
                   eventQueue: EventQueue,
-                  media: MediaController) {
+                  asset: AssetController) {
         self.conversationController = conversation
         self.account = account
         self.eventController = eventController
         self.databaseManager = databaseManager
         self.eventQueue = eventQueue
         self.membershipController = membershipController
-        self.mediaController = media
+        self.assetController = asset
         self.storage = storage
 
         setup()
@@ -135,7 +156,6 @@ internal class SyncManager {
             .subscribe(onNext: { type, json in
                 switch type {
                 case .rtcAnswer: self.processMedia(with: json)
-                case .rtcTerminate: break
                 case .memberMedia:
                     guard let model = try? Event(type: type, json: json) else { return }
                     
@@ -146,8 +166,7 @@ internal class SyncManager {
                     
                     conversation?.refreshEvents()
                     events.emitAll()
-                case .rtcNew, .rtcOffer, .rtcIce: self.processRTCMedia(with: json)
-                default: break
+                default: self.processRTCMedia(with: json)
                 }
             })
             .disposed(by: disposeBag)
@@ -177,7 +196,7 @@ internal class SyncManager {
             var hasFailedRequest = false
             
             /* Get the latest list of conversations, and see if there are any new ones, or if updates are available for existing ones. */
-            conversationController.all(with: session.userId).subscribe(onNext: { [weak self] conversations in
+            conversationController.all(with: session.userId).subscribe(onSuccess: { [weak self] conversations in
                 self?.process(conversations)
                 
                 semaphore.signal()
@@ -185,7 +204,7 @@ internal class SyncManager {
                 hasFailedRequest = true
                 
                 semaphore.signal()
-            }).disposed(by: disposeBag)
+            })
 
             if hasFailedRequest {
                 handleFatalError(error: HTTPSessionManager.Errors.requestFailed(error: ConversationClient.Errors.networking))
@@ -212,14 +231,14 @@ internal class SyncManager {
         var conversation: Conversation?
         var error: Error = ConversationClient.Errors.networking
 
-        conversationController.conversation(with: uuid).subscribe(onNext: { detailedConversation in
+        conversationController.conversation(with: uuid).subscribe(onSuccess: { detailedConversation in
             conversation = detailedConversation
             
             semaphore.signal()
         }, onError: { newError in
             error = newError
             semaphore.signal()
-        }).disposed(by: disposeBag)
+        })
         
         // start synchronous operation
         _ = semaphore.wait(timeout: .distantFuture)
@@ -240,7 +259,7 @@ internal class SyncManager {
         return detailedConversation
     }
     
-    private func syncConversation(for uuid: String, isExisiting: Bool, invitedBy: Event.Body.MemberInvite?=nil) throws {
+    private func syncConversation(for uuid: String, isExisiting: Bool, invitedBy: Event.Body.MemberInvite?=nil, withCompleteState completeState: Bool=false) throws {
         let events: SignalInvocations = SignalInvocations()
         
         /* For this conversation, fetch the latest detail over REST. */
@@ -325,6 +344,12 @@ internal class SyncManager {
             conversation.refreshEvents()
         }
         
+        // TODO: inactive state needs to be set manaully for new events,
+        // after refactoring of the sync manager make sure state are keep outside of the jobs
+        if completeState {
+            state.tryWithValue = .inactive
+        }
+        
         /* Now we've got this conversation and everything under it synced, we can emit all the events. */
         events.emitAll()
     }
@@ -400,7 +425,7 @@ internal class SyncManager {
                 
                 /* Save if updates were made. */
                 if updatesMade {
-                    try self.databaseManager.member.insert(existingMember.data)
+                    try self.databaseManager.member.update(existingMember.data)
                     
                     membershipUpdated = true
                 }
@@ -458,7 +483,7 @@ internal class SyncManager {
         /// have to always manually give a signal to continue otherwise it will wait forever
         let semaphore = DispatchSemaphore(value: 0)
         
-        account.user(with: uuid).subscribe(onNext: { user in
+        account.user(with: uuid).subscribe(onSuccess: { user in
             detail = user
             
             semaphore.signal()
@@ -466,7 +491,7 @@ internal class SyncManager {
             self.handleFatalError(error: HTTPSessionManager.Errors.requestFailed(error: error))
             
             semaphore.signal()
-        }).disposed(by: disposeBag)
+        })
         
         // start synchronous operation
         _ = semaphore.wait(timeout: .distantFuture)
@@ -518,7 +543,7 @@ internal class SyncManager {
                 })
             }
             
-            let download: Single<RawData> = mediaController.download(at: url.absoluteString)
+            let download: Single<RawData> = assetController.download(at: url.absoluteString)
             
             return download.do(onSuccess: { [weak self] object in
                 self?.storage.fileCache.set(key: id, value: object.value)
@@ -599,7 +624,7 @@ internal class SyncManager {
                     if newConversation.sequenceNumber > existing.data.rest.sequenceNumber {
                         existing.data.requiresSync = true
 
-                        try databaseManager.conversation.insert(existing.data)
+                        try databaseManager.conversation.update(existing.data)
                     }
                 } else {
                     previewModels.append(newConversation)
@@ -732,18 +757,20 @@ internal class SyncManager {
         } else {
             /* The conversation was not found, see if this is us being invited to a new conversation event. */
             if event.type == .memberInvited, let invitedBy: Event.Body.MemberInvite = try? event.model() {
-                try syncConversation(for: event.cid, isExisiting: false, invitedBy: invitedBy)
+                try syncConversation(for: event.cid, isExisiting: false, invitedBy: invitedBy, withCompleteState: true)
             /* See if it's us joining our own newly created conversation. */
             } else if event.type == .memberJoined {
-                try syncConversation(for: event.cid, isExisiting: false)
+                try syncConversation(for: event.cid, isExisiting: false, withCompleteState: true)
             }
         }
     }
     
     // TODO: decouple... should this one method do: create event model, save to database, do sync, process seen, cache, trigger delivered, notify observer
     private func processEvent(conversation: Conversation, event: Event, events: SignalInvocations) throws {
-        /* See if this new message is a sent message for one of our drafts. If so, replace the draft. */
+        // Dont save dupe events
+        guard databaseManager.event[with: event.id, in: event.cid] == nil else { return }
         
+        /* See if this new message is a sent message for one of our drafts. If so, replace the draft. */
         var draftEvent: DBEvent?
         
         if let tid = event.tid, let draft = databaseManager.event.getDraft(tid, in: conversation.uuid) {
@@ -805,7 +832,7 @@ internal class SyncManager {
         
         if event.type == .image {
             syncImage(event, for: .thumbnail)
-                .subscribe(onError: { _ in } )
+                .subscribe(onError: { _ in })
                 .disposed(by: disposeBag)
         }
 
@@ -833,11 +860,11 @@ internal class SyncManager {
         let isTyping = event.type == .textTypingOn
 
         events.add {
-            member.typing.value = isTyping
+            member.typing.subject.value = isTyping
         
             // update members typing status in conversation collection locally
             if let conversationMember = conversation.members.first(where: { $0.uuid == member.uuid }) {
-                conversationMember.typing.value = isTyping
+                conversationMember.typing.subject.value = isTyping
             }
         }
     }
@@ -858,7 +885,7 @@ internal class SyncManager {
             if let eventId = body["event_id"] as? Int {
                 return "\(eventId)"
             } else if let eventId = body["event_id"] as? String {
-                // FIXME: https://nexmoinc.atlassian.net/browse/CS-345
+                // FIXME: #CS-345
                 return eventId
             }
         
@@ -883,7 +910,7 @@ internal class SyncManager {
                 existing.date = event.timestamp
             }
 
-            try databaseManager.receipt.insert(existing.data)
+            try databaseManager.receipt.update(existing.data)
             
             events.add { textEvent.receiptRecordChanged.emit((existing)) }
         } else {
@@ -944,11 +971,21 @@ internal class SyncManager {
             events.add {
                 let invitedBy: Event.Body.MemberInvite? = try? event.model()
 
-                // for media invite, push it to invitation observable instead, since they an special member that are temporary
-                if invitedMember.user.isMe && invitedBy?.user.hasMediaSupport == true {
-                    let invitation = RTCController.Invitation(conversation: conversation, member: invitedMember, type: .audio)
-
-                    self.conversationController.media.invitationVariable.value = invitation
+                if invitedMember.user.isMe && invitedBy?.user.hasMediaSupport == true && self.state.value == .inactive {
+                    if conversation.name.hasPrefix(Conversation.ReservedPrefix.call.rawValue) {
+                        let call = CallFactory.call(
+                            with: conversation,
+                            from: invitedBy?.invitedBy,
+                            rtc: self.conversationController.media
+                        )
+                        
+                        self.conversationController.media.inboundCallsVariable.value = call
+                    } else {
+                        // for media invite, push it to invitation observable instead, since they an special member that are temporary
+                        let invitation = MediaController.Invitation(conversation: conversation, member: invitedMember, type: .audio)
+                        
+                        self.conversationController.media.invitationVariable.value = invitation
+                    }
                 } else {
                     conversation.memberInvited.emit(invitedMember)
                 }
@@ -980,7 +1017,7 @@ internal class SyncManager {
     }
     
     private func processRTCMedia(with json: [String: Any]) {
-        print("processRTCMedia(with json \(json)")
+        Log.info(.syncManager, "processRTCMedia(with json \(json)")
     }
     
     // MARK:
@@ -1000,8 +1037,8 @@ internal class SyncManager {
     // MARK:
     // MARK: Event
     
-    internal func receivedEvent(_ event: Event) -> Observable<(processing: Event, for: Conversation?)> {
-        return Observable<(processing: Event, for: Conversation?)>.create { observer in
+    internal func receivedEvent(_ event: Event) -> RxSwift.Observable<(processing: Event, for: Conversation?)> {
+        return RxSwift.Observable<(processing: Event, for: Conversation?)>.create { observer in
             let conversation = self.storage.conversationCache.get(uuid: event.cid)
             
             self.syncWorkerCondition.lock()
@@ -1046,8 +1083,8 @@ public func ==(lhs: SynchronizingState, rhs: SynchronizingState) -> Bool {
 /// :nodoc:
 internal func ==(lhs: SyncManager.State, rhs: SyncManager.State) -> Bool {
     switch (lhs, rhs) {
-    case (.inactive, .inactive): return false
-    case (.failed, .failed): return false
+    case (.inactive, .inactive): return true
+    case (.failed, .failed): return true
     case (.active(let l), .active(let r)): return l == r
     case (.inactive, _),
          (.failed, _),

@@ -35,25 +35,25 @@ internal extension RxSwift.Reactive where Base: UIApplication {
     // MARK: Private - UIApplication Notification State
     
     ///  State for when application is active
-    private var applicationDidBecomeActive: Observable<ApplicationState> {
+    private var applicationDidBecomeActive: RxSwift.Observable<ApplicationState> {
         return NotificationCenter.default.rx.notification(.UIApplicationDidBecomeActive)
             .map { _ in .active }
     }
     
     /// State for when application is background
-    private var applicationDidEnterBackground: Observable<ApplicationState> {
+    private var applicationDidEnterBackground: RxSwift.Observable<ApplicationState> {
         return NotificationCenter.default.rx.notification(.UIApplicationDidEnterBackground)
             .map { _ in .background }
     }
     
     /// State for when application is resigning active
-    private var applicationWillResignActive: Observable<ApplicationState> {
+    private var applicationWillResignActive: RxSwift.Observable<ApplicationState> {
         return NotificationCenter.default.rx.notification(.UIApplicationWillResignActive)
             .map { _ in .inactive }
     }
     
     /// State for when application is terminating
-    private var applicationWillTerminate: Observable<ApplicationState> {
+    private var applicationWillTerminate: RxSwift.Observable<ApplicationState> {
         return NotificationCenter.default.rx.notification(.UIApplicationWillTerminate)
             .map { _ in .terminated }
     }
@@ -63,7 +63,7 @@ internal extension RxSwift.Reactive where Base: UIApplication {
     
     /// Received remote notification observable
     /// Support iOS 9
-    internal var receiveRemoteNotification: Observable<PushNotificationController.State> {
+    internal var receiveRemoteNotification: RxSwift.Observable<PushNotificationController.State> {
         let remoteNotificationWithFetch = delegate
             .methodInvoked(#selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)))
             .map { value in PushNotificationController.State.receivedRemoteNotification(
@@ -71,6 +71,7 @@ internal extension RxSwift.Reactive where Base: UIApplication {
                 fetchCompletion: value[2])
         }
         
+        // TODO: Deprecate in version 1.0.0
         let remoteNotification = delegate
             .methodInvoked(#selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:)))
             .map { PushNotificationController.State.receivedRemoteNotification(
@@ -78,12 +79,12 @@ internal extension RxSwift.Reactive where Base: UIApplication {
                 fetchCompletion: nil)
         }
         
-        return Observable.of(remoteNotificationWithFetch, remoteNotification).merge()
+        return RxSwift.Observable.of(remoteNotificationWithFetch, remoteNotification).merge()
     }
     
     /// Registered for remote notifications device token observable
     /// Support iOS 9
-    internal var registeredForRemoteNotifications: Observable<PushNotificationController.State> {
+    internal var registeredForRemoteNotifications: RxSwift.Observable<PushNotificationController.State> {
         return delegate
             .methodInvoked(#selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:)))
             .map { $0.last as? Data }
@@ -92,7 +93,7 @@ internal extension RxSwift.Reactive where Base: UIApplication {
     }
 
     /// Register for remote notifications failed observable
-    internal var registerForRemoteNotificationsFailed: Observable<PushNotificationController.State> {
+    internal var registerForRemoteNotificationsFailed: RxSwift.Observable<PushNotificationController.State> {
         return delegate
             .methodInvoked(#selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:)))
             .map { $0.last as? Error }
@@ -104,8 +105,8 @@ internal extension RxSwift.Reactive where Base: UIApplication {
     // MARK: Application State
     
     /// Application state observable
-    internal var applicationState: Observable<ApplicationState> {
-        return Observable.of(
+    internal var applicationState: RxSwift.Observable<ApplicationState> {
+        return RxSwift.Observable.of(
             applicationDidBecomeActive,
             applicationWillResignActive,
             applicationDidEnterBackground,

@@ -17,7 +17,10 @@ import Foundation
 /// - updated: Updated existing T object into collection
 /// - deleted: Deleted T object from collection
 public enum Change<T, S> {
+    /// Inserted new T object into collection
     case inserted(T, S)
+    /// Updated existing T object into collection
     case updated(T)
+    /// Deleted T object from collection
     case deleted(T)
 }

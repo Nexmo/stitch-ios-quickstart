@@ -95,13 +95,13 @@ internal class NetworkController {
     // MARK: Status
     
     /// Socket status
-    internal var socketState: Variable<WebSocketManager.State> { return webSocketManager.state }
+    internal var socketState: RxSwift.Variable<WebSocketManager.State> { return webSocketManager.state }
     
     /// Listen for internal network error
-    internal var networkError: Variable<NetworkErrorProtocol?> { return HTTPManager.errorListener }
+    internal var networkError: RxSwift.Variable<NetworkErrorProtocol?> { return HTTPManager.errorListener }
     
     /// Network reachability status
-    internal var networkState: Variable<ReachabilityManager.State> { return HTTPManager.reachabilityManager.state }
+    internal var networkState: RxSwift.Variable<ReachabilityManager.State> { return HTTPManager.reachabilityManager.state }
     
     // MARK:
     // MARK: Initializers

@@ -1,5 +1,5 @@
 //
-//  Audio+ObjectiveC.swift
+//  Media+ObjectiveC.swift
 //  NexmoConversation
 //
 //  Created by Shams Ahmed on 20/10/2017.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Objective-C compatibility
-public extension Audio {
+public extension Media {
 
     // MARK:
     // MARK: Typealias
@@ -24,15 +24,11 @@ public extension Audio {
     ///
     /// - Parameter completion: completion block
     public func stateObjc(_ completion: @escaping Completion) {
-        state
-            .asDriver()
-            .asObservable()
-            .subscribe(onNext: { completion($0) })
-            .disposed(by: disposeBag)
+        state.subscribe(onSuccess: { completion($0) })
     }
 
     // MARK:
-    // MARK: Audio (Objective-C compatibility support)
+    // MARK: Media (Objective-C compatibility support)
 
     /// Objective-C: Enable audio
     ///

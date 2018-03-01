@@ -32,7 +32,6 @@ internal struct PushNotificationBuilder {
     
     /// Create payload for update request
     internal static func updateParameter(token: Data) -> Parameters {
-        
         var parameters = ["device_type": PushNotificationRouter.DeviceType.iOS.rawValue, "device_token": token.hexString]
         
         //TODO when production is ready (and production certifcate has been uploaded) ensure we dont send "sandbox"

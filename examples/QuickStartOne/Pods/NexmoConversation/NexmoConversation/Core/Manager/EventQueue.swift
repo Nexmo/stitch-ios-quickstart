@@ -38,7 +38,7 @@ internal class EventQueue: Queue {
     internal static var maximumRetries: Int { return 3 }
     
     /// State of queue
-    internal var state: Variable<State> = Variable<State>(.inactive)
+    internal var state: RxSwift.Variable<State> = RxSwift.Variable<State>(.inactive)
     
     private var workerThread: Thread? // Our worker thread.
 
@@ -77,7 +77,7 @@ internal class EventQueue: Queue {
          can find the task and begin processing it a refresh. */
         do {
             try self.database.task.clear()
-        } catch (let error) {
+        } catch let error {
             Log.error(.taskProcessor, "Task Manager failed to clear 'being processed' flag: " + error.localizedDescription)
         }
     }
@@ -257,7 +257,7 @@ internal class EventQueue: Queue {
         
         if self.sendMessageWatchers.isEmpty {
             /* Add the handler. */
-            let handlerRef = draftEvent.conversation.events.newEventReceived.addHandler(self, handler: EventQueue.watchForNewMessages)
+            let handlerRef = draftEvent.conversation.events.newEventReceived.subscribe(self, handler: EventQueue.watchForNewMessages)
             
             /* Remember details of the message we are waiting to see. */
             let watcher = QueueObserver(
@@ -370,7 +370,7 @@ internal class EventQueue: Queue {
             let watch = sendMessageWatchers.remove(at: index)
             
             if let handleRef = watch.handlerRef {
-                watch.conversation.events.newEventReceived.removeHandler(handleRef)
+                watch.conversation.events.newEventReceived.removeSubscriber(handleRef)
             }
             
             watcher = watch

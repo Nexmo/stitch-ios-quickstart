@@ -41,7 +41,7 @@ internal class ReachabilityManager: ReachabilityManagerProtocol {
     internal let networkReachability = NetworkReachabilityManager()
     
     /// State of network reachability
-    internal var state: Variable<State> = Variable<State>(.failed)
+    internal var state: RxSwift.Variable<State> = RxSwift.Variable<State>(.failed)
     
     // MARK:
     // MARK: Initializers

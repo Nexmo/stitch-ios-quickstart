@@ -15,7 +15,7 @@
 The Conversation SDK is intended to provide a ready solution for developers who want to integrate chat, voice and video into their apps.
 
 # Getting started👇 
-Come checkout the iOS [quickstarts](https://www.github.com/nexmo/conversation-ios-quickstarts)!
+Come checkout the iOS [quickstarts](https://www.github.com/nexmo/conversation-ios-quickstart)!
 
 # Installation
 ### [CocoaPods](http://cocoapods.org)
@@ -32,7 +32,6 @@ source 'https://github.com/Nexmo/conversation-ios-sdk.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target '<YOUR_TARGET_NAME>' do
-    pod 'GRDB.swift', '~> 0.90.2'
     pod 'NexmoConversation' # Stable version
     pod 'NexmoConversation', :git => 'https://github.com/Nexmo/conversation-ios-sdk.git', :branch => 'master' # Development version
 end
@@ -137,16 +136,21 @@ These type of class are designed to be gray-boxed. In each target, you can custo
 - https://github.com/github/swift-style-guide
 
 # License
-Copyright (c) 2017 Nexmo, Inc. All rights reserved. Licensed only under the Nexmo Conversation SDK License Agreement (the "License") located at
+Copyright (c) 2018 Nexmo, Inc. All rights reserved. Licensed only under the Nexmo Conversation SDK License Agreement (the "License") located at
 
 By downloading or otherwise using our software or services, you acknowledge that you have read, understand and agree to be bound by the Nexmo Conversation SDK License Agreement and Privacy Policy.
 
 You may not use, exercise any rights with respect to or exploit this SDK, or any modifications or derivative works thereof, except in accordance with the License.
 
 # Author
-* Jodi Humphreys, jodi.humphreys@vonage.com  
+* Jodi Humphreys
 * Shams Ahmed, shams.ahmed@vonage.com  
 * Ivan Ivanov, ivan.ivanov@vonage.com  
 * James Green, james.green@green-custard.com  
-* Paul Calver, paul.calver@vonage.com  
+* Paul Calver
 * Ashley Arthur, ashley.arthur@vonage.com
+* Eric Giannini, eric.giannini@vonage.com
+* Chris Guzman, chris.guzman@vonage.com
+* Tom Morris, Tom.Morris@vonage.com
+* Gady Rozin, gady.rozin@vonage.com
+* Chen Lev, chen.lev@vonage.com

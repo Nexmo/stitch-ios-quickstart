@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 // MARK: - Helper to move workload to other threads
-public extension ObservableType {
+internal extension ObservableType {
 
     // MARK:
     // MARK: Observe
@@ -18,14 +18,14 @@ public extension ObservableType {
     /// Async Main thread of where the result is sent after this point, only to be used for UI.
     ///
     /// - Returns: Observable
-    public func observeOnMainThread() -> RxSwift.Observable<Self.E> {
+    internal func observeOnMainThread() -> RxSwift.Observable<Self.E> {
         return observeOn(MainScheduler.asyncInstance)
     }
 
     /// Background thread of where the result is sent after this point
     ///
     /// - Returns: Observable
-    public func observeOnBackground() -> RxSwift.Observable<Self.E> {
+    internal func observeOnBackground() -> RxSwift.Observable<Self.E> {
         return observeOn(ConcurrentDispatchQueueScheduler.background)
     }
     
@@ -47,7 +47,7 @@ public extension ObservableType {
     }
 }
 
-public extension PrimitiveSequence {
+internal extension PrimitiveSequence {
 
     // MARK:
     // MARK: Observe
@@ -55,14 +55,14 @@ public extension PrimitiveSequence {
     /// Async Main thread of where the result is sent after this point, only to be used for UI.
     ///
     /// - Returns: Observable
-    public func observeOnMainThread() -> PrimitiveSequence<PrimitiveSequence.TraitType, PrimitiveSequence.ElementType> {
+    internal func observeOnMainThread() -> PrimitiveSequence<PrimitiveSequence.TraitType, PrimitiveSequence.ElementType> {
         return observeOn(MainScheduler.asyncInstance)
     }
 
     /// Background thread of where the result is sent after this point
     ///
     /// - Returns: Observable
-    public func observeOnBackground() -> PrimitiveSequence<PrimitiveSequence.TraitType, PrimitiveSequence.ElementType> {
+    internal func observeOnBackground() -> PrimitiveSequence<PrimitiveSequence.TraitType, PrimitiveSequence.ElementType> {
         return observeOn(ConcurrentDispatchQueueScheduler.background)
     }
 
