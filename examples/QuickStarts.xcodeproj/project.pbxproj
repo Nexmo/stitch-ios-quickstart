@@ -69,7 +69,7 @@
 		994C875C1FDB3027009C3BCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99A61B791FE062C000F5CFAE /* ChatController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		99A61B7A1FE062C100F5CFAE /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		99D373C91F54D48E0079AA61 /* QuickStartOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickStartOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99D373C91F54D48E0079AA61 /* QuickStartsOne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickStartsOne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99D373CC1F54D48E0079AA61 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		99D373CE1F54D48E0079AA61 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		99D373D11F54D48E0079AA61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 		99D373CA1F54D48E0079AA61 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				99D373C91F54D48E0079AA61 /* QuickStartOne.app */,
+				99D373C91F54D48E0079AA61 /* QuickStartsOne.app */,
 				994C874E1FDB3027009C3BCE /* QuickStartTwo.app */,
 			);
 			name = Products;
@@ -207,9 +207,9 @@
 			productReference = 994C874E1FDB3027009C3BCE /* QuickStartTwo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		99D373C81F54D48E0079AA61 /* QuickStartOne */ = {
+		99D373C81F54D48E0079AA61 /* QuickStartsOne */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 99D373DB1F54D48E0079AA61 /* Build configuration list for PBXNativeTarget "QuickStartOne" */;
+			buildConfigurationList = 99D373DB1F54D48E0079AA61 /* Build configuration list for PBXNativeTarget "QuickStartsOne" */;
 			buildPhases = (
 				3AC2768C31166BB3EC76D341 /* [CP] Check Pods Manifest.lock */,
 				99D373C51F54D48E0079AA61 /* Sources */,
@@ -222,9 +222,9 @@
 			);
 			dependencies = (
 			);
-			name = QuickStartOne;
+			name = QuickStartsOne;
 			productName = QuickStartOne;
-			productReference = 99D373C91F54D48E0079AA61 /* QuickStartOne.app */;
+			productReference = 99D373C91F54D48E0079AA61 /* QuickStartsOne.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -251,7 +251,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 99D373C41F54D48E0079AA61 /* Build configuration list for PBXProject "QuickStartOne" */;
+			buildConfigurationList = 99D373C41F54D48E0079AA61 /* Build configuration list for PBXProject "QuickStarts" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -264,7 +264,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				99D373C81F54D48E0079AA61 /* QuickStartOne */,
+				99D373C81F54D48E0079AA61 /* QuickStartsOne */,
 				994C874D1FDB3027009C3BCE /* QuickStartTwo */,
 				1078C1FF204171DE002F4F39 /* BuildAllTarget */,
 			);
@@ -457,7 +457,7 @@
 /* Begin PBXTargetDependency section */
 		1078C204204171E9002F4F39 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 99D373C81F54D48E0079AA61 /* QuickStartOne */;
+			target = 99D373C81F54D48E0079AA61 /* QuickStartsOne */;
 			targetProxy = 1078C203204171E9002F4F39 /* PBXContainerItemProxy */;
 		};
 		1078C206204171E9002F4F39 /* PBXTargetDependency */ = {
@@ -723,7 +723,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		99D373C41F54D48E0079AA61 /* Build configuration list for PBXProject "QuickStartOne" */ = {
+		99D373C41F54D48E0079AA61 /* Build configuration list for PBXProject "QuickStarts" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				99D373D91F54D48E0079AA61 /* Debug */,
@@ -732,7 +732,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		99D373DB1F54D48E0079AA61 /* Build configuration list for PBXNativeTarget "QuickStartOne" */ = {
+		99D373DB1F54D48E0079AA61 /* Build configuration list for PBXNativeTarget "QuickStartsOne" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				99D373DC1F54D48E0079AA61 /* Debug */,
