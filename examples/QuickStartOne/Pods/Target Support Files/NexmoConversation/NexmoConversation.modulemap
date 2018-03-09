@@ -1,6 +1,0 @@
-framework module NexmoConversation {
-  umbrella header "NexmoConversation-umbrella.h"
-
-  export *
-  module * { export * }
-}

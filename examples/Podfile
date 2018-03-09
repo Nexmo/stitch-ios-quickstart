@@ -1,0 +1,17 @@
+platform :ios, '9.0'
+
+use_frameworks!
+
+source 'git@github.com:CocoaPods/Specs.git'
+
+def podsList
+    pod "Stitch"
+end
+
+target 'QuickStartOne' do
+    podsList
+end
+
+target 'QuickStartTwo' do
+    podsList
+end
