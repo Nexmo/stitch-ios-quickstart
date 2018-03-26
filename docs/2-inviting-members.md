@@ -118,7 +118,7 @@ Update the authenticate function with an instance of `UIAlertController` with an
                 
                 print("DEMO - login unsuccessful with \(reason)")
                 
-            }).addDisposableTo(self.client.disposeBag) // Rx does not maintain a memory reference; to make sure that reference is still in place; keep a reference of this object while I do an operation.
+            })
             
                 }))
         
@@ -154,7 +154,7 @@ Update the authenticate function with an instance of `UIAlertController` with an
                 
                 print("DEMO - login unsuccessful with \(reason)")
                 
-            }).addDisposableTo(self.client.disposeBag) // Rx does not maintain a memory reference; to make sure that reference is still in place; keep a reference of this object while I do an operation.
+            })
             
                 }))
         
