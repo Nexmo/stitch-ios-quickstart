@@ -226,7 +226,7 @@ We also need to wire up the buttons in `LoginViewController.swift` Don't forget 
             
             print("DEMO - login unsuccessful with \(reason)")
             
-        }).addDisposableTo(client.disposeBag) // Rx does not maintain a memory reference; to make sure that reference is still in place; keep a reference of this object while I do an operation.
+        })
     }
 
     // chat button
