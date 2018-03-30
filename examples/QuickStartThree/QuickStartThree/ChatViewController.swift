@@ -88,11 +88,16 @@ class ChatViewController: UIViewController {
                 caption += " are typing..."
             }
             
-            typyingIndicatorLabel.text = caption
+            DispatchQueue.main.async {
+                self.typyingIndicatorLabel.text = caption
+            }
+            
             
         } else {
-            typyingIndicatorLabel.text = ""
             
+            DispatchQueue.main.async {
+                self.typyingIndicatorLabel.text = ""
+            }
         }
     }
     
@@ -177,4 +182,3 @@ extension ChatViewController : UITableViewDataSource {
         return cell;
     }
 }
-
