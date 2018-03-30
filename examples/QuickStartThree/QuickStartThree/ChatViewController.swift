@@ -13,10 +13,9 @@ class ChatViewController: UIViewController {
     
     // conversation for passing client
     var conversation: Conversation?
-    private var whoIsTyping = Set<String>()
     
-    // textView for displaying chat
-    @IBOutlet weak var textView: UITextView!
+    // a set of unique members typing
+    private var whoIsTyping = Set<String>()
     
     // tableView for displaying chat
     @IBOutlet weak var tableView: UITableView!
@@ -44,93 +43,98 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //
+        //UITableView's delegate
         tableView.delegate = self
+        
+        //UITableView dataSource
         tableView.dataSource = self
         
-        // a handler for updating the textView with TextEvents
-        //        conversation?.events.newEventReceived.subscribe(onSuccess: { event in
-        //            guard !event.isCurrentlyBeingSent else { return }
-        //
-        //            switch event {
-        //            case let textEvent as TextEvent:
-        //
-        //                self.textView.insertText("\n \n \(textEvent.text!) \n \n")
-        //
-        //            default: break
-        //            }
-        //        })
-        
-        
-        func refreshTypingIndicatorLabel(){
-            if !whoIsTyping.isEmpty {
-                var caption = whoIsTyping.joined(separator: ", ")
-                
-                if whoIsTyping.count == 1 {
-                    caption += " is typing..."
-                } else {
-                    caption += " are typing..."
-                }
-                
-                typyingIndicatorLabel.text = caption
-                
-            } else {
-                typyingIndicatorLabel.text = ""
-                
-            }
-        }
-        
-        
-        conversation!.members.forEach { member in
-            member.typing
-                .mainThread
-                .subscribe(onSuccess: { [weak self] in handleTypingChangedEvent(member: member, isTyping: $0) })
-        }
-        
-        
-        func handleTypingChangedEvent(member: Member, isTyping: Bool) {
-            /* make sure it is not this user typing */
-            if !member.user.isMe {
-                let name = member.user.name
-                
-                if isTyping {
-                    whoIsTyping.insert(name)
-                } else {
-                    whoIsTyping.remove(name)
-                }
-                
-                refreshTypingIndicatorLabel()
-            }
-        }
-        
-        conversation!.events.forEach({ event in
-            
-            if let event = event as? TextEvent {
-                
-                print(event.text!)
-                
-            }
-        })
-        
-        conversation!.events.forEach({ event in
-            print(event)
-        })
-        
+        // listen for messages
         conversation!.events.newEventReceived.subscribe(onSuccess: { event in
             if let event = event as? TextEvent, !event.isCurrentlyBeingSent {
-                // refresh list
+                // refresh tableView
                 self.tableView.reloadData()
             }
         })
         
-        // Do any additional setup after loading the view.
+        // listen for typing
+        conversation!.members.forEach { member in
+            member.typing
+                .mainThread
+                .subscribe(onSuccess: { [weak self] in self?.handleTypingChangedEvent(member: member, isTyping: $0) })
+        }
     }
+    // a handler for updating the textView with TextEvents
+    //        conversation?.events.newEventReceived.subscribe(onSuccess: { event in
+    //            guard !event.isCurrentlyBeingSent else { return }
+    //
+    //            switch event {
+    //            case let textEvent as TextEvent:
+    //
+    //                self.textView.insertText("\n \n \(textEvent.text!) \n \n")
+    //
+    //            default: break
+    //            }
+    //        })
+    
+    
+    func refreshTypingIndicatorLabel(){
+        if !whoIsTyping.isEmpty {
+            var caption = whoIsTyping.joined(separator: ", ")
+            
+            if whoIsTyping.count == 1 {
+                caption += " is typing..."
+            } else {
+                caption += " are typing..."
+            }
+            
+            typyingIndicatorLabel.text = caption
+            
+        } else {
+            typyingIndicatorLabel.text = ""
+            
+        }
+    }
+    
+    
+    
+    func handleTypingChangedEvent(member: Member, isTyping: Bool) {
+        /* make sure it is not this user typing */
+        if !member.user.isMe {
+            let name = member.user.name
+            
+            if isTyping {
+                whoIsTyping.insert(name)
+            } else {
+                whoIsTyping.remove(name)
+            }
+            
+            refreshTypingIndicatorLabel()
+        }
+    }
+    
+    //        conversation!.events.forEach({ event in
+    //
+    //            if let event = event as? TextEvent {
+    //
+    //                print(event.text!)
+    //
+    //            }
+    //        })
+    //
+    //        conversation!.events.forEach({ event in
+    //            print(event)
+    //        })
+    
+    
+    
+    
+    // Do any additional setup after loading the view.
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     /*
      // MARK: - Navigation
@@ -146,6 +150,14 @@ class ChatViewController: UIViewController {
 
 extension ChatViewController : UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        <#code#>
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        <#code#>
+    }
+    
 }
 
 extension ChatViewController : UITableViewDataSource {
@@ -153,6 +165,7 @@ extension ChatViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return conversation!.events.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
@@ -164,3 +177,4 @@ extension ChatViewController : UITableViewDataSource {
         return cell;
     }
 }
+
