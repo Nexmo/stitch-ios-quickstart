@@ -1,25 +1,11 @@
-
-
 ## Using more Event Listeners with the Nexmo Stitch In-App Messaging iOS SDK
 
 In this getting started guide we'll demonstrate how to show previous history of a Conversation we created in the [simple conversation](1-simple-conversation.md) getting started guide. From there we'll cover how to show when a member is typing.
 
-### Before you begin
+## 1 - Setup
 
 * Ensure you have run through the [the first](1-simple-conversation.md) and [second](2-inviting-members.md) quickstarts.
 * Make sure you have two iOS devices to complete this example. They can be two simulators, one simulator and one physical device, or two physical devices.
-
-## 1 - Setup
-
-For this quickstart you won't need to simulate server side events with `curl`. You'll just need to be able to login as both users created in the [first](1-simple-conversation.md) and [second](2-inviting-members.md) quickstarts.
-
-If you're continuing on from the previous guide you may already have a `APP_JWT`. If not, generate a JWT using your Application ID (`YOUR_APP_ID`).
-
-```bash
-$ APP_JWT="$(nexmo jwt:generate ./private.key application_id=YOUR_APP_ID exp=$(($(date +%s)+86400)))"
-```
-
-You may also need to regenerate the users JWTs. See quickstarts 1 and 2 for how to do so.
 
 ## 2 Update the iOS App
 
@@ -29,7 +15,7 @@ We will use the application we already created for quickstarts [1](1-simple-conv
 
 We're going to be adding some new elements to our chat app so let's update our layout to reflect them. 
 
-#### 2.1.1 UITableView 
+#### 2.1.1 `UITableView` 
 
 Let us start with an instance of `UITableView` whose cells we will use to display messages from the chat. In our `.xcodeproj` navigate to `ChatViewController` scene in `Main.storyboard`. Let us now delete the instance of `textView`.
 
@@ -48,9 +34,8 @@ In the previous quick starts we showed messages by adding to a TextView. For thi
 
 To create a connection from our instance of `UITableView` to its controller in `ChatViewController.swift` we set the `delegate` or `dataSource` properties referentially. With `Main.storyboard` open while simultaneously holding shift option command, click on `ChatViewController.swift` so that it appears in the assistant editor. Control drag from within the body of `UITableView` to `ChatViewController.swift` to declare `tableView` as an outlet as such: 
 
-```Swift
+```swift
     class ChatViewController: UIViewController {
-...
     // tableView for displaying chat
     @IBOutlet weak var tableView: UITableView!
     
@@ -59,12 +44,10 @@ To create a connection from our instance of `UITableView` to its controller in `
 
 Similarly, let us do the same for our instanec of `UILabel` in the following way: 
 
-```Swift 
-   class ChatViewController: UIViewController {
-
-...
-    // typingIndicatorLabel for typing indications
-    @IBOutlet weak var typyingIndicatorLabel: UILabel!
+```swift 
+		class ChatViewController: UIViewController {
+		// typingIndicatorLabel for typing indications
+		@IBOutlet weak var typyingIndicatorLabel: UILabel!
 }
 ```
 
@@ -72,15 +55,15 @@ Similarly, let us do the same for our instanec of `UILabel` in the following way
 
 Our instance of `UITableView` will need a `delegate` and `dataSource`. In `viewDidLoad(:)` we can use this:
 
-```Swift
+```swift
 		// assignment of delegate to our ChatViewController 
-        tableView.delegate = self
-       // assignment of dataSource to our ChatViewController 
-        tableView.dataSource = self
+		tableView.delegate = self
+		// assignment of dataSource to our ChatViewController 
+		tableView.dataSource = self
 
 ```
 
-Designating `ChatViewController` as delegate for the UITableView means that the `ChatViewController` agrees to act on behalf of the `UITableView` to take care of whatever delegate methods are required for our instance of `UITableView`. Similarly, designating `ChatViewController` as the the dataSource means that the `ChatViewController` agrees to act on behalf of the `UITableView` to handle methods required for funneling data into the UITableView. Accordingly, we must now program these methods. This is called 'conforming'. 
+Designating `ChatViewController` as delegate for the `UITableView` means that the `ChatViewController` agrees to act on behalf of the `UITableView` to take care of whatever delegate methods are required for our instance of `UITableView`. Similarly, designating `ChatViewController` as the the dataSource means that the `ChatViewController` agrees to act on behalf of the `UITableView` to handle methods required for funneling data into the UITableView. Accordingly, we must now program these methods. This is called 'conforming'. 
 
 ### 2.3.1 Programming Delegate and Datasource
 
@@ -90,12 +73,11 @@ In order to make it conform to the `UITableViewDataSource` protocol we will make
 
 Since this extension conforms to `UITableViewDelegate`, we program it thus: 
 
-```Swift 
+```swift 
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return 0
-        
+		return 0
     }
 ```
 
@@ -104,13 +86,13 @@ TODO REMOVE THIS paragraph:
 
 We'll also need to create a layout for the ViewHolder. Our layout will have a textview to hold the message text. The layout will also have a check mark image that we can make visible or set the visibility to `gone` depending on if the other users of the chat have seen the message or not. The layout will look like so:
 
-```Swift
+```swift
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
+ 		let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
         
-        return cell;
+		return cell;
     }
 
 ```
@@ -124,29 +106,29 @@ Let us reconfigure the boilerplate code with properties from our instance of the
 
 Let's start `numberOfRowsInSection`. We access the `conversations` property on `conversation` that we passed through `performSegue(withIdentifier:sender)` from the `LoginViewController.swift`. On the `events` property, which conforms to Swift's `CollectionType`, there is a property for `.count`, which returns the number of messages in a chat's history. It happens like so: 
 
-```Swift
+```swift
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return conversation!.events.count
+		return conversation!.events.count
     
     }
 ```
 
-Our instnace of `tableView` ought to return as many rows now as there are events in our instance of `conversation`, whereas earlier it returned none. If it does, we are halfway there! The next step is to configure `cellForRowAt` to display the events as messages in the prototype cell's `textLabel.text` property. We do it by downcasting an event per the row in `indexPath` as `TextEvent` that is assigned to the value of constant called `message`. With `message` containing the value for each row's messages, we assign it to the value for `cell.textLabel?.text`. It happens like so: 
+Our instance of `tableView` ought to return as many rows now as there are events in our instance of `conversation`, whereas earlier it returned none. If it does, we are halfway there! The next step is to configure `cellForRowAt` to display the events as messages in the prototype cell's `textLabel.text` property. We do it by downcasting an event per the row in `indexPath` as `TextEvent` that is assigned to the value of constant called `message`. With `message` containing the value for each row's messages, we assign it to the value for `cell.textLabel?.text`. It happens like so: 
 
 
-```Swift 
+```swift 
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
         
-        let message = conversation?.events[indexPath.row] as? TextEvent
+		let message = conversation?.events[indexPath.row] as? TextEvent
         
-        cell.textLabel?.text = message?.text
+		cell.textLabel?.text = message?.text
         
-        return cell;
+		return cell;
     }
 
 ```
@@ -159,21 +141,21 @@ Calling `tableView.reload()` on a conversation retrieves the event history. Now 
 
 We can add other listeners just like we added our other for subscribing to text events. Our next listener follows from the `.members` property as opposed to the `events` property on `conversation`. Whereas the latter is a collection of events, the former is a collection of members so we can loop through each one of the members with one of Swift's higher order functions like `.forEach` to subscribe to make a call to a hanlder. The handler then takes care of who is or is not typing.
 
-```Swift
+```swift
 
-    conversation!.members.forEach { member in
+		conversation!.members.forEach { member in
             member.typing
                 .mainThread
                 .subscribe(onSuccess: { [weak self] in self?.handleTypingChangedEvent(member: member, isTyping: $0) })
-        }
+		}
 
 ```
 
 With our listenered configured, we will `programhandleTypingChangedEvent(member:, isTyping:)` to figure out whether a member is typing, determine how many members are typing, as well as provide text to be displayed in our instance of `UILabel` for displaying the typing indications. It happens like so:
 
-```Swift
+```swift
 
-        func refreshTypingIndicatorLabel(){
+		func refreshTypingIndicatorLabel(){
             if !whoIsTyping.isEmpty {
                 var caption = whoIsTyping.joined(separator: ", ")
                 
@@ -190,14 +172,14 @@ With our listenered configured, we will `programhandleTypingChangedEvent(member:
                 
             }
         }
-
+        
 ``` 
 
 The last step is to add a property called `whoIsTyping` to our `ChatViewController.swift` file. We will declare to be of type `Set<>` whose elements, all of whom are unique, will be of type `String` so that no member may be duplicated by virtue of the strong typing on the data structure itself: 
 
-```Swift 
-// a set of unique members typing
-    private var whoIsTyping = Set<String>()
+```swift 
+		// a set of unique members typing
+		private var whoIsTyping = Set<String>()
 ``` 
 
 With these three sets of code in place, the typing indicator updates who is typing when! 
