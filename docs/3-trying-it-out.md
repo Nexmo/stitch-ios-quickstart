@@ -93,7 +93,7 @@ Since the last remaining required method for conforming to the protocol for `UIT
     }
 
 ```
-Implementing these two methods should remedy the error mentioned earlier. Both methods--`numberOfRowsInSection` and `cellForRowAt`, however, are boilerplate. In the next section we configure these methods to interact directly with our instance of `ConversationClient` to show a chat's history. 
+Implementing these two methods should remedy the error mentioned earlier. Both methods--`numberOfRowsInSection` and `cellForRowAt`, however, are boilerplate. In the next section we configure these methods to interact directly with our instance of `ConversationClient` to show chat history". 
 
 ### 2.4 - Show a chat's history
 
