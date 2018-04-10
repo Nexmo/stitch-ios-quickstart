@@ -35,19 +35,18 @@ In the previous quick starts we showed messages by adding to a TextView. For thi
 To create a connection from our instance of `UITableView` to its controller in `ChatViewController.swift` we set the `delegate` or `dataSource` properties referentially. With `Main.storyboard` open while simultaneously holding shift option command, click on `ChatViewController.swift` so that it appears in the assistant editor. Control drag from within the body of `UITableView` to `ChatViewController.swift` to declare `tableView` as an outlet as such: 
 
 ```swift
-    class ChatViewController: UIViewController {
+class ChatViewController: UIViewController {
     // tableView for displaying chat
     @IBOutlet weak var tableView: UITableView!
-    
 }
 ```
 
 Similarly, let us do the same for our instanec of `UILabel` in the following way: 
 
 ```swift 
-		class ChatViewController: UIViewController {
-		// typingIndicatorLabel for typing indications
-		@IBOutlet weak var typyingIndicatorLabel: UILabel!
+class ChatViewController: UIViewController {
+	// typingIndicatorLabel for typing indications
+	@IBOutlet weak var typyingIndicatorLabel: UILabel!
 }
 ```
 
@@ -56,11 +55,10 @@ Similarly, let us do the same for our instanec of `UILabel` in the following way
 Our instance of `UITableView` will need a `delegate` and `dataSource`. In `viewDidLoad(:)` we can use this:
 
 ```swift
-		// assignment of delegate to our ChatViewController 
-		tableView.delegate = self
-		// assignment of dataSource to our ChatViewController 
-		tableView.dataSource = self
-
+// assignment of delegate to our ChatViewController 
+tableView.delegate = self
+// assignment of dataSource to our ChatViewController 
+tableView.dataSource = self
 ```
 
 Designating `ChatViewController` as delegate for the `UITableView` means that the `ChatViewController` agrees to act on behalf of the `UITableView` to take care of whatever delegate methods are required for our instance of `UITableView`. Similarly, designating `ChatViewController` as the the dataSource means that the `ChatViewController` agrees to act on behalf of the `UITableView` to handle methods required for funneling data into the UITableView. Accordingly, we must now program these methods. This is called 'conforming'. 
@@ -74,23 +72,18 @@ In order to make it conform to the `UITableViewDataSource` protocol we will make
 Since this extension conforms to `UITableViewDelegate`, we program it thus: 
 
 ```swift 
-
-		func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-		return 0
-    }
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	return 0
+} 
 ```
 
 Since the last remaining required method for conforming to the protocol for `UITableViewDataSource` is `cellForRowAt`, we will add the method in the following way:
 
 ```swift
-
-		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
- 		let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
-        
-		return cell;
-    }
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
+	return cell;
+}
 
 ```
 Implementing these two methods should remedy the error mentioned earlier. Both methods--`numberOfRowsInSection` and `cellForRowAt`, however, are boilerplate. In the next section we configure these methods to interact directly with our instance of `ConversationClient` to show chat history". 
@@ -104,29 +97,24 @@ Let us reconfigure the boilerplate code with properties from our instance of the
 Let's start `numberOfRowsInSection`. We access the `conversations` property on `conversation` that we passed through `performSegue(withIdentifier:sender)` from the `LoginViewController.swift`. On the `events` property, which conforms to Swift's `CollectionType`, there is a property for `.count`, which returns the number of messages in a chat's history. It happens like so: 
 
 ```swift
-
-		func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-		return conversation!.events.count
-    
-    }
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	return conversation!.events.count
+}
 ```
 
 Our instance of `tableView` ought to return as many rows now as there are events in our instance of `conversation`, whereas earlier it returned none. If it does, we are halfway there! The next step is to configure `cellForRowAt` to display the events as messages in the prototype cell's `textLabel.text` property. We do it by downcasting an event per the row in `indexPath` as `TextEvent` that is assigned to the value of constant called `message`. With `message` containing the value for each row's messages, we assign it to the value for `cell.textLabel?.text`. It happens like so: 
 
 
 ```swift 
-
-		func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
     
-		let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
-        
-		let message = conversation?.events[indexPath.row] as? TextEvent
-        
-		cell.textLabel?.text = message?.text
-        
-		return cell;
-    }
+	let message = conversation?.events[indexPath.row] as? TextEvent
+    
+	cell.textLabel?.text = message?.text
+    
+	return cell;
+}
 
 ```
 
@@ -139,44 +127,40 @@ Calling `tableView.reload()` on a conversation retrieves the event history. Now 
 We can add other listeners just like we added our other for subscribing to text events. Our next listener follows from the `.members` property as opposed to the `events` property on `conversation`. Whereas the latter is a collection of events, the former is a collection of members so we can loop through each one of the members with one of Swift's higher order functions like `.forEach` to subscribe to make a call to a hanlder. The handler then takes care of who is or is not typing.
 
 ```swift
-
-		conversation!.members.forEach { member in
-            member.typing
-                .mainThread
-                .subscribe(onSuccess: { [weak self] in self?.handleTypingChangedEvent(member: member, isTyping: $0) })
-		}
-
+conversation!.members.forEach { member in
+	member.typing
+	    .mainThread
+	    .subscribe(onSuccess: { [weak self] in self?.handleTypingChangedEvent(member: member, isTyping: $0) })
+}
 ```
 
 With our listenered configured, we will `programhandleTypingChangedEvent(member:, isTyping:)` to figure out whether a member is typing, determine how many members are typing, as well as provide text to be displayed in our instance of `UILabel` for displaying the typing indications. It happens like so:
 
 ```swift
-
-		func refreshTypingIndicatorLabel(){
-            if !whoIsTyping.isEmpty {
-                var caption = whoIsTyping.joined(separator: ", ")
-                
-                if whoIsTyping.count == 1 {
-                    caption += " is typing..."
-                } else {
-                    caption += " are typing..."
-                }
-                
-                typyingIndicatorLabel.text = caption
-                
-            } else {
-                typyingIndicatorLabel.text = ""
-                
-            }
+func refreshTypingIndicatorLabel(){
+    if !whoIsTyping.isEmpty {
+        var caption = whoIsTyping.joined(separator: ", ")
+        
+        if whoIsTyping.count == 1 {
+            caption += " is typing..."
+        } else {
+            caption += " are typing..."
         }
         
+        typyingIndicatorLabel.text = caption
+        
+    } else {
+        typyingIndicatorLabel.text = ""
+        
+    }
+}        
 ``` 
 
 The last step is to add a property called `whoIsTyping` to our `ChatViewController.swift` file. We will declare to be of type `Set<>` whose elements, all of whom are unique, will be of type `String` so that no member may be duplicated by virtue of the strong typing on the data structure itself: 
 
 ```swift 
-		// a set of unique members typing
-		private var whoIsTyping = Set<String>()
+// a set of unique members typing
+private var whoIsTyping = Set<String>()
 ``` 
 
 With these three sets of code in place, the typing indicator updates who is typing when! 
