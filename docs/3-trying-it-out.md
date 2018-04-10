@@ -25,7 +25,7 @@ Do not forget to add a prototype cell. Control drag from the object library to a
 
 #### 2.1.2 UILabel 
 
-Let us added an instance of `UILabel` just below our instance of `UITableView` but above our instance of `TextField`. Later we will call it `typingIndicator` so that we show a message in the `typingIndicator` when a user is typing. 
+Add an instance of `UILabel` just below our instance of `UITableView` but above our instance of `TextField`. Later we will call it `typingIndicator` so that we show a message in the `typingIndicator` when a user is typing. 
 
 
 ### 2.2 Adding the new UI to the `ChatViewController`
