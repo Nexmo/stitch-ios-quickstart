@@ -79,33 +79,35 @@ Update the authenticate function with an instance of `UIAlertController` with an
 
 
 ```Swift
-   // login button
+    // login button
     @IBAction func loginBtn(_ sender: Any) {
         
         print("DEMO - login button pressed.")
-        
+
         let alert = UIAlertController(title: "My Alert", message: "This is an alert.", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("jamie", comment: "First User"), style: .`default`, handler: { _ in
+        
             NSLog("The \"First User\" is here!")
-            
+
             let token = Authenticate.userJWT
-            
-            print("DEMO - login called on client.")
-            
+
             self.client.login(with: token).subscribe(onSuccess: {
                 
                 if let user = self.client.account.user {
-                
-                    print("DEMO - login successful and here is our \(user)")
                     
-				 }, onError: { [weak self] error in
-				 
+                    print("Demo - login successful and here is our \(user)")
+                    
+                }
+                
+                
+            }, onError: { [weak self] error in
+                
                 self?.statusLbl.isHidden = false
                 
                 print(error.localizedDescription)
                 
-                let reason: String = {
+                let _: String = {
                     switch error {
                     case LoginResult.failed: return "failed"
                     case LoginResult.invalidToken: return "invalid token"
@@ -115,28 +117,29 @@ Update the authenticate function with an instance of `UIAlertController` with an
                     default: return "unknown"
                     }
                 }()
-                
-                print("DEMO - login unsuccessful with \(reason)")
+            
+                print("Demo - login for first user completed on client.")
                 
             })
-            
-                }))
+        
+        }))
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("alice", comment: "Second User"), style: .default, handler: { (_) in
-        
+            
             NSLog("The \"Second User\" is here!")
-            
+
             let token = Authenticate.anotherUserJWT
-            
+
             print("DEMO - login called on client.")
-            
+
             self.client.login(with: token).subscribe(onSuccess: {
-                
+            
                 if let user = self.client.account.user {
                     print("DEMO - login successful and here is our \(user)")
-                    
-                  }, onError: { [weak self] error in
-                  
+                }
+                
+            }, onError: { [weak self] error in
+                
                 self?.statusLbl.isHidden = false
                 
                 print(error.localizedDescription)
@@ -154,12 +157,12 @@ Update the authenticate function with an instance of `UIAlertController` with an
                 
                 print("DEMO - login unsuccessful with \(reason)")
                 
-            })
+                })
             
-                }))
+        }))
         
         DispatchQueue.main.async {
-         
+            
             self.present(alert, animated: true, completion: nil)
         }
         
