@@ -81,10 +81,7 @@ Since this extension conforms to `UITableViewDelegate`, we program it thus:
     }
 ```
 
-
-TODO REMOVE THIS paragraph: 
-
-We'll also need to create a layout for the ViewHolder. Our layout will have a textview to hold the message text. The layout will also have a check mark image that we can make visible or set the visibility to `gone` depending on if the other users of the chat have seen the message or not. The layout will look like so:
+Since the last remaining required method for conforming to the protocol for `UITableViewDataSource` is `cellForRowAt`, we will add the method in the following way:
 
 ```swift
 
