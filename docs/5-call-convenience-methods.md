@@ -1,5 +1,3 @@
-https://github.com/nexmoinc/conversation-ios-sdk/releases/tag/0.20.0
-
 ## Getting Started with the Nexmo Conversation iOS SDK
 
 In this getting started guide we'll cover adding call methods to the Conversation we created in the [simple conversation with audio](/stitch/in-app-messaging/guides/4-enable-audio/swift) getting started guide. We'll deal with member call events that trigger on the application and call state events that trigger on the Call object.
