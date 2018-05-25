@@ -15,7 +15,7 @@ This guide will introduce you to the following concepts.
 ### Before you begin
 - Ensure you have run through the [previous guide](/stitch/in-app-messaging/guides/4-enable-audio/swift) 
 
-### 1.0 - Updating Android App
+### 1.0 - Updating iOS App
 
 We will use the application we already created for [the first audio getting started guide](/stitch/in-app-messaging/guides/4-enable-audio/swift). All the basic setup has been done in the previous guides and should be in place. We can now focus on updating the client-side application.
 
@@ -42,13 +42,32 @@ do {
 
 ## 2.0 - Subscribing to call events
 
+To get given a Call object for all incoming calls, there is a Swift closure with `call` as its object. 
+
+```swift
+try client.media.inboundCalls.subscribe(onSuccess: { call in })
+```
+
 ## Receive an incoming call 
 
-Get given a Call object for all incoming calls
+You could do any number of things after getting a given Call object. You could show CallKit. You could show a customized user interface. Or you could just show an alert like we do to receive an incoming call. 
 
 ```swift
 try client.media.inboundCalls.subscribe(onSuccess: { call in
-    // code here
+
+// Here you configure code for all incoming calls. 
+
+let alert = UIAlertController(title: "Someone is calling you.", message: "Are you going to answer?", preferredStyle: .alert) 
+
+alert.addAction(UIAlertAction(title: NSLocalizedString("Answer", comment: "Default action"), style: .default, handler: { _ in 
+// 
+
+NSLog("The \"OK\" alert occured.")
+
+}))
+
+self.present(alert, animated: true, completion: nil)    
+
 })
 ```
 
