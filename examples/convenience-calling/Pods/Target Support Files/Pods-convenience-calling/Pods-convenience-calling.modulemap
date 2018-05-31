@@ -1,0 +1,6 @@
+framework module Pods_convenience_calling {
+  umbrella header "Pods-convenience-calling-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -48,7 +48,7 @@ To get given a Call object for all incoming calls, there is a Swift closure with
 try client.media.inboundCalls.subscribe(onSuccess: { call in })
 ```
 
-## Receive an incoming call 
+## 2.1 Receive an incoming call 
 
 You could do any number of things after getting a given Call object. You could show CallKit. You could show a customized user interface. Or you could just show an alert like we do to receive an incoming call. 
 
@@ -62,7 +62,7 @@ let alert = UIAlertController(title: "Someone is calling you.", message: "Are yo
 alert.addAction(UIAlertAction(title: NSLocalizedString("Answer", comment: "Default action"), style: .default, handler: { _ in 
 // 
 
-NSLog("The \"OK\" alert occured.")
+NSLog("The user selected the \"Answer\" alert.")
 
 }))
 
@@ -73,14 +73,14 @@ self.present(alert, animated: true, completion: nil)
 
 Since we will be tapping into protected device functionality we will have to ask for permission. We will update our `.plist` as well as display an alert. After permissions we will add AVFoundation class, set up audio from within the SDK and add a speaker emoji for our UI 🔈
 
-## Reject an incoming call 
+## 2.2 Reject an incoming call 
 
-optional `onError:` can be called
+If you would like to reject an incoming call, you can call the following method on `call`: 
 
 ```swift
 call.reject()
 ```
-
+If there is an error, the method comes with an optional `onError:` parameter. 
 
 ### 2.1 Receive a PSTN Phone Call via Stitch
 
