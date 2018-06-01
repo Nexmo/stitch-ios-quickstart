@@ -19,9 +19,10 @@ This guide will introduce you to the following concepts.
 
 We will use the application we already created for [the first audio getting started guide](/stitch/in-app-messaging/guides/4-enable-audio/swift). All the basic setup has been done in the previous guides and should be in place. We can now focus on updating the client-side application.
 
-### 1.1 Adding a CallViewController with `.storyboard` files 
+### 1.1 Modify the ChatController with `.storyboard` files 
 
-### 1.2 Initiating a call 
+### 1.2 Call Emoji! 📞
+
 
 Pass a list of users to initiate a call object:
 
