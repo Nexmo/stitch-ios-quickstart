@@ -62,8 +62,10 @@ To ensure the chat is setup, we will configure an instance of `UITableView` to h
 
 - Add an instance of `UITableView` to the scene for `ChatViewController` in `.storyboard`
 - Control drag to create an reference in `ChatViewController`
-- Inside of `ChatViewController`'s `viewDidLoad(:)`
+- Inside of `ChatViewController`'s `viewDidLoad(:)` configure both the `dataSource` and `delegate` properties on our reference to `tableView` to `.self`. 
+- Last but no least we will add an extension to ensure confirmity to the required methods:
 
+```
 extension ChatController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,6 +83,8 @@ extension ChatController : UITableViewDataSource {
     }
 
 } 
+``` 
+With our chat set up, we are ready to move onto setting up the call method. 
 
 ## 2.0 -  📞 + ☎️ equals a call
 
