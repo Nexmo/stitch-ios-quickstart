@@ -26,6 +26,8 @@ To modify the `.storyboard` to accomodate a call convenience method, let's perfo
 
 - Control drag from the instance to the `ChatViewController.swift` to create an action we will program later. 
 
+- Inside of this action simply write the following: `call()`. 
+
 ### 1.2 Call Emoji! 📞
 
 With the `UIBarButtonItem` properly laid out in `.storyboard` the next step is to configure its UI with a Call Emoji! 📞
@@ -88,8 +90,31 @@ With our chat set up, we are ready to move onto setting up the call method.
 
 ## 2.0 -  📞 + ☎️ equals a call
 
+Earlier we droped the following in an action for our call emoji 📞: `call()`. We will program this function with our call convenience method now. Below `viewDidLoad()` declare a private function called `call()` like so: 
+
+```swift 
+private func call() {
+}
+``` 
+
+Inside of this method copy and paste the code snippet from earlier with our actual call method. 
+
+```swift 
+private func call() {
+
+   client.media.call(users, onSuccess: { result in
+        // code here
+        // result contains Call object and any errors from requesting invites for users
+    }, onError: { networkError in
+        // code here
+    })
+
+}
+``` 
+We no longer need the generic do-try-catch.  Inside of the function, however, we will add an instance of `UIAlertController`. We will loop over each member in the a conversation displayed in the `UITableView` with the higher order function `.forEach` so that we add an action for calling each member to the activity sheet:
+
 ```
-       // MARK: - Call Convenience Method
+    // MARK: - Call Convenience Method
     private func call() {
         
         let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
@@ -112,3 +137,9 @@ With our chat set up, we are ready to move onto setting up the call method.
     
 }
 ```
+## 3.0 Try it out!
+
+There it is. If a member is present in the chat, then he or she may be called. 
+
+
+
