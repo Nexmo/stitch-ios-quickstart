@@ -20,11 +20,24 @@ This guide will introduce you to the following concepts.
 We will use the application we already created for [the first audio getting started guide](/stitch/in-app-messaging/guides/4-enable-audio/swift). All the basic setup has been done in the previous guides and should be in place. We can now focus on updating the client-side application.
 
 ### 1.1 Modify the ChatController with `.storyboard` files 
+To modify the `.storyboard` to accomodate a call convenience method, let's perform the following changes: 
+
+- Inside of the scene for `ChatViewController.swift` add an instance of `UIBarButtonItem` to the upper right hand corner of the `UINavigationController`. 
+
+- Control drag from the instance to the `ChatViewController.swift` to create an action we will program later. 
 
 ### 1.2 Call Emoji! 📞
 
+With the `UIBarButtonItem` properly laid out in `.storyboard` the next step is to configure its UI with a Call Emoji! 📞
 
-Pass a list of users to initiate a call object:
+- Under the attributes inspector in the utilities menu change the `UIBarButtonItem`'s System Item to Custom. 
+- Inside of the Bar Item's properties, select title. 
+- Inside of the Bar Item's title property add a 📞!
+
+### 1.3 ☎️ `call` convenience method 
+
+How will we configure the `UIBarButton`'s action? We will configure it with our `call` convenience method, which is built on top of our existing architecture for the `client. We access call functionality through class called `media`. In the `media` class there is a single method for handling calls, called `call`. There were no puns intended here! ;) 
+
 
 ```swift
 do {
@@ -41,78 +54,57 @@ do {
 }
 ``` 
 
-## 2.0 - Subscribing to call events
+The method is really simple. It takes an array of users. It handles connecting with each one of the elements in the user array. Before we program it for real. Let's make sure our UI for chat is setup. 
 
-To get given a Call object for all incoming calls, there is a Swift closure with `call` as its object. 
+## 2.0 
 
-```swift
-try client.media.inboundCalls.subscribe(onSuccess: { call in })
+To ensure the chat is setup, we will configure an instance of `UITableView` to handle messages in the chat. To implement the `UITableView`, take the following steps: 
+
+- Add an instance of `UITableView` to the scene for `ChatViewController` in `.storyboard`
+- Control drag to create an reference in `ChatViewController`
+- Inside of `ChatViewController`'s `viewDidLoad(:)`
+
+extension ChatController : UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return conversation!.events.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellWithIdentifier", for: indexPath)
+        
+        let message = conversation?.events[indexPath.row] as? TextEvent
+        
+        cell.textLabel?.text = message?.text
+        
+        return cell;
+    }
+
+} 
+
+## 2.0 -  📞 + ☎️ equals a call
+
 ```
+       // MARK: - Call Convenience Method
+    private func call() {
+        
+        let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
+        
+        conversation?.members.forEach{ member in
+            callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
+                
+                    client.media.call(member.user.username, onSuccess: { result in
+                        // if you would like to display a UI for calling...
+                    }, onError: { networkError in
+                        // if you would like to display a log for error...
+                    })
+                
+            }))
+        }
+        
+        self.present(alert, animated: true, completion: nil)
 
-## 2.1 Receive an incoming call 
-
-You could do any number of things after getting a given Call object. You could show CallKit. You could show a customized user interface. Or you could just show an alert like we do to receive an incoming call. 
-
-```swift
-try client.media.inboundCalls.subscribe(onSuccess: { call in
-
-// Here you configure code for all incoming calls. 
-
-let alert = UIAlertController(title: "Someone is calling you.", message: "Are you going to answer?", preferredStyle: .alert) 
-
-alert.addAction(UIAlertAction(title: NSLocalizedString("Answer", comment: "Default action"), style: .default, handler: { _ in 
-// 
-
-NSLog("The user selected the \"Answer\" alert.")
-
-}))
-
-self.present(alert, animated: true, completion: nil)    
-
-})
+    }
+    
+}
 ```
-
-Since we will be tapping into protected device functionality we will have to ask for permission. We will update our `.plist` as well as display an alert. After permissions we will add AVFoundation class, set up audio from within the SDK and add a speaker emoji for our UI 🔈
-
-## 2.2 Reject an incoming call 
-
-If you would like to reject an incoming call, you can call the following method on `call`: 
-
-```swift
-call.reject()
-```
-If there is an error, the method comes with an optional `onError:` parameter. 
-
-### 2.1 Receive a PSTN Phone Call via Stitch
-
-After you've set up you're app to handle incoming calls, you can follow the PSTN to IP tutorial published on our blog. Now you can make PSTN Phone Calls via the Nexmo Voice API and receive those calls via the Stitch SDK.
-
-### 2.2 Answer an incoming call 
-
-`onSuccess:` will be called when call has been answered
-
-```swift
-call.answer(onSuccess: {
-    // code here              
-}, onFailure: { error in
-    // code here
-})
-``` 
-
-### 2.3 - Let users hang up on a call 
-
-`onSuccess` is called when the call has successfully hung up. 
-
-```swift
-call.hangUp(onSuccess: {
-    // code here
-}, onFailure: { error in
-    // code here
-})
-```
-
-
-
-## 3.0 - Open the app on two devices
-
-Now run the app on two devices (make sure they have a working mic and speakers!), making sure to login with the user name `jamie` in one and with `alice` in the other. Call one from the other, accept the call and start talking. You'll also see events being logged Logcat.
