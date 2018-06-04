@@ -111,7 +111,7 @@ class LoginViewController: UIViewController {
 // a stub for holding the value for private.key
 struct Authenticate {
     
-    static let userJWT = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MjIyNzA4MDMsImp0aSI6ImZjN2NmM2IwLTMyY2EtMTFlOC04OTM0LTIxZWZiYzAxZDUyMSIsInN1YiI6ImphbWllIiwiZXhwIjoiMTUyMjM1NzIwMiIsImFjbCI6eyJwYXRocyI6eyIvdjEvc2Vzc2lvbnMvKioiOnt9LCIvdjEvdXNlcnMvKioiOnt9LCIvdjEvY29udmVyc2F0aW9ucy8qKiI6e319fSwiYXBwbGljYXRpb25faWQiOiJhZDg2Mzg2MS0zNWU3LTQyNTgtOTRiNy1iMGQ3OWQ4ZTU4NDcifQ.cw5fTFKWdh4WuYatJMnfLgLTRewhGtHrgE-GvKSVtyLSej9XeH7MWvj7EOq1hzLP0VdN0Vyj977upnGCOj_ogb-uEyIxyuQrWi-zsYorXz6R2oCyY5OiZCErgxmdTMicQ1tAQlDmIATgo9bAgyOIiIVf3FqJbOnpLrrLgTbZip6fngCyzWsqh2I4aswTrtLTVOHJTia7X3OU3JVIKo-pLj1X0S09Vj6JbzSL5oaKKmdhsZpcGhgY8v0bN94KJsFbei82xkZnm5LnLzIK7dzX8bfZ8o7sP27jGwYnxovwnorwg6GIJvHaZFt310Fnp7qy8o5to3dtJlkMORRLlm0l2w"
+    static let userJWT = ""
     
     static let anotherUserJWT = ""
     
