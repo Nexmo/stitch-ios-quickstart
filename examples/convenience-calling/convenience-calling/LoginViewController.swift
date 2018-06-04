@@ -117,4 +117,13 @@ class LoginViewController: UIViewController {
 }
 
 
+// a stub for holding the value for private.key
+struct Authenticate {
+    
+    static let userJWT = ""
+    
+    static let anotherUserJWT = ""
+    
+}
+
 
