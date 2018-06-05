@@ -1,10 +1,23 @@
-# Nexmo In-App to Phone Calling!
+# Nexmo In-App to Phone Calling, or, Outbound PSTN Calling guide for iOS with Swift
+ 
+In this getting started guide we'll cover how to make an outbound PSTN call from your Android app using the Nexmo Stitch SDK.
 
-## What is an NCCO? 
+## Concepts
 
-## Configuring the UI
+This guide will cover the following concepts:
+ 
+ - **Calls** - calling a PSTN number in your application without creating a Conversation first
+ - **Call State** - A state a call can be in. Either `STARTED`, `RINGING`, or `ANSWERED`
 
-## Programming the methods
+## Before you begin
+
+You should read the [Outbound PSTN Calling NCCO guide](/stitch/in-app-voice/ncco-guide) before completing this quickstart. In order to make an outbound PSTN call, you'll have to correctly link your application to an answer url with an NCCO. The NCCO guide goes into further detail.
+
+## Setting up an iOS Project
+
+### Configuring the UI
+
+### Programming the methods
 
 ```
  // TODO: STEP 1
