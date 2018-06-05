@@ -81,11 +81,13 @@ In this example we're assuming the user has already logged in with the `conversa
 
 ### Programming the UI
 
-UITextField
+To configure the UI were going to add two instances of UIButton below an instance of UITextField.
 
-📞
+- add an instance of UITextField 
+- add an instance of UIButton but inside of its label, make sure to add a telephone 📞 emoji! 
+- add an instance of UIButton but inside of its label, make sure to add a stop sign 🛑 emoji! 
 
-🛑
+Make sure that you wire up each one of these UI elements to their respective properties or methods. 
 
 # Try it out! 
 
@@ -93,4 +95,4 @@ After you've followed along with this quickstart, you will be able to make a cal
 
 ## Where next?
  
-You can view the source code for this [quickstart on GitHub]()
+You can view the source code for this [quickstart on GitHub](https://github.com/Nexmo/stitch-ios-quickstart/examples/call-convenenience).
