@@ -15,14 +15,18 @@ You should read the [Outbound PSTN Calling NCCO guide](/stitch/in-app-voice/ncco
 
 ## Setting up an iOS Project
 
-### Configuring the UI
+To set up the Nexmo In-App to Phone Calling in iOS with Swift, you will need to setup both the UI and the methods. Here we'll program methods and then wire them up. 
 
 ### Programming the methods
+
+First you'll need the latest version of the Nexmo Stitch SDK in your `ViewController.swift`.
 
 ```
  // TODO: STEP 1
  import Stitch
 ```
+
+Now that you have the SDK included in your project, you'll ned to create a new instance of the `ConversationClient`. You can do this in your `ViewController.swift` where you'll be making your outbound PSTN call. 
 
  ```
  // TODO: STEP 2
