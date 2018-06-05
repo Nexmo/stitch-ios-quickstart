@@ -47,6 +47,8 @@ Now that you have the SDK included in your project, you'll ned to create a new i
              }
  ```
  
+In this example we're assuming the user has already logged in with the `conversationClient.login()` method. For more details about how to implement that read the [simple conversation quickstart](/stitch/in-app-messaging/guides/1-simple-conversation/swift).
+ 
  ```   
     // MARK:
     // MARK: Action
@@ -76,6 +78,8 @@ Now that you have the SDK included in your project, you'll ned to create a new i
          })
      }
 ```
+
+### Programming the UI
 
 # Try it out! 
 
