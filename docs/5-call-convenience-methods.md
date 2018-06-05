@@ -46,13 +46,12 @@ do {
     let users = ["user1", "user2"]
 
     try client.media.call(users, onSuccess: { result in
-        // code here
         // result contains Call object and any errors from requesting invites for users
     }, onError: { networkError in
-        // code here
+        // if you would like to work on the networkError, you can here.
     })
 } catch let error {
-    // code here
+    // if it is some other error, you can catch it here.
 }
 ``` 
 
@@ -103,10 +102,9 @@ Inside of this method copy and paste the code snippet from earlier with our actu
 private func call() {
 
    client.media.call(users, onSuccess: { result in
-        // code here
         // result contains Call object and any errors from requesting invites for users
     }, onError: { networkError in
-        // code here
+        // if you would like to work on the networkError, you can here.
     })
 
 }
@@ -114,26 +112,26 @@ private func call() {
 We no longer need the generic do-try-catch.  Inside of the function, however, we will add an instance of `UIAlertController`. We will loop over each member in the a conversation displayed in the `UITableView` with the higher order function `.forEach` so that we add an action for calling each member to the activity sheet:
 
 ```
-    // MARK: - Call Convenience Method
-    private func call() {
-        
-        let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
-        
-        conversation?.members.forEach{ member in
-            callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
-                
-                    client.media.call(member.user.username, onSuccess: { result in
-                        // if you would like to display a UI for calling...
-                    }, onError: { networkError in
-                        // if you would like to display a log for error...
-                    })
-                
-            }))
-        }
-        
-        self.present(alert, animated: true, completion: nil)
-
+// MARK: - Call Convenience Method
+private func call() {
+    
+    let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
+    
+    conversation?.members.forEach{ member in
+        callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
+            
+                client.media.call(member.user.username, onSuccess: { result in
+                    // if you would like to display a UI for calling...
+                }, onError: { networkError in
+                    // if you would like to display a log for error...
+                })
+            
+        }))
     }
+    
+    self.present(alert, animated: true, completion: nil)
+
+}
     
 }
 ```
