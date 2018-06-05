@@ -1,5 +1,11 @@
 # Nexmo In-App to Phone Calling!
 
+## What is an NCCO? 
+
+## Configuring the UI
+
+## Programming the methods
+
 ```
  // TODO: STEP 1
  import Stitch
@@ -53,3 +59,11 @@
          })
      }
 ```
+
+# Try it out! 
+
+After you've followed along with this quickstart, you will be able to make a call to a PSTN phone. Don't forget to include the country code when you make a call! For example if you're calling a phone number in the USA, the phone number will need to begin with a 1. When calling a phone number in Great Britain the phone number will need to be prefixed with 44.
+
+## Where next?
+ 
+You can view the source code for this [quickstart on GitHub]()
