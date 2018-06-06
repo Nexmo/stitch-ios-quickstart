@@ -32,7 +32,7 @@ class ChatController: UIViewController {
         
         do {
             // send method
-            try consfversation?.send(textField.text!)
+            try consversation?.send(textField.text!)
             
         } catch let error {
             print(error)
