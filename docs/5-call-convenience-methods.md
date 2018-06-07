@@ -112,28 +112,25 @@ private func call() {
 We no longer need the generic do-try-catch.  Inside of the function, however, we will add an instance of `UIAlertController`. We will loop over each member in the a conversation displayed in the `UITableView` with the higher order function `.forEach` so that we add an action for calling each member to the activity sheet:
 
 ```
-// MARK: - Call Convenience Method
-private func call() {
-    
-    let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
-    
-    conversation?.members.forEach{ member in
-        callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
-            
-                client.media.call(member.user.username, onSuccess: { result in
-                    // if you would like to display a UI for calling...
-                }, onError: { networkError in
-                    // if you would like to display a log for error...
-                })
-            
-        }))
-    }
-    
-    self.present(alert, animated: true, completion: nil)
+    // MARK: - Call Convenience Methods
+    private func call() {
+        
+        let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
+        
+        conversation?.members.forEach{ member in
+            callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
+                
+                    ConversationClient.instance.media.call(member.user.username, onSuccess: { result in
+                        // if you would like to display a UI for calling...
+                    }, onError: { networkError in
+                        // if you would like to display a log for error...
+                    })
+            }))
+        }
+        
+        self.present(callAlert, animated: true, completion: nil)
 
-}
-    
-}
+    }
 ```
 ## 3.0 Try it out!
 
