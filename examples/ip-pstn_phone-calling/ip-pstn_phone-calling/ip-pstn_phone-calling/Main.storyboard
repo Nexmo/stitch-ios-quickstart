@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="StitchWorkshop" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Phone number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JUy-Nw-jLa">
+                                <rect key="frame" x="16" y="121" width="382" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="dOx-mz-cSI"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad" returnKeyType="send" enablesReturnKeyAutomatically="YES" textContentType="tel"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EQE-iP-rIl">
+                                <rect key="frame" x="162" y="183" width="90" height="66"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="66" id="9Ra-G6-GA5"/>
+                                    <constraint firstAttribute="width" constant="90" id="RYe-Bu-XJU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="45"/>
+                                <state key="normal" title="📞"/>
+                                <connections>
+                                    <action selector="makeCall" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nf9-YZ-PWe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4O5-bO-kRb">
+                                <rect key="frame" x="162" y="277" width="90" height="66"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="66" id="Da9-Lu-Tef"/>
+                                    <constraint firstAttribute="width" constant="90" id="mFO-M3-vQY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="45"/>
+                                <state key="normal" title="🛑"/>
+                                <connections>
+                                    <action selector="hangup" destination="BYZ-38-t0r" eventType="touchUpInside" id="T9u-kC-dKC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JUy-Nw-jLa" secondAttribute="trailing" constant="16" id="FHC-XD-yed"/>
+                            <constraint firstItem="JUy-Nw-jLa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="GfF-nH-vh9"/>
+                            <constraint firstItem="EQE-iP-rIl" firstAttribute="top" secondItem="JUy-Nw-jLa" secondAttribute="bottom" constant="32" id="JW4-q3-YH5"/>
+                            <constraint firstItem="4O5-bO-kRb" firstAttribute="top" secondItem="EQE-iP-rIl" secondAttribute="bottom" constant="28" id="Mzp-zO-ymi"/>
+                            <constraint firstItem="JUy-Nw-jLa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="101" id="ZZ7-Qs-9Z7"/>
+                            <constraint firstItem="4O5-bO-kRb" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="an4-cN-UrB"/>
+                            <constraint firstItem="EQE-iP-rIl" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="wgX-O3-NH1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="textfield" destination="JUy-Nw-jLa" id="QTc-HS-oW2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+    </scenes>
+</document>
