@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import NexmoConversation
+import Stitch
 
 class ChatController: UIViewController {
     
@@ -49,7 +49,9 @@ class ChatController: UIViewController {
         
         // a handler for updating the textView with TextEvents
         conversation?.events.newEventReceived.addHandler { event in
+            
             guard let event = event as? TextEvent, event.isCurrentlyBeingSent == false else { return }
+            
             guard let text = event.text else { return }
             
             self.textView.insertText(" \(text) \n ")
@@ -57,7 +59,7 @@ class ChatController: UIViewController {
         
     }
 
-       // MARK: - Call Convenience Methods
+    // MARK: - Call Convenience Methods
     private func call() {
         
         let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
@@ -65,17 +67,15 @@ class ChatController: UIViewController {
         conversation?.members.forEach{ member in
             callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
                 
-                    client.media.call(member.user.username, onSuccess: { result in
+                    ConversationClient.instance.media.call(member.user.username, onSuccess: { result in
                         // if you would like to display a UI for calling...
                     }, onError: { networkError in
                         // if you would like to display a log for error...
                     })
-                
             }))
         }
-        DispatchQueue.main.async {
-        self.present(alert, animated: true, completion: nil)
-        }
+        
+        self.present(callAlert, animated: true, completion: nil)
 
     }
     

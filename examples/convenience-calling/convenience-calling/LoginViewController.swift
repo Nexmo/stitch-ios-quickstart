@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Nexmo-Stitch
+import Stitch
 
 class LoginViewController: UIViewController {
     
