@@ -22,11 +22,11 @@ Here is a handy dandy table with a brief list of all states:
 - **complete**: Platform has terminated this call after the call was successfully answered
 - **machine**: Platform detected an answering machine
 
-These states are valid for all 1:1 cal combinations such as (IP-IP, IP - PSTN, PSTN - IP, etc...). Since these states are straightforward let's demonstrate how to subscribe to changes in state in an iOS app. 
+These states are valid for all 1:1 call combinations such as (IP-IP, IP - PSTN, PSTN - IP, etc...). Since these states are straightforward let's demonstrate how to subscribe to changes in state in an iOS app. 
 
 ## 1.0 Setting up the iOS app 
 
-In order to subscribe to call events, our app will need to be able to make out outgoing calls. We will subscribe to changes in the state of the outgoing call in the usual way. We will 
+In order to subscribe to call events, our app will need to be able to make outgoing calls. We will subscribe to changes in the state of the outgoing call in the usual way. We will 
 
 ## 2.0 Subscribing to a State Changes & Retrieval
 
