@@ -179,7 +179,7 @@ Given the way the iOS Push Notification work, it’s critical for the user to gr
 As soon as the `Info.plist` is configured, we have to register for remote notifications with Apple's method called `registerForRemoteNotifications`. Since Push Notifications run disrupt an app's User Interface, registration needs to happen on the main thread. To register on the main thread we pass `registerForRemoteNotifications` as an argument in the `async().` method on `.main` property for `DispatchQueue`:
 
 ```swift
-DispatchQueue.main.async(execute: UIApplication.shared.registerForRemoteNotifications)
+	DispatchQueue.main.async(execute: UIApplication.shared.registerForRemoteNotifications)
 ```
 ### 4.2 Registering Device Token with the SDK
 
@@ -189,9 +189,9 @@ After the functionality for registering remote notifications is integrated, we p
 // MARK:
 // MARK: Notification
 
-func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-client.appLifecycle.push.registeredForRemoteNotifications(with: deviceToken)
-}
+	func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+	client.appLifecycle.push.registeredForRemoteNotifications(with: deviceToken)
+	}
 ```
 
 ## 5 Configuring the Stitch iOS SDK within the iOS App 
@@ -199,18 +199,18 @@ client.appLifecycle.push.registeredForRemoteNotifications(with: deviceToken)
 The last step is to configure the app to respond to requests for Push Notifications. Drop either of the following lines of code inside of `viewDidLoad(:)` in `ViewController.swift`:
 
 ```swift
-// listen for push notifications
-ConversationClient.instance.appLifecycle.notifications.subscribe(onSuccess: { notification in
-// code here
-})
+	// listen for push notifications
+	ConversationClient.instance.appLifecycle.notifications.subscribe(onSuccess: { notification in
+	// code here
+	})
 
 ```
 You can also subscribe to events for push notifications through the `.receiveRemoteNotifications` property here: 
 
 ```
-ConversationClient.instance.appLifecycle.receiveRemoteNotification.subscribe(onSuccess: { notification in
-// code here
-})
+	ConversationClient.instance.appLifecycle.receiveRemoteNotification.subscribe(onSuccess: { notification in
+	// code here
+	})
 ```
 
 ## 5.1 Configuring `sendBtn`
@@ -218,26 +218,26 @@ ConversationClient.instance.appLifecycle.receiveRemoteNotification.subscribe(onS
 In `ViewController.swift` drop in an instance of `ConversationClient` so that we can send messages. 
 
 ```
- /// Nexmo Conversation client
-    let client: ConversationClient = {
-        return ConversationClient.instance
-    }()
+	/// Nexmo Conversation client
+	let client: ConversationClient = {
+	    return ConversationClient.instance
+	}()
 ```
 Next we configure our `sendBtn` to send messages through our `ConversationClient`:
 
 ```
-    // sendBtn for sending text
-    @IBAction func sendBtn(_ sender: Any) {
+// sendBtn for sending text
+@IBAction func sendBtn(_ sender: Any) {
+    
+    do {
+        // send method
+        try client.conversation?.send(textField.text!)
         
-        do {
-            // send method
-            try client.conversation?.send(textField.text!)
-            
-        } catch let error {
-            print(error)
-        }
-        
+    } catch let error {
+        print(error)
     }
+    
+}
 ```
 
 Finally, we need to listen for text updates so we are adding a handler to `viewDidLoad(:)`:
@@ -265,7 +265,8 @@ curl -v -X POST \
            \"payload\": {\"aps\":{\"alert\":\"Push data\"}}}" \
    http://qa1.internal:3150/v1/push/notify
 ```
-After sending the POST request we should be able to see the displayable message in a push notification. 
+This HTTP request returns 200 for success, with no body. After sending the POST request we should be able to see the displayable message in a push notification. 
+ 
 
 ## 6 Trying it out 
 
