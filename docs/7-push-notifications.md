@@ -116,7 +116,17 @@ If you would like to double check any of the JWT credentials, navigate to [your-
 
 ## 2 - Sending the APNS Certificate to Nexmo, the Vonage API Platform
 
-The next step is to upload the token generated from step 1.6 to our push service.
+There are series of steps to take in order to send the APNS Certificate to Nexmo 
+
+### 2.0 Creating the push token
+
+// Create push token
+hexdump -ve '1/1 "%.2x"' < applecert.p12 > applecert.pfx.hex
+hextoken=cat applecert.pfx.hex
+
+### 2.1 Upload push token
+
+With the JWT, which as assigned to `USER_JWT` in step 1.5, allowing us to access to Nexmo,  our next step is to upload the push certificate. 
 
 ```bash
 // Upload
@@ -127,13 +137,13 @@ curl -v -X PUT \
 https://api.nexmo.com/v1/applications/$appid/push_tokens/ios
 ```
 
-### 2.1 Export .p12 certificate
+### 2.2 Retrieve push token
 // go to Keychain and export (Note: must export with the same private key on that machine)
- 
-```bash
-hexdump -ve '1/1 "%.2x"' < applecert.p12 > applecert.pfx.hex
-hextoken=cat applecert.pfx.hex
-```
+
+// Retrieve push token for testing
+curl -H "Authorization: Bearer $jwt_dev" 
+-H "Content-Type: application/json" 
+https://api.nexmo.com/v1/applications/$appid/push_tokens/ios
 
 ## 3 - iOS App
 
