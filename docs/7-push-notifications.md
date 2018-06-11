@@ -2,9 +2,9 @@
 
 You have already implemented multiple features with which to stitch together a conversation: initializing an instance of our client, creating a conversation, adding members, displaying conversations' history, or enabling audio. Let's add push notifications now! 
 
-Push Notification depend on Apple Push Notification's service. It is a robust, secure, and highly efficient service for app developers to propagate information throughout a network of interconnected iOS devices, especially those connected together through the Stitch iOS SDK so Push Notifications rely upon APNS entirely. 
+Push Notification depend on Apple Push Notification's service (a.k.a. _APNS_). It is a robust, secure, and highly efficient service for app developers to propagate information throughout a network of interconnected iOS devices, especially those connected to the Stitch iOS SDK. Push Notifications therefore rely almost entirely upon APNS. 
 
-In this tutorial we will configure: an APNS certificate in keychain, uploading/downloading an iOS Push Notification certificate, toggling permissions in Xcode. After all of these these prerequisite configurations are in place we will set up the Stitch iOS SDK within the sample app to send our first Push Notification!  
+In this tutorial we will configure: an APNS certificate in keychain, uploading/downloading an iOS Push Notification certificate, toggling permissions in Xcode, setting up the Stitch iOS SDK within the sample app and sending out our first Push Notification!  
  
  
 ## 1 - Setup
