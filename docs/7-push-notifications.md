@@ -120,9 +120,13 @@ There are series of steps to take in order to send the APNS Certificate to Nexmo
 
 ### 2.0 Creating the push token
 
+Here we want to create the push token. 
+
+```bash
 // Create push token
 hexdump -ve '1/1 "%.2x"' < applecert.p12 > applecert.pfx.hex
 hextoken=cat applecert.pfx.hex
+```
 
 ### 2.1 Upload push token
 
@@ -138,12 +142,15 @@ https://api.nexmo.com/v1/applications/$appid/push_tokens/ios
 ```
 
 ### 2.2 Retrieve push token
-// go to Keychain and export (Note: must export with the same private key on that machine)
 
+Here we are going to retrieve the push token. 
+
+```bash
 // Retrieve push token for testing
 curl -H "Authorization: Bearer $jwt_dev" 
 -H "Content-Type: application/json" 
 https://api.nexmo.com/v1/applications/$appid/push_tokens/ios
+```
 
 ## 3 - iOS App
 
@@ -245,6 +252,20 @@ Finally, we need to listen for text updates so we are adding a handler to `viewD
     }
 ```
 
+## 6 Sending a push notification 
+In the `payload` variable of this POST request we can put together a message that will displayed in the push notification: 
+
+```bash
+curl -v -X POST \
+   -H "Authorization: Bearer $jwt_user" \
+   -H "Content-Type: application/json" \
+   -d "{\"device_type\": \"ios\", \
+           \"device_token\":\"$regtoken\", \
+           \"application_id\":\"$appid\", \
+           \"payload\": {\"aps\":{\"alert\":\"Push data\"}}}" \
+   http://qa1.internal:3150/v1/push/notify
+```
+After sending the POST request we should be able to see the displayable message in a push notification. 
 
 ## 6 Trying it out 
 
