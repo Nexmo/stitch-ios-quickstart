@@ -10,12 +10,4 @@ target 'SimpleConversation' do
 
   pod "Nexmo-Stitch" #, :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "release" # $
 
-  target 'SimpleConversationTests' do
-    inherit! :search_paths
-  end
-
-  target 'SimpleConversationUITests' do
-    inherit! :search_paths
-  end
-
 end
