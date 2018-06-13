@@ -6,7 +6,7 @@ source "https://github.com/Nexmo/PodSpec.git"
 source 'git@github.com:CocoaPods/Specs.git'
 
 
-target 'SimpleConversation' do
+target 'simple-conversation-objc' do
 
   pod "Nexmo-Stitch" #, :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "release" # $
 
