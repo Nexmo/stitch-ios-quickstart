@@ -49,10 +49,10 @@ end
 
 ## Accessing a Swift Class in Objective-C
 
-To start programming in Objective-C with the Stitch Swift iOS SDk, add a CocoaTouch class called `LoginVC` as a subclass of UIViewController. 
+To start programming in Objective-C with the Stitch Swift iOS SDk, add a CocoaTouch class called `LoginVC` as a subclass of UIViewController. Program the interface file in the following way:
 
-1. In the `.h` file add `@import Stitch;`.
-2. Below `interface` add a property for the client. 
+1. Import the Stitch iOS SDK in the interface file.
+2. In the interface file's interface add a property for the client. 
 
 Your code should look like this: 
 
@@ -66,10 +66,35 @@ Your code should look like this:
 @end
 ```
 
-### 2.2 Adding ViewControllers & .storyboard files
+Program the implementation file in the following way: 
 
-Let's add a few view controllers. Start by adding a custom subclass of `UIViewController` from a CocoaTouch file named `LoginViewController`, which we will use for creating the login functionality, and another custom subclass of `UIViewController` from a CocoaTouch file named `ChatViewController`, which we will use for creating the chat functionality. Add two new scenes to `Main.storyboard`, assigning each to one of the added custom subclasses of `UIViewController` respectively. 
+1. Import the LoginVC interface file. 
+2. Synthesize the client. 
+3. Initialize the client after the controller's view is loaded into memory. 
 
+Your code should look like this: 
+
+
+```Objective-C
+#import "LoginVC.h"
+
+@interface LoginVC ()
+
+@end
+
+@implementation LoginVC
+
+@synthesize client;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    client = [NXMConversationClient instance];
+}
+
+@end
+```
 
 ### 2.4 Creating the login layout
 Let's layout the login functionality. Set constraints on the top & leading attributes of an instance of UIButton with a constant HxW at 71x94 to the top of the Bottom Layout Guide + 20 and the leading attribute of `view` + 16. This is our login button. Reverse leading to trailing for another instance of UIButton with the same constraints. This our chat button. Set the text on these instances accordingly. Add a status label centered horizontally & vertically. Finally, embedd this scene into a navigation controller. Control drag from the chat button to scene assigned to the chat controller, naming the segue `chatView`. 
