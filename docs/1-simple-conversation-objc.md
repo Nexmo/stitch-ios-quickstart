@@ -1,10 +1,18 @@
 # Getting Started with the Nexmo Stitch iOS SDK in Objective-C
 
-In this getting started guide we'll demonstrate how to build a simple conversation app with IP messaging using the Nexmo Stitch iOS SDK.
+In this getting started guide we'll demonstrate how to build a simple conversation app with IP messaging using the Nexmo Stitch iOS SDK but with interoperability in Objective-C.
 
-## Concepts & Setup 
+## 1 - Concepts & Setup 
 
-Please see the Swift [guide](https://developer.nexmo.com/stitch/in-app-messaging/guides/1-simple-conversation) for an introduction to concepts and setting up a JSON web token for the Nexmo dashboard. 
+Please see the Swift [guide](https://developer.nexmo.com/stitch/in-app-messaging/guides/1-simple-conversation) for an introduction to concepts and setting up a JSON web token for the Nexmo dashboard.
+
+## 2 - Create the iOS App
+
+With the basic setup in place we can now focus on the client-side application.
+
+### 2.1 Start a new project
+
+Open Xcode and start a new project. We'll name it "simple-conversation-objc".  
 
 ## Interoperability with Objective-C
 
@@ -21,188 +29,43 @@ The process of setting up interoperability in Objective-C is identical for nearl
 5. Go to your project's "Build Settings" and switch to "All" instead of "Basic", which is the default option. Under "Packaging" turn on  "Defines Module" by chaning "No" to "Yes". Changing this parameter enables us to use Swift classes inside of Objective-C files.
 6. Inside of "Build Settings" make sure to look for "Product Module Name" in the "Packaging" section so that you can copy the "Product Module Name" exactly. 
 
-## Accessing a Swift Class in Objective-C
-
-The next step is to import the header "Stitch-Swift.h" in the implementation file `.m` of the class where you would like to access a Swift class in Objective-C. 
-
-The final step in accessibility is making sure to cast the top-level Swift class as an object in Objective-C. There are two ways: 
-
-1. To declare the class with `@objc` as in: `@objc public class myStitchClass`.
-2. Or to declare the Swift class as a subclass of NSObject as in: `public class myStitchClass: NSObject {}`. 
-
-##  Integrating Nexmo In-App Messaging
-
-With Stitch Swift classes both available and accessible, the next step is to integrate Stitch features into the Objective-C app. 
-
-## Try it out
-After this you should be able to run the app and send messages.
-
-
-
- ## Getting Started with the Nexmo iOS Conversation SDK
-
-In this getting started guide we'll demonstrate how to build a simple conversation app with IP messaging using the Nexmo Conversation iOS SDK.
-
-## Concepts
-
-This guide will introduce you to the following concepts.
-
-* **Nexmo Applications** - contain configuration for the application that you are building
-* **JWTs** ([JSON Web Tokens](https://jwt.io/)) - the Conversation API uses JWTs for authentication. JWTs contain all the information the Nexmo platform needs to authenticate requests. JWTs also contain information such as the associated Applications, Users and permissions. It helps you as well as Nexmo facilitate the retention & analysis of metadata for future AI implementations. 
-* **Users** - users who are associated with the Nexmo Application. It's expected that Users will have a one-to-one mapping with your own authentication system.
-* **Conversations** - A thread of conversation between two or more Users.
-* **Members** - Users that are part of a conversation.
-
-### Before you begin
-
-* _**[Contact us](mailto:ea-support@nexmo.com) for access to the CocoaPod (if you haven't already done so)**_
-* Ensure you have Node.JS and NPM installed (you'll need it for the Nexmo CLI) <sup>[1](#myfootnote1)</sup>
-* Ensure you have Xcode installed
-* Create a free Nexmo account - [signup](https://dashboard.nexmo.com)
-* Install the Nexmo CLI:
-
-    ```bash
-    $ npm install -g nexmo-cli@beta
-    ```
-
-    Setup the CLI to use your Nexmo API Key and API Secret. You can get these from the [setting page](https://dashboard.nexmo.com/settings) in the Nexmo Dashboard.
-
-    ```bash
-    $ nexmo setup api_key api_secret
-    ```
-
-## 1 - Setup
-
-The Nexmo iOS Conversation SDK utilizes JSON web tokens (i.e., JWTs) to for contextual, omnichannel, artificially intelligent in-app endpoints. While artificial intelligence is still in the process of being developed, IP Message, for instance, is only one of the many channels that literally plug into an app integrated with the Nexmo iOS Conversation SDK. While the sky is the limit, let's start from ground zero to create a Nexmo application. 
-
-_Note: The steps within this section can all be done dynamically via server-side logic. But in order to get the client-side functionality we're going to manually run through setup._
-
-### 1.1 - Create a Nexmo application
-
-Create an application within the Nexmo platform.
-
-```bash
-$ nexmo app:create "Conversation iOS App" http://example.com/answer http://example.com/event --type=rtc --keyfile=private.key
-```
-
-Nexmo Applications contain configuration for the application that you are building. The output of the above command will be something like this:
-
-```bash
-Application created: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
-No existing config found. Writing to new file.
-Credentials written to /path/to/your/local/folder/.nexmo-app
-Private Key saved to: private.key
-```
-
-The first item is the Application ID and the second is a private key that is used generate JWTs that are used to authenticate your interactions with Nexmo. You should take a note of it. We'll refer to this as `YOUR_APP_ID` later.
-
-
-### 1.2 - Create a Conversation
-
-Create a conversation within the application:
-
-```bash
-$ nexmo conversation:create display_name="Nexmo Chat"
-```
-
-The output of the above command will be something like this:
-
-```sh
-Conversation created: CON-aaaaaaaa-bbbb-cccc-dddd-0123456789ab
-```
-
-That is the Conversation ID. Take a note of it as this is the unique identifier for the conversation that has been created. We'll refer to this as YOUR_CONVERSATION_ID later.
-
-### 1.3 - Create a User
-
-Create a user who will participate within the conversation.
-
-```bash
-$ nexmo user:create name="jamie"
-```
-
-The output will look as follows:
-
-```sh
-User created: USR-aaaaaaaa-bbbb-cccc-dddd-0123456789ab
-```
-
-Take a note of the `id` attribute as this is the unique identifier for the user that has been created. We'll refer to this as `YOUR_USER_ID` later.
-
-### 1.4 - Add the User to the Conversation
-
-Finally, let's add the user to the conversation that we created. Remember to replace `YOUR_CONVERSATION_ID` and `YOUR_USER_ID` values.
-
-```bash
-$ nexmo member:add YOUR_CONVERSATION_ID action=join channel='{"type":"app"}' user_id=YOUR_USER_ID
-```
-
-The output of this command will confirm that the user has been added to the "Nexmo Chat" conversation.
-
-```sh
-Member added: MEM-aaaaaaaa-bbbb-cccc-dddd-0123456789ab
-```
-
-You can also check this by running the following request, replacing `YOUR_CONVERSATION_ID`:
-
-```bash
-$ nexmo member:list YOUR_CONVERSATION_ID -v
-```
-
-Where you should see a response similar to the following:
-
-```sh
-name                                     | user_id                                  | user_name | state  
----------------------------------------------------------------------------------------------------------
-MEM-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | USR-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | jamie     | JOINED
-```
-
-### 1.5 - Generate a User JWT
-
-Generate a JWT for the user and take a note of it. Remember to change the `YOUR_APP_ID` value in the command.
-
-```bash
-$ USER_JWT="$(nexmo jwt:generate ./private.key sub=jamie exp=$(($(date +%s)+86400)) acl='{"paths": {"/v1/sessions/**": {}, "/v1/users/**": {}, "/v1/conversations/**": {}}}' application_id=YOUR_APP_ID)"
-```
-
-*Note: The above command saves the generated JWT to a `USER_JWT` variable. It also sets the expiry of the JWT to one day from now.*
-
-You can see the JWT for the user by running the following:
-
-```bash
-$ echo $USER_JWT
-```
-
-### 1.6 The Nexmo Conversation API Dashboard 
-
-If you would like to double check any of the JWT credentials, navigate to [your-applications](https://dashboard.nexmo.com/voice/your-applications) where you can see a table with three entries respectively entitled "Name", "Id", or "Security settings". Under the menu options for "Edit" next to "Delete", you can take a peak at the details of the applications such as "Application name", "Application Id", etc... 
-
-## 2 - Create the iOS App
-
-With the basic setup in place we can now focus on the client-side application
-
-### 2.1 Start a new project
-
-Open Xcode and start a new project. We'll name it "QuickStartOne". 
-
 ### 2.2 Adding the Nexmo iOS Conversation SDK to Cocoapods
 
 Navigate to the project's root directory in the Terminal. Run: `pod init`. Open the file entitled `PodFile`. Configure its specifications accordingly: 
 
 ```bash
 # Uncomment the next line to define a global platform for your project
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 source "https://github.com/Nexmo/PodSpec.git"
 source 'git@github.com:CocoaPods/Specs.git'
 
-target 'QuickStartOne' do
+target 'simple-conversation-objc' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  pod "NexmoConversation", :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "master" # development
+  pod "Nexmo-Stitch", :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "master" # development
 end
-
 ```
+
+## Accessing a Swift Class in Objective-C
+
+To start programming in Objective-C with the Stitch Swift iOS SDk, add a CocoaTouch class called `LoginVC` as a subclass of UIViewController. 
+
+1. In the `.h` file add `@import Stitch;`.
+2. Below `interface` add a property for the client. 
+
+Your code should look like this: 
+
+```Objective-C
+@import Stitch;
+
+@interface LoginVC : UIViewController
+
+@property (retain, nonatomic) NXMConversationClient *client;
+
+@end
+```
+
 ### 2.2 Adding ViewControllers & .storyboard files
 
 Let's add a few view controllers. Start by adding a custom subclass of `UIViewController` from a CocoaTouch file named `LoginViewController`, which we will use for creating the login functionality, and another custom subclass of `UIViewController` from a CocoaTouch file named `ChatViewController`, which we will use for creating the chat functionality. Add two new scenes to `Main.storyboard`, assigning each to one of the added custom subclasses of `UIViewController` respectively. 
