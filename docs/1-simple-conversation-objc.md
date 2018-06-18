@@ -107,7 +107,7 @@ Configure your own layout for login with:
 
 ### 2.5 - Create the Login Functionality
 
-Below `UIKit` let's import the `NexmoConversation`. Next we setup a custom instance of the `ConversationClient` and saving it as a member variable in the view controller. 
+Below `UIKit` let's import the `Stitch`. Next we setup a custom instance of the `ConversationClient` and saving it as a member variable in the view controller. 
 
 ```Objective-C
 - (IBAction)loginBtn:(id)sender {
@@ -280,3 +280,7 @@ NXMEventBase *baseEvent = [events indexWithSafe:[events startIndex]];
 ## 3.0 - Trying it out
 
 After this you should be able to run the app and send messages.
+
+## What's next? 
+
+Click [here](https://github.com/Nexmo/stitch-ios-quickstart/tree/master/examples/simple-conversation/simple-conversation-objc), if you would like to compare your codebase with the codebase for this quick start.
