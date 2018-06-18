@@ -1,0 +1,430 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		993CF1DE20D1C0FA00E55BFD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 993CF1DD20D1C0FA00E55BFD /* AppDelegate.m */; };
+		993CF1E420D1C0FA00E55BFD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 993CF1E220D1C0FA00E55BFD /* Main.storyboard */; };
+		993CF1E620D1C0FA00E55BFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 993CF1E520D1C0FA00E55BFD /* Assets.xcassets */; };
+		993CF1E920D1C0FA00E55BFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 993CF1E720D1C0FA00E55BFD /* LaunchScreen.storyboard */; };
+		993CF1EC20D1C0FA00E55BFD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 993CF1EB20D1C0FA00E55BFD /* main.m */; };
+		99F0957920D1C6A100F10D5B /* ChatVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F0957820D1C6A100F10D5B /* ChatVC.m */; };
+		99F0957C20D1C6B000F10D5B /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F0957B20D1C6B000F10D5B /* LoginVC.m */; };
+		C11F848C5DD5A6DDB5ED09DC /* Pods_simple_conversation_objc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A93AA2004A9756C39D1F8 /* Pods_simple_conversation_objc.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		10DA3FCF0C22952BA3CB1024 /* Pods-simple-conversation-objc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-conversation-objc.release.xcconfig"; path = "Pods/Target Support Files/Pods-simple-conversation-objc/Pods-simple-conversation-objc.release.xcconfig"; sourceTree = "<group>"; };
+		110A93AA2004A9756C39D1F8 /* Pods_simple_conversation_objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_simple_conversation_objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		993CF1D920D1C0FA00E55BFD /* simple-conversation-objc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "simple-conversation-objc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		993CF1DC20D1C0FA00E55BFD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		993CF1DD20D1C0FA00E55BFD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		993CF1E320D1C0FA00E55BFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		993CF1E520D1C0FA00E55BFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		993CF1E820D1C0FA00E55BFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		993CF1EA20D1C0FA00E55BFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		993CF1EB20D1C0FA00E55BFD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		99F0957720D1C6A100F10D5B /* ChatVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatVC.h; sourceTree = "<group>"; };
+		99F0957820D1C6A100F10D5B /* ChatVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatVC.m; sourceTree = "<group>"; };
+		99F0957A20D1C6B000F10D5B /* LoginVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
+		99F0957B20D1C6B000F10D5B /* LoginVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
+		E9CEA808FFBF631722BFC303 /* Pods-simple-conversation-objc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-conversation-objc.debug.xcconfig"; path = "Pods/Target Support Files/Pods-simple-conversation-objc/Pods-simple-conversation-objc.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		993CF1D620D1C0FA00E55BFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C11F848C5DD5A6DDB5ED09DC /* Pods_simple_conversation_objc.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7A4FBF24DE956FEA3973803C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				110A93AA2004A9756C39D1F8 /* Pods_simple_conversation_objc.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		993CF1D020D1C0FA00E55BFD = {
+			isa = PBXGroup;
+			children = (
+				993CF1DB20D1C0FA00E55BFD /* simple-conversation-objc */,
+				993CF1DA20D1C0FA00E55BFD /* Products */,
+				E1446AA6AAC853650B4D6591 /* Pods */,
+				7A4FBF24DE956FEA3973803C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		993CF1DA20D1C0FA00E55BFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				993CF1D920D1C0FA00E55BFD /* simple-conversation-objc.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		993CF1DB20D1C0FA00E55BFD /* simple-conversation-objc */ = {
+			isa = PBXGroup;
+			children = (
+				993CF1DC20D1C0FA00E55BFD /* AppDelegate.h */,
+				993CF1DD20D1C0FA00E55BFD /* AppDelegate.m */,
+				99F0957720D1C6A100F10D5B /* ChatVC.h */,
+				99F0957820D1C6A100F10D5B /* ChatVC.m */,
+				99F0957A20D1C6B000F10D5B /* LoginVC.h */,
+				99F0957B20D1C6B000F10D5B /* LoginVC.m */,
+				993CF1E220D1C0FA00E55BFD /* Main.storyboard */,
+				993CF1E520D1C0FA00E55BFD /* Assets.xcassets */,
+				993CF1E720D1C0FA00E55BFD /* LaunchScreen.storyboard */,
+				993CF1EA20D1C0FA00E55BFD /* Info.plist */,
+				993CF1EB20D1C0FA00E55BFD /* main.m */,
+			);
+			path = "simple-conversation-objc";
+			sourceTree = "<group>";
+		};
+		E1446AA6AAC853650B4D6591 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E9CEA808FFBF631722BFC303 /* Pods-simple-conversation-objc.debug.xcconfig */,
+				10DA3FCF0C22952BA3CB1024 /* Pods-simple-conversation-objc.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		993CF1D820D1C0FA00E55BFD /* simple-conversation-objc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 993CF1EF20D1C0FA00E55BFD /* Build configuration list for PBXNativeTarget "simple-conversation-objc" */;
+			buildPhases = (
+				F3EC6A705E59A303F443D10D /* [CP] Check Pods Manifest.lock */,
+				993CF1D520D1C0FA00E55BFD /* Sources */,
+				993CF1D620D1C0FA00E55BFD /* Frameworks */,
+				993CF1D720D1C0FA00E55BFD /* Resources */,
+				05930C0F8B71F08D82FC8689 /* [CP] Embed Pods Frameworks */,
+				BD532CB705F116B83E168C4A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "simple-conversation-objc";
+			productName = "simple-conversation-objc";
+			productReference = 993CF1D920D1C0FA00E55BFD /* simple-conversation-objc.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		993CF1D120D1C0FA00E55BFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Nexmo, Inc.";
+				TargetAttributes = {
+					993CF1D820D1C0FA00E55BFD = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 993CF1D420D1C0FA00E55BFD /* Build configuration list for PBXProject "simple-conversation-objc" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 993CF1D020D1C0FA00E55BFD;
+			productRefGroup = 993CF1DA20D1C0FA00E55BFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				993CF1D820D1C0FA00E55BFD /* simple-conversation-objc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		993CF1D720D1C0FA00E55BFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				993CF1E920D1C0FA00E55BFD /* LaunchScreen.storyboard in Resources */,
+				993CF1E620D1C0FA00E55BFD /* Assets.xcassets in Resources */,
+				993CF1E420D1C0FA00E55BFD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		05930C0F8B71F08D82FC8689 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-simple-conversation-objc/Pods-simple-conversation-objc-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/NexmoGRDB.swift/GRDB.framework",
+				"${PODS_ROOT}/NexmoWebRTC/WebRTC.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stitch.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Stitch.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-simple-conversation-objc/Pods-simple-conversation-objc-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD532CB705F116B83E168C4A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-simple-conversation-objc/Pods-simple-conversation-objc-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F3EC6A705E59A303F443D10D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-simple-conversation-objc-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		993CF1D520D1C0FA00E55BFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				99F0957920D1C6A100F10D5B /* ChatVC.m in Sources */,
+				993CF1EC20D1C0FA00E55BFD /* main.m in Sources */,
+				99F0957C20D1C6B000F10D5B /* LoginVC.m in Sources */,
+				993CF1DE20D1C0FA00E55BFD /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		993CF1E220D1C0FA00E55BFD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				993CF1E320D1C0FA00E55BFD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		993CF1E720D1C0FA00E55BFD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				993CF1E820D1C0FA00E55BFD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		993CF1ED20D1C0FA00E55BFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		993CF1EE20D1C0FA00E55BFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		993CF1F020D1C0FA00E55BFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9CEA808FFBF631722BFC303 /* Pods-simple-conversation-objc.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "simple-conversation-objc/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nexmo.simple-conversation-objc";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		993CF1F120D1C0FA00E55BFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10DA3FCF0C22952BA3CB1024 /* Pods-simple-conversation-objc.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "simple-conversation-objc/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nexmo.simple-conversation-objc";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		993CF1D420D1C0FA00E55BFD /* Build configuration list for PBXProject "simple-conversation-objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				993CF1ED20D1C0FA00E55BFD /* Debug */,
+				993CF1EE20D1C0FA00E55BFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		993CF1EF20D1C0FA00E55BFD /* Build configuration list for PBXNativeTarget "simple-conversation-objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				993CF1F020D1C0FA00E55BFD /* Debug */,
+				993CF1F120D1C0FA00E55BFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 993CF1D120D1C0FA00E55BFD /* Project object */;
+}
