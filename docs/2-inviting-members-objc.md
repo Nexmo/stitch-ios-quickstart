@@ -14,7 +14,7 @@ This guide will introduce you to the following concepts:
 ### Before you begin
 
 
-* Ensure you have run through the [previous guide](1-simple-conversation.md)
+* Ensure you have run through the [previous guide](1-simple-conversation.md) to understand how Swift interoperability for Objective-C
 * Make sure you have two iOS devices to complete this example. They can be two simulators, one simulator and one physical device, or two physical devices.
 
 > Note: We do not currently support any drag & drop UIs yet so we'll build on the last UI.
@@ -86,7 +86,7 @@ Update the authenticate function with an instance of `UIAlertController` with an
 
         let alert = UIAlertController(title: "My Alert", message: "This is an alert.", preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("jamie", comment: "First User"), style: .`default`, handler: { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("bob", comment: "First User"), style: .`default`, handler: { _ in
         
             NSLog("The \"First User\" is here!")
 
@@ -217,7 +217,7 @@ We'll loop through the conversations the user is a member to make sure that the 
 
 ### 2.4 - Run the apps
 
-Run the apps on both the simulator & device. On one of them, login "jamie". On the other login "alice".
+Run the apps on both the simulator & device. On one of them, login "bob". On the other login "alice".
 
 ### 2.5 - Invite the second user to the conversations
 
@@ -244,15 +244,17 @@ Where you should see an output similar to the following:
 ```bash
 name                                     | user_id                                  | user_name | state  
 ---------------------------------------------------------------------------------------------------------
-MEM-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | USR-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | jamie     | JOINED
+MEM-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | USR-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | bob     | JOINED
 MEM-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | USR-aaaaaaaa-bbbb-cccc-dddd-0123456789ab | alice     | INVITED
 
 ```
 
-Return to your emulators so you can see `alice` has a conversation listed now. You can click the conversation name and proceed to chat between `alice` and `jamie`.
+Return to your emulators so you can see `alice` has a conversation listed now. You can click the conversation name and proceed to chat between `alice` and `bob`.
 
 # Trying it out
 
-Once you've completed this quickstart, you can run the sample app on two different devices. You'll be able to login as a user, join an existing conversation or receive invites, and chat with users. Here's a gif of our quickstart in action.
+Once you've completed this quickstart, you can run the sample app on two different devices. You'll be able to login as a user, join an existing conversation or receive invites, and chat with users. 
 
 # What's next? 
+
+Click [here](https://github.com/Nexmo/stitch-ios-quickstart/tree/master/examples/inviting-members/inviting-members-objc), if you would like to compare your codebase with the codebase for this quick start.

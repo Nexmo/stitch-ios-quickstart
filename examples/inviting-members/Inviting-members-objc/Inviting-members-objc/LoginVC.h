@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  LoginVC.h
 //  inviting-members-objc
 //
 //  Created by Eric Giannini on 6/18/18.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface LoginVC : UIViewController
 
 @end
-
