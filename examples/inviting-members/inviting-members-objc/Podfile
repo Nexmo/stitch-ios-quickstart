@@ -1,0 +1,15 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+use_frameworks!
+
+source "https://github.com/Nexmo/PodSpec.git"
+source 'git@github.com:CocoaPods/Specs.git'
+
+target 'inviting-members-objc' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+
+  # Pods for inviting-members-objc
+  pod "Nexmo-Stitch" #, :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "release" # development
+
+end

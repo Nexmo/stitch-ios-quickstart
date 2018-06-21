@@ -1,0 +1,30 @@
+PODS:
+  - Alamofire (4.7.2)
+  - Nexmo-Stitch (1.8.0):
+    - Alamofire (~> 4.0)
+    - NexmoGRDB.swift (~> 0.90)
+    - NexmoWebRTC (~> 63.11)
+    - RxSwift (~> 4.0)
+    - Socket.IO-Client-Swift (~> 13.0)
+  - NexmoGRDB.swift (0.90.5)
+  - NexmoWebRTC (63.11.16)
+  - RxSwift (4.2.0)
+  - Socket.IO-Client-Swift (13.2.1):
+    - Starscream (~> 3.0.2)
+  - Starscream (3.0.5)
+
+DEPENDENCIES:
+  - Nexmo-Stitch
+
+SPEC CHECKSUMS:
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Nexmo-Stitch: ecb45e5573ce0ada64c349e91850bccbffc7b7ed
+  NexmoGRDB.swift: a3f76f83f87c0836f3b2cdb375aa7e9e9f8bce3a
+  NexmoWebRTC: efb9a506e6107d12399114b621f4b71b07c56d75
+  RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
+  Socket.IO-Client-Swift: b94943e2fb916fe2f95244b9ed21828634002280
+  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
+
+PODFILE CHECKSUM: 44d257914d2a54569b812bce2545bf5e8b33b392
+
+COCOAPODS: 1.4.0

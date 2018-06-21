@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@import Stitch;
 
 @interface LoginVC : UIViewController
 
+@property (retain, nonatomic) NXMConversationClient *client;
+
+@property (weak, nonatomic) IBOutlet UILabel *statusLbl;
+
+
 @end
+
