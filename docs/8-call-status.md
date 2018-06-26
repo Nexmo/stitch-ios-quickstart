@@ -8,7 +8,7 @@ Both inbound and outbound calls follow the same call flow once answered. This ca
 
 Each call goes through a sequence of states in its lifecycle:
 
-A call may pass from Created to Ringing to Answered to Complete but there are many different sets of sequences for states in a call's lifecycle. Below is an schematic diagram outlining a few sets. 
+A call may pass from Created to Ringing to Answered to Complete but there are many different sets of sequences for states in a call's lifecycle. Below is a schematic diagram outlining a few sets. 
 
 ![Call_States_RTC.png](./Call_States_RTC.png)
 
