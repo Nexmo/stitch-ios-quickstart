@@ -1,7 +1,6 @@
 # Call States 
 
-In this quick start we are going to explain call statuses for _outgoing calls_ like 
- started, ringing, answered, rejected, busy, unanswered, timeout, failed, complete, machine. Since everyone is familiar with the phone, these concepts are pretty straightforward. 
+In this guide we are going to explain call states like started, ringing, answered, rejected, busy, unanswered, timeout, failed, complete, machine. Since everyone is familiar with the phone, these concepts are pretty straightforward. 
  
 Both inbound and outbound calls follow the same call flow once answered. This call flow is controlled by an NCCO. An NCCO is a script of actions to be run within the context of the call. Actions are executed in the order they appear in the script, with the next action starting when the previous action has finished executing. For more information about NCCOs, see the [NCCO reference](https://developer.nexmo.com/voice/voice-api/ncco-reference).
 
