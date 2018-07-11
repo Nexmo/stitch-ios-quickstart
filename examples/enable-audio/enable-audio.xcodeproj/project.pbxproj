@@ -12,6 +12,9 @@
 		9909727620EC14E900FE7F9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9909727420EC14E900FE7F9C /* Main.storyboard */; };
 		9909727820EC14ED00FE7F9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9909727720EC14ED00FE7F9C /* Assets.xcassets */; };
 		9909727B20EC14ED00FE7F9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9909727920EC14ED00FE7F9C /* LaunchScreen.storyboard */; };
+		994AEB0720F56608009D75D5 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994AEB0620F56608009D75D5 /* LoginVC.swift */; };
+		994AEB0920F5666B009D75D5 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994AEB0820F5666B009D75D5 /* ChatVC.swift */; };
+		9E7D9DF5573E33F55806853E /* Pods_enable_audio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6E9657CBEE56C7473181B98 /* Pods_enable_audio.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,11 @@
 		9909727720EC14ED00FE7F9C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9909727A20EC14ED00FE7F9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9909727C20EC14ED00FE7F9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		994AEB0620F56608009D75D5 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		994AEB0820F5666B009D75D5 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
+		B23CF71CDC8EB2B55C40C6B1 /* Pods-enable-audio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enable-audio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-enable-audio/Pods-enable-audio.debug.xcconfig"; sourceTree = "<group>"; };
+		B6E9657CBEE56C7473181B98 /* Pods_enable_audio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enable_audio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB52780D7D91613582C590CA /* Pods-enable-audio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enable-audio.release.xcconfig"; path = "Pods/Target Support Files/Pods-enable-audio/Pods-enable-audio.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +37,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E7D9DF5573E33F55806853E /* Pods_enable_audio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		43E8569D7E4C2D8A1D63C299 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B23CF71CDC8EB2B55C40C6B1 /* Pods-enable-audio.debug.xcconfig */,
+				FB52780D7D91613582C590CA /* Pods-enable-audio.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		4803488E2B79D5F17E5D67DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B6E9657CBEE56C7473181B98 /* Pods_enable_audio.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9909726420EC14E900FE7F9C = {
 			isa = PBXGroup;
 			children = (
 				9909726F20EC14E900FE7F9C /* enable-audio */,
 				9909726E20EC14E900FE7F9C /* Products */,
+				43E8569D7E4C2D8A1D63C299 /* Pods */,
+				4803488E2B79D5F17E5D67DF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,6 +84,8 @@
 			children = (
 				9909727020EC14E900FE7F9C /* AppDelegate.swift */,
 				9909727220EC14E900FE7F9C /* ViewController.swift */,
+				994AEB0620F56608009D75D5 /* LoginVC.swift */,
+				994AEB0820F5666B009D75D5 /* ChatVC.swift */,
 				9909727420EC14E900FE7F9C /* Main.storyboard */,
 				9909727720EC14ED00FE7F9C /* Assets.xcassets */,
 				9909727920EC14ED00FE7F9C /* LaunchScreen.storyboard */,
@@ -71,9 +101,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9909727F20EC14ED00FE7F9C /* Build configuration list for PBXNativeTarget "enable-audio" */;
 			buildPhases = (
+				4C6AC2C1804FFDEC6B05674F /* [CP] Check Pods Manifest.lock */,
 				9909726920EC14E900FE7F9C /* Sources */,
 				9909726A20EC14E900FE7F9C /* Frameworks */,
 				9909726B20EC14E900FE7F9C /* Resources */,
+				2EA7737085D811059529689E /* [CP] Embed Pods Frameworks */,
+				EB1FD4C7FBCA94B891511584 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,13 +163,83 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2EA7737085D811059529689E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-enable-audio/Pods-enable-audio-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/NexmoGRDB.swift/GRDB.framework",
+				"${PODS_ROOT}/NexmoWebRTC/WebRTC.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stitch.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Stitch.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-enable-audio/Pods-enable-audio-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4C6AC2C1804FFDEC6B05674F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-enable-audio-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB1FD4C7FBCA94B891511584 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-enable-audio/Pods-enable-audio-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9909726920EC14E900FE7F9C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				994AEB0920F5666B009D75D5 /* ChatVC.swift in Sources */,
 				9909727320EC14E900FE7F9C /* ViewController.swift in Sources */,
 				9909727120EC14E900FE7F9C /* AppDelegate.swift in Sources */,
+				994AEB0720F56608009D75D5 /* LoginVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,14 +381,12 @@
 		};
 		9909728020EC14ED00FE7F9C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B23CF71CDC8EB2B55C40C6B1 /* Pods-enable-audio.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "enable-audio/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nexmo.enable-audio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -295,14 +396,12 @@
 		};
 		9909728120EC14ED00FE7F9C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB52780D7D91613582C590CA /* Pods-enable-audio.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "enable-audio/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nexmo.enable-audio";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
