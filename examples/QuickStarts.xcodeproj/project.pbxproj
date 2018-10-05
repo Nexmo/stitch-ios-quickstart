@@ -22,7 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		56180D61E037A9C05A66B927 /* Pods_QuickStartOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81B6CAEF177B653B31C0D0EB /* Pods_QuickStartOne.framework */; };
+		334A7322B1E4C74C05E2AE68 /* Pods_QuickStartsOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170B353381D37D169C77EAD /* Pods_QuickStartsOne.framework */; };
+		56B39F942167C3EE00D4C74E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99D373D81F54D48E0079AA61 /* Info.plist */; };
 		994C87511FDB3027009C3BCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994C87501FDB3027009C3BCE /* AppDelegate.swift */; };
 		994C87561FDB3027009C3BCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 994C87541FDB3027009C3BCE /* Main.storyboard */; };
 		994C87581FDB3027009C3BCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 994C87571FDB3027009C3BCE /* Assets.xcassets */; };
@@ -35,7 +36,7 @@
 		99D373D41F54D48E0079AA61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99D373D31F54D48E0079AA61 /* Assets.xcassets */; };
 		99D373D71F54D48E0079AA61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99D373D51F54D48E0079AA61 /* LaunchScreen.storyboard */; };
 		99EBF5851F54F7D6001A03F2 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EBF5841F54F7D5001A03F2 /* ChatController.swift */; };
-		A0E2AC3C957A77E5E699973C /* Pods_QuickStartTwo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC36E4F063EA4042ADA891B /* Pods_QuickStartTwo.framework */; };
+		C964AAB396529B5941BC135B /* Pods_QuickStartTwo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A503CA26648A4C69618D16 /* Pods_QuickStartTwo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,11 +57,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		14DFD9E4AABDCED0139C7834 /* Pods-QuickStartOne.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartOne.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartOne/Pods-QuickStartOne.debug.xcconfig"; sourceTree = "<group>"; };
-		247AB04A9584F6FAFB209BA1 /* Pods-QuickStartOne.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartOne.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartOne/Pods-QuickStartOne.release.xcconfig"; sourceTree = "<group>"; };
-		4BAD5209EB8DB9A21D9CEE50 /* Pods-QuickStartTwo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartTwo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo.debug.xcconfig"; sourceTree = "<group>"; };
-		81B6CAEF177B653B31C0D0EB /* Pods_QuickStartOne.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickStartOne.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8599835F0D9AD1CDBBFC4A2E /* Pods-QuickStartTwo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartTwo.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo.release.xcconfig"; sourceTree = "<group>"; };
+		0170B353381D37D169C77EAD /* Pods_QuickStartsOne.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickStartsOne.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		28A503CA26648A4C69618D16 /* Pods_QuickStartTwo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickStartTwo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C899E31D2F8BDBC1CC9D242 /* Pods-QuickStartTwo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartTwo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo.debug.xcconfig"; sourceTree = "<group>"; };
+		7B2CB40902A0CEBC0AF47963 /* Pods-QuickStartTwo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartTwo.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo.release.xcconfig"; sourceTree = "<group>"; };
+		7B9C7A55E9D6447ECFCD0E49 /* Pods-QuickStartsOne.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartsOne.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartsOne/Pods-QuickStartsOne.debug.xcconfig"; sourceTree = "<group>"; };
 		994C874E1FDB3027009C3BCE /* QuickStartTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickStartTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		994C87501FDB3027009C3BCE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		994C87551FDB3027009C3BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -77,7 +78,7 @@
 		99D373D61F54D48E0079AA61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		99D373D81F54D48E0079AA61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99EBF5841F54F7D5001A03F2 /* ChatController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
-		DDC36E4F063EA4042ADA891B /* Pods_QuickStartTwo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickStartTwo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9D2C453D5F86A2BD9E8D625 /* Pods-QuickStartsOne.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickStartsOne.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuickStartsOne/Pods-QuickStartsOne.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0E2AC3C957A77E5E699973C /* Pods_QuickStartTwo.framework in Frameworks */,
+				C964AAB396529B5941BC135B /* Pods_QuickStartTwo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56180D61E037A9C05A66B927 /* Pods_QuickStartOne.framework in Frameworks */,
+				334A7322B1E4C74C05E2AE68 /* Pods_QuickStartsOne.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,11 +123,22 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		12AF1115F2AE5DEB6B94D48C /* Frameworks */ = {
+		2EA1A81138C329BBCD47FE62 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				81B6CAEF177B653B31C0D0EB /* Pods_QuickStartOne.framework */,
-				DDC36E4F063EA4042ADA891B /* Pods_QuickStartTwo.framework */,
+				5C899E31D2F8BDBC1CC9D242 /* Pods-QuickStartTwo.debug.xcconfig */,
+				7B2CB40902A0CEBC0AF47963 /* Pods-QuickStartTwo.release.xcconfig */,
+				7B9C7A55E9D6447ECFCD0E49 /* Pods-QuickStartsOne.debug.xcconfig */,
+				F9D2C453D5F86A2BD9E8D625 /* Pods-QuickStartsOne.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6A98EE63FB33B259E7B9DF34 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28A503CA26648A4C69618D16 /* Pods_QuickStartTwo.framework */,
+				0170B353381D37D169C77EAD /* Pods_QuickStartsOne.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -148,8 +160,8 @@
 				99D373CB1F54D48E0079AA61 /* QuickStartOne */,
 				994C874F1FDB3027009C3BCE /* QuickStartTwo */,
 				99D373CA1F54D48E0079AA61 /* Products */,
-				C650B1F45E951092F1C58E02 /* Pods */,
-				12AF1115F2AE5DEB6B94D48C /* Frameworks */,
+				2EA1A81138C329BBCD47FE62 /* Pods */,
+				6A98EE63FB33B259E7B9DF34 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -173,17 +185,6 @@
 			path = QuickStartOne;
 			sourceTree = "<group>";
 		};
-		C650B1F45E951092F1C58E02 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				14DFD9E4AABDCED0139C7834 /* Pods-QuickStartOne.debug.xcconfig */,
-				247AB04A9584F6FAFB209BA1 /* Pods-QuickStartOne.release.xcconfig */,
-				4BAD5209EB8DB9A21D9CEE50 /* Pods-QuickStartTwo.debug.xcconfig */,
-				8599835F0D9AD1CDBBFC4A2E /* Pods-QuickStartTwo.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -191,12 +192,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 994C875F1FDB3027009C3BCE /* Build configuration list for PBXNativeTarget "QuickStartTwo" */;
 			buildPhases = (
-				6A2E58ADA5C69101DB5E23E5 /* [CP] Check Pods Manifest.lock */,
+				2013D0D1D711B46D94BB38A4 /* [CP] Check Pods Manifest.lock */,
 				994C874A1FDB3027009C3BCE /* Sources */,
 				994C874B1FDB3027009C3BCE /* Frameworks */,
 				994C874C1FDB3027009C3BCE /* Resources */,
-				E25B1B11953E6BB5090699BC /* [CP] Embed Pods Frameworks */,
-				6C423B4FD24B9CD797E1370C /* [CP] Copy Pods Resources */,
+				B1E4389CC5994241C3A55AC7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -211,12 +211,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 99D373DB1F54D48E0079AA61 /* Build configuration list for PBXNativeTarget "QuickStartsOne" */;
 			buildPhases = (
-				3AC2768C31166BB3EC76D341 /* [CP] Check Pods Manifest.lock */,
+				39F1C65205FC2C595AB50742 /* [CP] Check Pods Manifest.lock */,
 				99D373C51F54D48E0079AA61 /* Sources */,
 				99D373C61F54D48E0079AA61 /* Frameworks */,
 				99D373C71F54D48E0079AA61 /* Resources */,
-				91994C22A2B9710B86E9C0C0 /* [CP] Embed Pods Frameworks */,
-				414D774F906D00F148F3A471 /* [CP] Copy Pods Resources */,
+				C04DD81496E84DAF822C09EA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -286,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B39F942167C3EE00D4C74E /* Info.plist in Resources */,
 				99D373D71F54D48E0079AA61 /* LaunchScreen.storyboard in Resources */,
 				99D373D41F54D48E0079AA61 /* Assets.xcassets in Resources */,
 				99D373D21F54D48E0079AA61 /* Main.storyboard in Resources */,
@@ -295,40 +295,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3AC2768C31166BB3EC76D341 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-QuickStartOne-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		414D774F906D00F148F3A471 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartOne/Pods-QuickStartOne-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6A2E58ADA5C69101DB5E23E5 /* [CP] Check Pods Manifest.lock */ = {
+		2013D0D1D711B46D94BB38A4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -346,56 +313,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6C423B4FD24B9CD797E1370C /* [CP] Copy Pods Resources */ = {
+		39F1C65205FC2C595AB50742 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-QuickStartsOne-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		91994C22A2B9710B86E9C0C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartOne/Pods-QuickStartOne-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/NexmoGRDB.swift/GRDB.framework",
-				"${PODS_ROOT}/NexmoWebRTC/WebRTC.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-				"${PODS_ROOT}/Stitch/Carthage/Build/iOS/NexmoConversation.framework",
-				"${PODS_ROOT}/Stitch/Carthage/Build/iOS/NexmoConversation.framework.dSYM",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NexmoConversation.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/NexmoConversation.framework.dSYM",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartOne/Pods-QuickStartOne-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E25B1B11953E6BB5090699BC /* [CP] Embed Pods Frameworks */ = {
+		B1E4389CC5994241C3A55AC7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -403,30 +339,60 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/NexmoGRDB.swift/GRDB.framework",
 				"${PODS_ROOT}/NexmoWebRTC/WebRTC.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-				"${PODS_ROOT}/Stitch/Carthage/Build/iOS/NexmoConversation.framework",
-				"${PODS_ROOT}/Stitch/Carthage/Build/iOS/NexmoConversation.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stitch.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Stitch.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NexmoConversation.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/NexmoConversation.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartTwo/Pods-QuickStartTwo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C04DD81496E84DAF822C09EA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartsOne/Pods-QuickStartsOne-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework",
+				"${PODS_ROOT}/Nexmo-Stitch/Carthage/Build/iOS/Stitch.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/NexmoGRDB.swift/GRDB.framework",
+				"${PODS_ROOT}/NexmoWebRTC/WebRTC.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stitch.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Stitch.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickStartsOne/Pods-QuickStartsOne-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -521,7 +487,7 @@
 		};
 		994C875D1FDB3027009C3BCE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4BAD5209EB8DB9A21D9CEE50 /* Pods-QuickStartTwo.debug.xcconfig */;
+			baseConfigurationReference = 5C899E31D2F8BDBC1CC9D242 /* Pods-QuickStartTwo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -547,7 +513,7 @@
 		};
 		994C875E1FDB3027009C3BCE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8599835F0D9AD1CDBBFC4A2E /* Pods-QuickStartTwo.release.xcconfig */;
+			baseConfigurationReference = 7B2CB40902A0CEBC0AF47963 /* Pods-QuickStartTwo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -678,12 +644,12 @@
 		};
 		99D373DC1F54D48E0079AA61 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 14DFD9E4AABDCED0139C7834 /* Pods-QuickStartOne.debug.xcconfig */;
+			baseConfigurationReference = 7B9C7A55E9D6447ECFCD0E49 /* Pods-QuickStartsOne.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "QuickStartOne/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.unicornmobile.QuickStartOne;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nexmo.QuickStartOne;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 			};
@@ -691,12 +657,12 @@
 		};
 		99D373DD1F54D48E0079AA61 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 247AB04A9584F6FAFB209BA1 /* Pods-QuickStartOne.release.xcconfig */;
+			baseConfigurationReference = F9D2C453D5F86A2BD9E8D625 /* Pods-QuickStartsOne.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "QuickStartOne/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.unicornmobile.QuickStartOne;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nexmo.QuickStartOne;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 			};
