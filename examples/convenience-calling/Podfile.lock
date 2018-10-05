@@ -16,6 +16,16 @@ PODS:
 DEPENDENCIES:
   - Nexmo-Stitch
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Nexmo-Stitch
+    - NexmoGRDB.swift
+    - NexmoWebRTC
+    - RxSwift
+    - Socket.IO-Client-Swift
+    - Starscream
+
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   Nexmo-Stitch: afa2dc2d33c48e4792ff9c4d4ca146b28657cc4d
@@ -27,4 +37,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 84e5211092693d25a0823331ff33380c383cbf9e
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.2

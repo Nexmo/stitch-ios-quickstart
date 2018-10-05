@@ -32,7 +32,7 @@ class ChatController: UIViewController {
         
         do {
             // send method
-            try consversation?.send(textField.text!)
+            try conversation?.send(textField.text!)
             
         } catch let error {
             print(error)
@@ -42,36 +42,37 @@ class ChatController: UIViewController {
 
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
-        super.viewDidload()
+        super.viewDidLoad()
         
-        tableView.delegate = self
+        tableView.delegate = self as? UITableViewDelegate
         tableView.dataSource = self
         
         // a handler for updating the textView with TextEvents
-        conversation?.events.newEventReceived.addHandler { event in
-            
+        conversation?.events.newEventReceived.subscribe(onSuccess: { (event) in
             guard let event = event as? TextEvent, event.isCurrentlyBeingSent == false else { return }
             
             guard let text = event.text else { return }
             
-            self.textView.insertText(" \(text) \n ")
-        }
+            self.textField.insertText(" \(text) \n ")
+
+        }, onError: { (error) in
+            
+        })
         
     }
 
     // MARK: - Call Convenience Methods
     private func call() {
         
-        let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .sheet)
+        let callAlert = UIAlertController(title: "Call", message: "Who would you like to call?", preferredStyle: .actionSheet)
         
         conversation?.members.forEach{ member in
-            callAlert.addAction(UIAlertAction(title: member.user.username, style: .default, handler: {
-                
-                    ConversationClient.instance.media.call(member.user.username, onSuccess: { result in
-                        // if you would like to display a UI for calling...
-                    }, onError: { networkError in
-                        // if you would like to display a log for error...
-                    })
+            callAlert.addAction(UIAlertAction(title: member.user.name, style: .default, handler: { (action) in
+                ConversationClient.instance.media.call([member.user.name], onSuccess: { result in
+                    // if you would like to display a UI for calling...
+                }, onError: { networkError in
+                    // if you would like to display a log for error...
+                })
             }))
         }
         
