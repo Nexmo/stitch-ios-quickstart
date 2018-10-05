@@ -2,11 +2,10 @@ platform :ios, '9.0'
 
 use_frameworks!
 
-source "https://github.com/Nexmo/PodSpec.git"
 source 'git@github.com:CocoaPods/Specs.git'
 
 def nexmoConversationPod
-    pod "NexmoConversation", :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "release" # development
+    pod "Nexmo-Stitch"
 end
 
 target 'QuickStartOne' do
