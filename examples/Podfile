@@ -8,7 +8,7 @@ def podsList
     pod "Nexmo-Stitch"
 end
 
-target 'QuickStartOne' do
+target 'QuickStartsOne' do
     podsList
 end
 

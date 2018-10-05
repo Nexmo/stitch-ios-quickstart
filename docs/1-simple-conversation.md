@@ -152,13 +152,11 @@ Navigate to the project's root directory in the Terminal. Run: `pod init`. Open 
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
 
-source "https://github.com/Nexmo/PodSpec.git"
 source 'git@github.com:CocoaPods/Specs.git'
 
 target 'QuickStartOne' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  pod "NexmoConversation", :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "master" # development
+  pod "Nexmo-Stitch"
 end
 
 ```
@@ -173,7 +171,7 @@ Let's layout the login functionality. Set constraints on the top & leading attri
 
 ### 2.5 - Create the Login Functionality
 
-Below `UIKit` let's import the `NexmoConversation`. Next we setup a custom instance of the `ConversationClient` and saving it as a member variable in the view controller. 
+Below `UIKit` let's import `Stitch` framework. Next we setup a custom instance of the `ConversationClient` and saving it as a member variable in the view controller. 
 
 ```Swift
     /// Nexmo Conversation client
@@ -308,7 +306,7 @@ Like last time we'll wire up the views in `ChatViewController.swift` We also nee
 ```Swift
 
 import UIKit
-import NexmoConversation
+import Stitch
 
 class ChatController: UIViewController {
     
