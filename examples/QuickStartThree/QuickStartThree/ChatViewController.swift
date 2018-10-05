@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import NexmoConversation
+import Stitch
 
 class ChatViewController: UIViewController {
     
@@ -156,11 +156,11 @@ class ChatViewController: UIViewController {
 extension ChatViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
+        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        <#code#>
+        
     }
     
 }
