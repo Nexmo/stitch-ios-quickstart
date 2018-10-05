@@ -44,13 +44,12 @@ platform :ios, '10.0'
 
 use_frameworks!
 
-source "https://github.com/Nexmo/PodSpec.git"
 source 'git@github.com:CocoaPods/Specs.git'
 
 
 target 'enable-audio' do
 
-  pod "Nexmo-Stitch" #, :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "release" # development
+  pod "Nexmo-Stitch"
 
 end
 ```
@@ -65,7 +64,7 @@ Let's layout the login functionality. Set constraints on the top & leading attri
 
 ### 1.4 - Create the Login Functionality
 
-Below `UIKit` let's import the `NexmoConversation`. Next we setup a custom instance of the `ConversationClient` and saving it as a member variable in the view controller.
+Below `UIKit` let's import the `Stitch` framework. Next we setup a custom instance of the `ConversationClient` and saving it as a member variable in the view controller.
 
 ```swift
 /// Nexmo Conversation client
@@ -199,7 +198,7 @@ Like last time we'll wire up the views in `ChatViewController.swift` We also nee
 ```swift
 
 import UIKit
-import NexmoConversation
+import Stitch
 
 class ChatController: UIViewController {
 

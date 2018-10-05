@@ -99,7 +99,7 @@ class LoginViewController: UIViewController {
         })
         
         DispatchQueue.main.async {
-        performSegue(withIdentifier: "chatView", sender: nil)
+        self.performSegue(withIdentifier: "chatView", sender: nil)
         }
     }
     

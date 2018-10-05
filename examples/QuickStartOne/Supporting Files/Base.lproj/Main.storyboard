@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gIM-Rr-E83">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gIM-Rr-E83">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--Login Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="chatView" id="BYZ-38-t0r" customClass="LoginController" customModule="QuickStartOne" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView" id="BYZ-38-t0r" customClass="LoginController" customModule="QuickStartsOne" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -67,7 +67,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="0F0-68-USf"/>
                     <connections>
-                        <outlet property="statusLbl" destination="gOV-m2-ka6" id="uae-8b-cdy"/>
+                        <outlet property="statusLbl" destination="gOV-m2-ka6" id="ki0-OL-iGl"/>
                         <segue destination="rTc-eL-BAN" kind="show" identifier="chatView" id="rIq-Yi-x0c"/>
                     </connections>
                 </viewController>
@@ -78,7 +78,7 @@
         <!--Chat Controller-->
         <scene sceneID="Zyz-r4-L3T">
             <objects>
-                <viewController storyboardIdentifier="ChatController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rTc-eL-BAN" customClass="ChatController" customModule="QuickStartOne" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rTc-eL-BAN" customClass="ChatController" customModule="QuickStartsOne" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Lbn-6E-HQG"/>
                         <viewControllerLayoutGuide type="bottom" id="bdE-tq-CQ9"/>

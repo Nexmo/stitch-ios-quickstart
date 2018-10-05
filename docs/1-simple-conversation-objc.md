@@ -37,13 +37,12 @@ Navigate to the project's root directory in the Terminal. Run: `pod init`. Open 
 # Uncomment the next line to define a global platform for your project
 platform :ios, '10.0'
 
-source "https://github.com/Nexmo/PodSpec.git"
 source 'git@github.com:CocoaPods/Specs.git'
 
 target 'simple-conversation-objc' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  pod "Nexmo-Stitch", :git => "https://github.com/nexmo/conversation-ios-sdk.git", :branch => "master" # development
+  pod "Nexmo-Stitch"
 end
 ```
 

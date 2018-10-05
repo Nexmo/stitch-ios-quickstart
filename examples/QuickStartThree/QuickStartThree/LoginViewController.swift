@@ -4,7 +4,7 @@
 //
 
 import UIKit
-import NexmoConversation
+import Stitch
 
 class LoginViewController: UIViewController {
     
