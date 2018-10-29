@@ -8,7 +8,7 @@ This is the iOS SDK for Nexmo In-App Messaging and Voice APIs. Read more about:
 - [Viewing the SDK API Reference docs](#sdk-api-reference-docs)
 - [Checking out the additional resources](#additional-resources)
 
-Please note that this SDK only supports Swift 4.1.2.
+Please note that this SDK supports Swift 4.1.2 and earler.
 
 ## About In-App Messaging and Voice
 
